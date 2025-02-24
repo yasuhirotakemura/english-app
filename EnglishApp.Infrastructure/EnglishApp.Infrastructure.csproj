@@ -7,14 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="SqlServer\**" />
+    <EmbeddedResource Remove="SqlServer\**" />
+    <None Remove="SqlServer\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\EnglishApp.Domain\EnglishApp.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Factories\" />
     <Folder Include="Fake\" />
-    <Folder Include="SqlServer\Repositories\" />
-    <Folder Include="Services\" />
   </ItemGroup>
 
   <ItemGroup>
