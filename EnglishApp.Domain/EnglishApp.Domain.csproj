@@ -12,7 +12,6 @@
     <Folder Include="Logics\" />
     <Folder Include="StaticValues\" />
     <Folder Include="ValueObjects\Bases\" />
-    <Folder Include="Repositories\" />
   </ItemGroup>
 
 </Project>
