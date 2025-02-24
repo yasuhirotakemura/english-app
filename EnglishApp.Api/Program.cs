@@ -1,6 +1,20 @@
-﻿WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+﻿using EnglishApp.Domain.Repositories;
+using EnglishApp.Domain.Services;
+using EnglishApp.Infrastructure.Repositories;
+using EnglishApp.Infrastructure.Services;
+
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+// SQL Server Service の登録
+builder.Services.AddSingleton<SqlServerService>();
+
+// Repository の登録
+builder.Services.AddScoped<IEnglishTextRepository, EnglishTextRepository>();
+builder.Services.AddScoped<IEnglishQuestionRepository, EnglishQuestionRepository>();
+
+// サービスの登録（追加）
+builder.Services.AddScoped<IRepositoryService, RepositoryService>();  // ← ここを追加
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
