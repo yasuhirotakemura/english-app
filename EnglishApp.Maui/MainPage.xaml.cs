@@ -30,6 +30,13 @@ public partial class MainPage : ContentPage
         ImmutableList<EnglishTextEntity>? testGet = await service.GetEnglishTextsAsync();
 
         Debug.WriteLine("HELLO");
-        Debug.WriteLine(testGet?.Count);
+
+        if(testGet is not null)
+        {
+            foreach (EnglishTextEntity entity in testGet)
+            {
+                Debug.WriteLine(entity.Content + "\n");
+            }
+        }
     }
 }
