@@ -3,13 +3,13 @@
     x:Class="EnglishApp.Maui.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:EnglishApp.Maui"
+    xmlns:local="clr-namespace:EnglishApp.Maui.Views"
     Shell.FlyoutBehavior="Disabled"
     Title="EnglishApp.Maui">
 
     <ShellContent
         Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+        ContentTemplate="{DataTemplate local:MainView}"
+        Route="MainView" />
 
 </Shell>
