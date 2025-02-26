@@ -14,7 +14,7 @@ builder.Services.AddScoped<IEnglishTextRepository, EnglishTextRepository>();
 builder.Services.AddScoped<IEnglishQuestionRepository, EnglishQuestionRepository>();
 
 // サービスの登録（追加）
-builder.Services.AddScoped<IRepositoryService, RepositoryService>();  // ← ここを追加
+builder.Services.AddScoped<IRepositoryService, RepositoryService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

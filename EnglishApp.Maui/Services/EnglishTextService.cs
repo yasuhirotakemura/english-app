@@ -12,7 +12,7 @@ public class EnglishTextService(HttpClient httpClient)
     {
         try
         {
-            return await this._httpClient.GetFromJsonAsync<ImmutableList<EnglishTextEntity>>("http://localhost:5249/api/EnglishText");
+            return await this._httpClient.GetFromJsonAsync<ImmutableList<EnglishTextEntity>>("http://10.0.2.2:5249/api/EnglishText");
         }
         catch (Exception ex)
         {
