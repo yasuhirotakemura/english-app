@@ -1,5 +1,6 @@
 ﻿using EnglishApp.Domain.Entities;
 using EnglishApp.Maui.Services;
+using EnglishApp.Maui.Views;
 using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 
@@ -25,7 +26,6 @@ public sealed class MainViewModel : BindableBase
     {
         ImmutableList<EnglishTextEntity>? texts = await this._englishTextService.GetEnglishTextsAsync();
         
-
         if(texts is not null)
         {
             this.EnglishTexts.Clear();
