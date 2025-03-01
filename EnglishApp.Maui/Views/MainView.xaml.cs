@@ -1,6 +1,4 @@
-﻿using EnglishApp.Domain.Entities;
-using EnglishApp.Maui.ViewModels;
-using System.Diagnostics;
+﻿using EnglishApp.Maui.ViewModels;
 
 namespace EnglishApp.Maui.Views;
 
@@ -18,16 +16,5 @@ public partial class MainView : ContentPage
         this._mainViewModel = new();
 
         this.BindingContext = this._mainViewModel;
-    }
-
-    public void OnQuestionItemTapped(object sender, ItemTappedEventArgs e)
-    {
-        if(e.Item == null ||
-           e.Item is not EnglishTextEntity englishTextEntity)
-        {
-            return;
-        }
-
-        Debug.WriteLine(englishTextEntity.Content);
     }
 }
