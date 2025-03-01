@@ -1,12 +1,15 @@
-﻿using EnglishApp.Domain.Entities;
+﻿using CommunityToolkit.Mvvm.Input;
+using EnglishApp.Domain.Entities;
 using EnglishApp.Maui.Services;
+using EnglishApp.Maui.ViewModels.Bases;
 using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Windows.Input;
 
 namespace EnglishApp.Maui.ViewModels;
 
-public sealed class MainViewModel : BindableBase
+public sealed class MainViewModel : ViewModelBase
 {
     private readonly EnglishTextService _englishTextService;
 
@@ -18,11 +21,11 @@ public sealed class MainViewModel : BindableBase
 
         this.EnglishTexts = [];
 
-        this.LoadTextsCommand = new(async () => await this.LoadEnglishTextsAsync());
-        this.QuestionItemTappedCommand = new(this.OnQuestionItemTappedCommand);
+        this.LoadTextsCommand = new AsyncRelayCommand(this.LoadEnglishTextsAsync);
+        this.QuestionItemTappedCommand = new AsyncRelayCommand(this.OnQuestionItemTappedCommand);
     }
 
-    public DelegateCommand LoadTextsCommand { get; }
+    public ICommand LoadTextsCommand { get; }
     private async Task LoadEnglishTextsAsync()
     {
         ImmutableList<EnglishTextEntity>? texts = await this._englishTextService.GetEnglishTextsAsync();
@@ -38,8 +41,8 @@ public sealed class MainViewModel : BindableBase
         }
     }
 
-    public DelegateCommand<EnglishTextEntity> QuestionItemTappedCommand { get; }
-    private void OnQuestionItemTappedCommand(EnglishTextEntity entity)
+    public ICommand QuestionItemTappedCommand { get; }
+    private async Task OnQuestionItemTappedCommand()
     {
         Debug.WriteLine("HELLO MAUI");
     }

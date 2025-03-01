@@ -1,10 +1,9 @@
-﻿namespace EnglishApp.Maui
+﻿namespace EnglishApp.Maui;
+
+public partial class AppShell : Shell
 {
-    public partial class AppShell : Shell
+    public AppShell()
     {
-        public AppShell()
-        {
-            InitializeComponent();
-        }
+        this.InitializeComponent();
     }
 }

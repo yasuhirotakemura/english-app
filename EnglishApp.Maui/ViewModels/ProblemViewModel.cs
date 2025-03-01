@@ -1,11 +1,9 @@
-﻿namespace EnglishApp.Maui.ViewModels;
+﻿using EnglishApp.Maui.ViewModels.Bases;
 
-public class ProblemViewModel : BindableBase
+namespace EnglishApp.Maui.ViewModels;
+
+public class ProblemViewModel : ViewModelBase, IQueryAttributable
 {
-    public ProblemViewModel()
-    {
-    }
-
     private string _title = String.Empty;
     public string Title
     {
@@ -18,5 +16,10 @@ public class ProblemViewModel : BindableBase
     {
         get => this._content;
         set => this.SetProperty(ref this._content, value);
+    }
+
+    public void ApplyQueryAttributes(IDictionary<string, object> query)
+    {
+        throw new NotImplementedException();
     }
 }
