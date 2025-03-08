@@ -12,13 +12,11 @@ public sealed class HomeViewModel : ViewModelBase
 {
     private readonly IEnglishTextApiService _englishTextApiService;
 
-    public ObservableCollection<EnglishTextEntity> EnglishTexts { get; }
+    public ObservableCollection<EnglishTextEntity> EnglishTexts { get; } = [];
 
     public HomeViewModel(IEnglishTextApiService englishTextApiService)
     {
         this._englishTextApiService = englishTextApiService;
-
-        this.EnglishTexts = [];
 
         this.LoadTextsCommand = new AsyncRelayCommand(this.LoadEnglishTextsAsync);
     }
