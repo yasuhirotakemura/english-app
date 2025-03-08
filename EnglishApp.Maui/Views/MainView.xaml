@@ -12,7 +12,10 @@
         <VerticalStackLayout Padding="10">
             <Label Text="問題一覧" FontSize="24" HorizontalOptions="Center"/>
             <Button Text="データ取得" Command="{Binding LoadTextsCommand}" />
-            <ListView ItemsSource="{Binding EnglishTexts}" SelectionMode="Single" >
+            <ListView 
+                ItemsSource="{Binding EnglishTexts}" 
+                SelectedItem="{Binding SelectedEnglishText, Mode=TwoWay}"
+                SelectionMode="Single" >
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>

@@ -6,7 +6,7 @@ namespace EnglishApp.Infrastructure.Services;
 public sealed class SqlServerService
 {
     private readonly string _connectionString
-        = "Server=JUPITER4823;Database=YutaEnglish;Integrated Security=True;TrustServerCertificate=True;\r\n";
+        = "Server=JUPITER4823;Database=EnglishApp;Integrated Security=True;TrustServerCertificate=True;\r\n";
 
     public async Task<ImmutableList<T>> QueryAsync<T>(
         string sql,

@@ -4,8 +4,8 @@ namespace EnglishApp.Maui.ViewModels.Bases;
 
 public abstract class ViewModelBase : ObservableObject
 {
-    public virtual Task NavigateToAsync(string route, object parameter = null)
+    public virtual Task NavigateToAsync(string route, Dictionary<string, object> parameter)
     {
-        return Shell.Current.GoToAsync(route, parameter != null ? new Dictionary<string, object> { { "parameter", parameter } } : null);
+        return Shell.Current.GoToAsync(route, parameter);
     }
 }

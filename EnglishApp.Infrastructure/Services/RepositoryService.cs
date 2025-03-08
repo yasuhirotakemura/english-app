@@ -14,9 +14,9 @@ public sealed class RepositoryService(SqlServerService sqlServer) : IRepositoryS
         return this._englishTextRepository ??= new EnglishTextRepository(this._sqlServer);
     }
 
-    private IEnglishQuestionRepository? _englishQuestionRepository;
-    public IEnglishQuestionRepository EnglishQuestionRepository()
+    private IEnglishChoiceQuestionRepository? _englishChoiceQuestionRepository;
+    public IEnglishChoiceQuestionRepository EnglishChoiceQuestionRepository()
     {
-        return this._englishQuestionRepository ??= new EnglishQuestionRepository(this._sqlServer);
+        return this._englishChoiceQuestionRepository ??= new EnglishChoiceQuestionRepository(this._sqlServer);
     }
 }

@@ -2,10 +2,9 @@
 using EnglishApp.Domain.Entities;
 using EnglishApp.Maui.Services;
 using EnglishApp.Maui.ViewModels.Bases;
+using EnglishApp.Maui.Views;
 using System.Collections.Immutable;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Windows.Input;
 
 namespace EnglishApp.Maui.ViewModels;
 
@@ -15,6 +14,31 @@ public sealed class MainViewModel : ViewModelBase
 
     public ObservableCollection<EnglishTextEntity> EnglishTexts { get; }
 
+    private EnglishTextEntity? _selectedEnglishText;
+    public EnglishTextEntity? SelectedEnglishText
+    {
+        get => this._selectedEnglishText;
+        set
+        {
+            if(value is not EnglishTextEntity englishTextEntity)
+            {
+                return;
+            }
+
+            this.OnProblemSelected(englishTextEntity);
+        }
+    }
+
+    private void OnProblemSelected(EnglishTextEntity englishText)
+    {
+        Dictionary<string, object> navigationParameter = new()
+        {
+            { nameof(EnglishTextEntity), englishText },
+        };
+
+        this.NavigateToAsync(nameof(ProblemView), navigationParameter);
+    }
+
     public MainViewModel()
     {
         this._englishTextService = new(new());
@@ -22,10 +46,9 @@ public sealed class MainViewModel : ViewModelBase
         this.EnglishTexts = [];
 
         this.LoadTextsCommand = new AsyncRelayCommand(this.LoadEnglishTextsAsync);
-        this.QuestionItemTappedCommand = new AsyncRelayCommand(this.OnQuestionItemTappedCommand);
     }
 
-    public ICommand LoadTextsCommand { get; }
+    public IAsyncRelayCommand LoadTextsCommand { get; }
     private async Task LoadEnglishTextsAsync()
     {
         ImmutableList<EnglishTextEntity>? texts = await this._englishTextService.GetEnglishTextsAsync();
@@ -39,11 +62,5 @@ public sealed class MainViewModel : ViewModelBase
                 this.EnglishTexts.Add(text);
             }
         }
-    }
-
-    public ICommand QuestionItemTappedCommand { get; }
-    private async Task OnQuestionItemTappedCommand()
-    {
-        Debug.WriteLine("HELLO MAUI");
     }
 }

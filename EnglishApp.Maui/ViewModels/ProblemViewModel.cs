@@ -1,9 +1,34 @@
-﻿using EnglishApp.Maui.ViewModels.Bases;
+﻿using EnglishApp.Domain.Entities;
+using EnglishApp.Maui.Services;
+using EnglishApp.Maui.ViewModels.Bases;
+using System.Collections.Immutable;
+using System.Collections.ObjectModel;
 
 namespace EnglishApp.Maui.ViewModels;
 
 public class ProblemViewModel : ViewModelBase, IQueryAttributable
 {
+    public async void ApplyQueryAttributes(IDictionary<string, object> query)
+    {
+        if(query[nameof(EnglishTextEntity)] is not EnglishTextEntity englishTextEntity)
+        {
+            return;
+        }
+
+        this.Title = englishTextEntity.Title;
+        this.Content = englishTextEntity.Content;
+
+        ImmutableList<EnglishChoiceQuestionEntity>? entities =  await new EnglishChoiceQuestionService(new()).GetChoiceQuestionsAsync(englishTextEntity.Id);
+
+        if(entities is not null)
+        {
+            foreach(EnglishChoiceQuestionEntity e in entities)
+            {
+                this.Choices.Add(e);
+            }
+        }
+    }
+
     private string _title = String.Empty;
     public string Title
     {
@@ -18,8 +43,5 @@ public class ProblemViewModel : ViewModelBase, IQueryAttributable
         set => this.SetProperty(ref this._content, value);
     }
 
-    public void ApplyQueryAttributes(IDictionary<string, object> query)
-    {
-        throw new NotImplementedException();
-    }
+    public ObservableCollection<EnglishChoiceQuestionEntity> Choices { get; } = [];
 }
