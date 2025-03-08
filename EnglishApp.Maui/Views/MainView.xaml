@@ -4,10 +4,6 @@
              xmlns:viewModels="clr-namespace:EnglishApp.Maui.ViewModels"
              x:Class="EnglishApp.Maui.Views.MainView"
              Title="ホーム">
-    <ContentPage.BindingContext>
-        <viewModels:MainViewModel />
-    </ContentPage.BindingContext>
-
     <ContentPage.Content>
         <VerticalStackLayout Padding="10">
             <Label Text="問題一覧" FontSize="24" HorizontalOptions="Center"/>

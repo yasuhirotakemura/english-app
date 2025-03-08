@@ -4,9 +4,6 @@
              xmlns:viewModels="clr-namespace:EnglishApp.Maui.ViewModels"
              x:Class="EnglishApp.Maui.Views.ProblemView"
              Title="問題一覧">
-    <ContentPage.BindingContext>
-        <viewModels:ProblemViewModel />
-    </ContentPage.BindingContext>
 
     <ContentPage.Content>
         <ScrollView>

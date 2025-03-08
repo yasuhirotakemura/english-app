@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Input;
+using EnglishApp.Application.Interfaces;
 using EnglishApp.Domain.Entities;
-using EnglishApp.Maui.Services;
 using EnglishApp.Maui.ViewModels.Bases;
 using EnglishApp.Maui.Views;
 using System.Collections.Immutable;
@@ -10,9 +10,34 @@ namespace EnglishApp.Maui.ViewModels;
 
 public sealed class MainViewModel : ViewModelBase
 {
-    private readonly EnglishTextService _englishTextService;
+    private readonly IEnglishTextApiService _englishTextApiService;
 
     public ObservableCollection<EnglishTextEntity> EnglishTexts { get; }
+
+    public MainViewModel(IEnglishTextApiService englishTextApiService)
+    {
+        this._englishTextApiService = englishTextApiService;
+
+        this.EnglishTexts = [];
+
+        this.LoadTextsCommand = new AsyncRelayCommand(this.LoadEnglishTextsAsync);
+    }
+
+    public IAsyncRelayCommand LoadTextsCommand { get; }
+    private async Task LoadEnglishTextsAsync()
+    {
+        ImmutableList<EnglishTextEntity>? texts = await this._englishTextApiService.GetEnglishTextsAsync();
+
+        if (texts is not null)
+        {
+            this.EnglishTexts.Clear();
+
+            foreach (EnglishTextEntity text in texts)
+            {
+                this.EnglishTexts.Add(text);
+            }
+        }
+    }
 
     private EnglishTextEntity? _selectedEnglishText;
     public EnglishTextEntity? SelectedEnglishText
@@ -20,7 +45,7 @@ public sealed class MainViewModel : ViewModelBase
         get => this._selectedEnglishText;
         set
         {
-            if(value is not EnglishTextEntity englishTextEntity)
+            if (value is not EnglishTextEntity englishTextEntity)
             {
                 return;
             }
@@ -37,30 +62,5 @@ public sealed class MainViewModel : ViewModelBase
         };
 
         this.NavigateToAsync(nameof(ProblemView), navigationParameter);
-    }
-
-    public MainViewModel()
-    {
-        this._englishTextService = new(new());
-
-        this.EnglishTexts = [];
-
-        this.LoadTextsCommand = new AsyncRelayCommand(this.LoadEnglishTextsAsync);
-    }
-
-    public IAsyncRelayCommand LoadTextsCommand { get; }
-    private async Task LoadEnglishTextsAsync()
-    {
-        ImmutableList<EnglishTextEntity>? texts = await this._englishTextService.GetEnglishTextsAsync();
-
-        if (texts is not null)
-        {
-            this.EnglishTexts.Clear();
-
-            foreach (EnglishTextEntity text in texts)
-            {
-                this.EnglishTexts.Add(text);
-            }
-        }
     }
 }
