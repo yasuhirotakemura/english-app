@@ -60,15 +60,21 @@
     <ProjectReference Include="..\EnglishApp.Domain\EnglishApp.Domain.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="Views\MainView.xaml.cs">
-      <DependentUpon>MainView.xaml</DependentUpon>
+    <Compile Update="Views\HomeView.xaml.cs">
+      <DependentUpon>HomeView.xaml</DependentUpon>
     </Compile>
     <Compile Update="Views\ProblemView.xaml.cs">
       <DependentUpon>ProblemView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <MauiXaml Update="Views\LoginView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
     <MauiXaml Update="Views\ProblemView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Views\WelcomeView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </MauiXaml>
   </ItemGroup>

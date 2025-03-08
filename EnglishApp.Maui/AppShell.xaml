@@ -10,8 +10,8 @@
     <TabBar>
         <ShellContent
             Title="HOME"
-            ContentTemplate="{DataTemplate local:MainView}"
-            Route="MainView" />
+            ContentTemplate="{DataTemplate local:WelcomeView}"
+            Route="WelcomeView" />
     </TabBar>
 
 </Shell>
