@@ -1,5 +1,5 @@
-﻿using EnglishApp.Domain.Entities;
-using EnglishApp.Maui.Services;
+﻿using EnglishApp.Application.Interfaces;
+using EnglishApp.Domain.Entities;
 using EnglishApp.Maui.ViewModels.Bases;
 using System.Collections.Immutable;
 using System.Collections.ObjectModel;
@@ -8,9 +8,18 @@ namespace EnglishApp.Maui.ViewModels;
 
 public class ProblemViewModel : ViewModelBase, IQueryAttributable
 {
+    private readonly IChoiceQuestionApiService _choiceQuestionApiService;
+
+    public ProblemViewModel(IChoiceQuestionApiService choiceQuestionApiService)
+    {
+        this._choiceQuestionApiService = choiceQuestionApiService;
+    }
+
+    public ObservableCollection<EnglishChoiceQuestionEntity> Choices { get; } = [];
+
     public async void ApplyQueryAttributes(IDictionary<string, object> query)
     {
-        if(query[nameof(EnglishTextEntity)] is not EnglishTextEntity englishTextEntity)
+        if (query[nameof(EnglishTextEntity)] is not EnglishTextEntity englishTextEntity)
         {
             return;
         }
@@ -18,11 +27,11 @@ public class ProblemViewModel : ViewModelBase, IQueryAttributable
         this.Title = englishTextEntity.Title;
         this.Content = englishTextEntity.Content;
 
-        ImmutableList<EnglishChoiceQuestionEntity>? entities =  await new EnglishChoiceQuestionService(new()).GetChoiceQuestionsAsync(englishTextEntity.Id);
+        ImmutableList<EnglishChoiceQuestionEntity>? entities = await this._choiceQuestionApiService.GetChoiceQuestionsAsync(englishTextEntity.Id);
 
-        if(entities is not null)
+        if (entities is not null)
         {
-            foreach(EnglishChoiceQuestionEntity e in entities)
+            foreach (EnglishChoiceQuestionEntity e in entities)
             {
                 this.Choices.Add(e);
             }
@@ -42,6 +51,4 @@ public class ProblemViewModel : ViewModelBase, IQueryAttributable
         get => this._content;
         set => this.SetProperty(ref this._content, value);
     }
-
-    public ObservableCollection<EnglishChoiceQuestionEntity> Choices { get; } = [];
 }

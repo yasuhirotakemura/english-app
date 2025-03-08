@@ -53,10 +53,10 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.2" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Utilities\" />
     <Folder Include="BackgroundWorker\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\EnglishApp.Application\EnglishApp.Application.csproj" />
     <ProjectReference Include="..\EnglishApp.Domain\EnglishApp.Domain.csproj" />
   </ItemGroup>
   <ItemGroup>

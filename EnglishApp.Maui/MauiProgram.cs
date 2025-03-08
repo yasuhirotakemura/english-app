@@ -1,4 +1,7 @@
 ﻿using CommunityToolkit.Maui;
+using EnglishApp.Application.Interfaces;
+using EnglishApp.Application.Services;
+using EnglishApp.Maui.ViewModels;
 using Microsoft.Extensions.Logging;
 
 namespace EnglishApp.Maui;
@@ -11,6 +14,8 @@ public static class MauiProgram
 		builder
 			.UseMauiApp<App>()
             .UseMauiCommunityToolkit()
+            .RegisterViewModels()
+            .RegisterApiServices()
             .ConfigureFonts(fonts =>
 			{
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -18,9 +23,27 @@ public static class MauiProgram
 			});
 
 #if DEBUG
-		builder.Logging.AddDebug();
+        builder.Logging.AddDebug();
 #endif
 
 		return builder.Build();
 	}
+
+    public static MauiAppBuilder RegisterViewModels(this MauiAppBuilder builder)
+    {
+        builder.Services.AddSingleton<MainViewModel>();
+        builder.Services.AddTransient<ProblemViewModel>();
+
+        return builder;
+    }
+
+    public static MauiAppBuilder RegisterApiServices(this MauiAppBuilder builder)
+    {
+        builder.Services.AddSingleton<HttpClient>();
+
+        builder.Services.AddSingleton<IEnglishTextApiService, EnglishTextApiService>();
+        builder.Services.AddSingleton<IChoiceQuestionApiService, ChoiceQuestionApiService>();
+
+        return builder;
+    }
 }
