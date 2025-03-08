@@ -1,10 +1,13 @@
-﻿namespace EnglishApp.Maui
+﻿using EnglishApp.Maui.Views;
+
+namespace EnglishApp.Maui;
+
+public partial class AppShell : Shell
 {
-    public partial class AppShell : Shell
+    public AppShell()
     {
-        public AppShell()
-        {
-            InitializeComponent();
-        }
+        this.InitializeComponent();
+
+        Routing.RegisterRoute(nameof(ProblemView), typeof(ProblemView));
     }
 }

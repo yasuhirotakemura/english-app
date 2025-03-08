@@ -1,27 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-
   <ItemGroup>
     <Compile Remove="SqlServer\**" />
     <EmbeddedResource Remove="SqlServer\**" />
     <None Remove="SqlServer\**" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\EnglishApp.Domain\EnglishApp.Domain.csproj" />
   </ItemGroup>
-
   <ItemGroup>
     <Folder Include="Fake\" />
   </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="Microsoft.Data.SqlClient" Version="6.0.1" />
   </ItemGroup>
-
 </Project>

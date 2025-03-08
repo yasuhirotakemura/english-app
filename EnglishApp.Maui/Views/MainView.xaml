@@ -1,13 +1,21 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="EnglishApp.Maui.Views.MainView">
+             xmlns:viewModels="clr-namespace:EnglishApp.Maui.ViewModels"
+             x:Class="EnglishApp.Maui.Views.MainView"
+             Title="ホーム">
+    <ContentPage.BindingContext>
+        <viewModels:MainViewModel />
+    </ContentPage.BindingContext>
 
     <ContentPage.Content>
         <VerticalStackLayout Padding="10">
             <Label Text="問題一覧" FontSize="24" HorizontalOptions="Center"/>
             <Button Text="データ取得" Command="{Binding LoadTextsCommand}" />
-            <ListView ItemsSource="{Binding EnglishTexts}" SelectionMode="None">
+            <ListView 
+                ItemsSource="{Binding EnglishTexts}" 
+                SelectedItem="{Binding SelectedEnglishText, Mode=TwoWay}"
+                SelectionMode="Single" >
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>

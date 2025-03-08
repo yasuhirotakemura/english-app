@@ -11,7 +11,7 @@ builder.Services.AddSingleton<SqlServerService>();
 
 // Repository の登録
 builder.Services.AddScoped<IEnglishTextRepository, EnglishTextRepository>();
-builder.Services.AddScoped<IEnglishQuestionRepository, EnglishQuestionRepository>();
+builder.Services.AddScoped<IEnglishChoiceQuestionRepository, EnglishChoiceQuestionRepository>();
 
 // サービスの登録（追加）
 builder.Services.AddScoped<IRepositoryService, RepositoryService>();

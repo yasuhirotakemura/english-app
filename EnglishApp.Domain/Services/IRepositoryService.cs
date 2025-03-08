@@ -5,6 +5,5 @@ namespace EnglishApp.Domain.Services;
 public interface IRepositoryService
 {
     public IEnglishTextRepository EnglishTextRepository();
-
-    public IEnglishQuestionRepository EnglishQuestionRepository();
+    public IEnglishChoiceQuestionRepository EnglishChoiceQuestionRepository();
 }

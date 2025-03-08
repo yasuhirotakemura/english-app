@@ -17,14 +17,13 @@ internal static class EntityFactory
         );
     }
 
-    public static EnglishQuestionEntity CreateEnglishQuestion(SqlDataReader reader)
+    public static EnglishChoiceQuestionEntity CreateEnglishChoiceQuestionEntity(SqlDataReader reader)
     {
         return new
         (
             reader.GetInt32(reader.GetOrdinal("Id")),
             reader.GetInt32(reader.GetOrdinal("EnglishTextId")),
             reader.GetString(reader.GetOrdinal("QuestionText")),
-            reader.GetString(reader.GetOrdinal("Answer")),
             reader.GetDateTime(reader.GetOrdinal("CreatedAt")),
             reader.GetDateTime(reader.GetOrdinal("UpdatedAt"))
         );
