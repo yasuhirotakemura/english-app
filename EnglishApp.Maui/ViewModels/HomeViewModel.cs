@@ -8,13 +8,13 @@ using System.Collections.ObjectModel;
 
 namespace EnglishApp.Maui.ViewModels;
 
-public sealed class MainViewModel : ViewModelBase
+public sealed class HomeViewModel : ViewModelBase
 {
     private readonly IEnglishTextApiService _englishTextApiService;
 
     public ObservableCollection<EnglishTextEntity> EnglishTexts { get; }
 
-    public MainViewModel(IEnglishTextApiService englishTextApiService)
+    public HomeViewModel(IEnglishTextApiService englishTextApiService)
     {
         this._englishTextApiService = englishTextApiService;
 

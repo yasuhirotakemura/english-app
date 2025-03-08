@@ -4,7 +4,7 @@ namespace EnglishApp.Maui.Views;
 
 public partial class MainView : ContentPage
 {
-    public MainView(MainViewModel mainVieModel)
+    public MainView(HomeViewModel mainVieModel)
     {
         this.InitializeComponent();
 
