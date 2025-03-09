@@ -2,7 +2,7 @@
 
 namespace EnglishApp.Maui.Utilities;
 
-public sealed class Message : IMessage
+public sealed class MessageService : IMessageService
 {
     public Task Show(string title, string message, string cancel = "はい")
     {
