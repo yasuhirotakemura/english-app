@@ -6,6 +6,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="Helpers\" />
+    <Folder Include="Logics\" />
     <Folder Include="StaticValues\" />
     <Folder Include="ValueObjects\Bases\" />
   </ItemGroup>
