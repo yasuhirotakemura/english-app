@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using EnglishApp.Domain.Interfaces;
+using EnglishApp.Domain.Logics;
 using EnglishApp.Maui.ViewModels.Bases;
 
 namespace EnglishApp.Maui.ViewModels;
@@ -39,6 +40,11 @@ public sealed class LoginViewModel : ViewModelBase, IQueryAttributable
     public IAsyncRelayCommand LoginCommand { get; }
     private async Task OnLoginCommand()
     {
+        if(!EmailAnalysis.IsValidEmail(this._userEmail))
+        {
+            await this._messageService.Show("エラー", "メールアドレスを正しく入力してください。");
+        }
+
         // API経由でサーバー側に Email とハッシュ化した Password を渡し、応答を見る。
     }
 }

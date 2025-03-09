@@ -5,18 +5,38 @@
              xmlns:local="clr-namespace:EnglishApp.Maui.Behaviors"
              x:Class="EnglishApp.Maui.Views.LoginView"
              Title="ログイン">
-    <VerticalStackLayout VerticalOptions="Center" Spacing="24">
-        <VerticalStackLayout>
-            <Label Text="メールアドレス" FontSize="24"></Label>
-            <Entry Text="{Binding UserEmail, Mode=TwoWay}"></Entry>
-        </VerticalStackLayout>
+    <Grid Padding="16" VerticalOptions="Center">
+        <Border Padding="16">
+            <VerticalStackLayout Spacing="24">
+                <Label Text="さあ、始めましょう！" 
+                       FontSize="32"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center" />
 
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="メールアドレス" FontSize="16" />
+                    <Entry Text="{Binding UserEmail, Mode=TwoWay}" 
+                           Placeholder="メールアドレスを入力" 
+                           Keyboard="Email"
+                           HeightRequest="48"/>
+                </VerticalStackLayout>
 
-        <VerticalStackLayout>
-            <Label Text="パスワード" FontSize="24"></Label>
-            <Entry Text="{Binding UserPassword, Mode=TwoWay}" IsPassword="True"></Entry>
-        </VerticalStackLayout>
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="パスワード" FontSize="16" />
+                    <Entry Text="{Binding UserPassword, Mode=TwoWay}" 
+                           Placeholder="パスワードを入力"
+                           IsPassword="True"
+                           MaxLength="50"
+                           HeightRequest="48"/>
+                </VerticalStackLayout>
 
-        <Button Text="ログイン" Command="{Binding LoginCommand}"></Button>
-    </VerticalStackLayout>
+                <Button Text="ログイン" 
+                        Command="{Binding LoginCommand}" 
+                        CornerRadius="8"
+                        FontSize="24"
+                        HeightRequest="64" />
+            </VerticalStackLayout>
+        </Border>
+
+    </Grid>
 </ContentPage>
