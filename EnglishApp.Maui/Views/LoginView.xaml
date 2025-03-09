@@ -2,8 +2,24 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="EnglishApp.Maui.Views.LoginView"
+             xmlns:local="clr-namespace:EnglishApp.Maui.Behaviors"
              Title="ログイン">
-    <VerticalStackLayout>
-        
+    <VerticalStackLayout VerticalOptions="Center" Spacing="24">
+        <VerticalStackLayout>
+            <Label Text="メールアドレス" FontSize="24"></Label>
+            <Entry Text="{Binding UserEmail, Mode=TwoWay}">
+                <Entry.Behaviors>
+                    <local:EmailValidationBehavior />
+                </Entry.Behaviors>
+            </Entry>
+        </VerticalStackLayout>
+
+
+        <VerticalStackLayout>
+            <Label Text="パスワード" FontSize="24"></Label>
+            <Entry Text="{Binding UserPassword, Mode=TwoWay}" IsPassword="True"></Entry>
+        </VerticalStackLayout>
+
+        <Button Text="ログイン" Command="{Binding LoginCommand}"></Button>
     </VerticalStackLayout>
 </ContentPage>

@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using EnglishApp.Maui.ViewModels.Bases;
+using EnglishApp.Maui.Views;
 using System.Diagnostics;
 
 namespace EnglishApp.Maui.ViewModels;
@@ -15,7 +16,7 @@ public sealed class WelcomeViewModel : ViewModelBase
     public IAsyncRelayCommand LoginCommand { get; }
     public async Task OnLoginCommand()
     {
-        Debug.WriteLine("ログインします。");
+        await this.NavigateToAsync(nameof(LoginView), []);
     }
 
     public IAsyncRelayCommand SignUpCommand { get; }
