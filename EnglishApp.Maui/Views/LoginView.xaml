@@ -1,17 +1,14 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+<ContentPage x:Name="LoginPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="EnglishApp.Maui.Views.LoginView"
              xmlns:local="clr-namespace:EnglishApp.Maui.Behaviors"
+             x:Class="EnglishApp.Maui.Views.LoginView"
              Title="ログイン">
     <VerticalStackLayout VerticalOptions="Center" Spacing="24">
         <VerticalStackLayout>
             <Label Text="メールアドレス" FontSize="24"></Label>
-            <Entry Text="{Binding UserEmail, Mode=TwoWay}">
-                <Entry.Behaviors>
-                    <local:EmailValidationBehavior />
-                </Entry.Behaviors>
-            </Entry>
+            <Entry Text="{Binding UserEmail, Mode=TwoWay}"></Entry>
         </VerticalStackLayout>
 
 

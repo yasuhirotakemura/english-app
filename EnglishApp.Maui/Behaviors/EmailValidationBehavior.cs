@@ -1,9 +1,20 @@
-﻿using EnglishApp.Domain.Logics;
+﻿using EnglishApp.Domain.Interfaces;
+using EnglishApp.Domain.Logics;
 
 namespace EnglishApp.Maui.Behaviors;
 
-public class EmailValidationBehavior : Behavior<Entry>
+public class EmailValidationBehavior() : Behavior<Entry>
 {
+
+    public static readonly BindableProperty MessageServiceProperty =
+    BindableProperty.Create(nameof(MessageService), typeof(IMessageService), typeof(EmailValidationBehavior));
+
+    public IMessageService MessageService
+    {
+        get => (IMessageService)this.GetValue(MessageServiceProperty);
+        set => this.SetValue(MessageServiceProperty, value);
+    }
+
     protected override void OnAttachedTo(Entry entry)
     {
         base.OnAttachedTo(entry);
@@ -18,16 +29,14 @@ public class EmailValidationBehavior : Behavior<Entry>
 
     private async void OnEntryUnfocused(object? sender, FocusEventArgs e)
     {
-        if(sender is not Entry entry)
+        if (sender is not Entry entry)
         {
             return;
         }
 
-        if(!EmailAnalysis.IsValidEmail(entry.Text) &&
-            Shell.Current is Shell currentShell &&
-            currentShell.CurrentPage is Page currentPage)
+        if (!EmailAnalysis.IsValidEmail(entry.Text))
         {
-            await currentPage.DisplayAlert("エラー", "無効なメールアドレスです。", "OK");
+            await this.MessageService.Show("エラー", "有効なメールアドレスを入力してください。");
         }
     }
 }

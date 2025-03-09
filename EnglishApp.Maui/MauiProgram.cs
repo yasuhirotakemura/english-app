@@ -1,6 +1,8 @@
 ﻿using CommunityToolkit.Maui;
 using EnglishApp.Application.Interfaces;
 using EnglishApp.Application.Services;
+using EnglishApp.Domain.Interfaces;
+using EnglishApp.Maui.Utilities;
 using EnglishApp.Maui.ViewModels;
 using Microsoft.Extensions.Logging;
 
@@ -15,6 +17,7 @@ public static class MauiProgram
 			.UseMauiApp<App>()
             .UseMauiCommunityToolkit()
             .RegisterViewModels()
+            .RegisterServices()
             .RegisterApiServices()
             .ConfigureFonts(fonts =>
 			{
@@ -35,6 +38,13 @@ public static class MauiProgram
         builder.Services.AddTransient<LoginViewModel>();
         builder.Services.AddSingleton<HomeViewModel>();
         builder.Services.AddTransient<ProblemViewModel>();
+
+        return builder;
+    }
+
+    public static MauiAppBuilder RegisterServices(this MauiAppBuilder builder)
+    {
+        builder.Services.AddTransient<IMessageService, MessageService>();
 
         return builder;
     }

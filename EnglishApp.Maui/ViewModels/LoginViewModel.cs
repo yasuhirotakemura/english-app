@@ -1,14 +1,21 @@
 ﻿using CommunityToolkit.Mvvm.Input;
+using EnglishApp.Domain.Interfaces;
 using EnglishApp.Maui.ViewModels.Bases;
 
 namespace EnglishApp.Maui.ViewModels;
 
 public sealed class LoginViewModel : ViewModelBase, IQueryAttributable
 {
-    public LoginViewModel()
+    private readonly IMessageService _messageService;
+
+    public LoginViewModel(IMessageService messageService)
     {
+        this._messageService = messageService;
+
         this.LoginCommand = new AsyncRelayCommand(this.OnLoginCommand);
     }
+
+    public IMessageService MessageService => this._messageService;
 
     public void ApplyQueryAttributes(IDictionary<string, object> query)
     {
