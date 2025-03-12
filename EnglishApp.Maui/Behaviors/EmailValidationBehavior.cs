@@ -34,7 +34,7 @@ public class EmailValidationBehavior() : Behavior<Entry>
             return;
         }
 
-        if (!EmailAnalysis.IsValidEmail(entry.Text))
+        if (!EmailAnalysis.IsValid(entry.Text))
         {
             await this.MessageService.Show("エラー", "有効なメールアドレスを入力してください。");
         }

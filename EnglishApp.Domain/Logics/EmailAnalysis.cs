@@ -5,7 +5,7 @@ namespace EnglishApp.Domain.Logics;
 
 public static class EmailAnalysis
 {
-    public static bool IsValidEmail(string email)
+    public static bool IsValid(string email)
     {
         if (String.IsNullOrWhiteSpace(email))
         {
