@@ -8,7 +8,7 @@
     <Grid Padding="16" VerticalOptions="Center">
         <Border Padding="16">
             <VerticalStackLayout Spacing="24">
-                <Label Text="さあ、始めましょう！" 
+                <Label Text="おかえりなさい！" 
                        FontSize="32"
                        FontAttributes="Bold"
                        HorizontalOptions="Center" />

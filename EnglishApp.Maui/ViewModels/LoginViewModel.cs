@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Input;
+using EnglishApp.Domain.Exceptions;
 using EnglishApp.Domain.Interfaces;
 using EnglishApp.Domain.Logics;
 using EnglishApp.Maui.ViewModels.Bases;
@@ -40,7 +41,10 @@ public sealed class LoginViewModel : ViewModelBase, IQueryAttributable
     public IAsyncRelayCommand LoginCommand { get; }
     private async Task OnLoginCommand()
     {
-        if(!EmailAnalysis.IsValidEmail(this._userEmail))
+
+        throw new InputException("Hello");
+
+        if(!EmailAnalysis.IsValid(this._userEmail))
         {
             await this._messageService.Show("エラー", "メールアドレスを正しく入力してください。");
         }
