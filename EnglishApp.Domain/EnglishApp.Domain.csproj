@@ -5,7 +5,6 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="Helpers\" />
     <Folder Include="StaticValues\" />
     <Folder Include="ValueObjects\Bases\" />
   </ItemGroup>

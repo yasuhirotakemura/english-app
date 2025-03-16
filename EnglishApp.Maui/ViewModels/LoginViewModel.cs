@@ -41,9 +41,6 @@ public sealed class LoginViewModel : ViewModelBase, IQueryAttributable
     public IAsyncRelayCommand LoginCommand { get; }
     private async Task OnLoginCommand()
     {
-
-        throw new InputException("Hello");
-
         if(!EmailAnalysis.IsValid(this._userEmail))
         {
             await this._messageService.Show("エラー", "メールアドレスを正しく入力してください。");

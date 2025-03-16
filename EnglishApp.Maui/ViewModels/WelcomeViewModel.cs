@@ -22,6 +22,6 @@ public sealed class WelcomeViewModel : ViewModelBase
     public IAsyncRelayCommand SignUpCommand { get; }
     public async Task OnSignUpCommand()
     {
-        Debug.WriteLine("新規登録します。");
+        await this.NavigateToAsync(nameof(SignUpView), []);
     }
 }
