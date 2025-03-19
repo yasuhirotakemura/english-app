@@ -9,7 +9,9 @@ public sealed class UserRepository(SqlServerService sqlServerService) : IUserRep
 
     public async Task<int> CreateUser()
     {
-        const string query = "INSERT INTO User DEFAULT VALUES; SELECT SCOPE_IDENTITY();";
+        const string query =
+            "INSERT INTO [User] DEFAULT VALUES;" +
+            "SELECT SCOPE_IDENTITY();";
 
         object? result = await this._sqlServerService.ExecuteScalarAsync(query);
 

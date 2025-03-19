@@ -9,20 +9,20 @@ public sealed class UserAuthRepository(SqlServerService sqlServerService) : IUse
 {
     private readonly SqlServerService _sqlServerService = sqlServerService;
 
-    public async Task CreateUserAuth(UserAuthEntity entity)
+    public async Task<int> CreateUserAuth(UserAuthEntity entity)
     {
         const string sql = @"
             INSERT INTO UserAuth (UserId, Email, PasswordHash, Salt) 
             VALUES (@UserId, @Email, @PasswordHash, @Salt);";
 
         SqlParameter[] parameters =
-{
-            new("@UserId", entity.Id),
-            new("@Email", entity.Email),
-            new("@PasswordHash", entity.PasswordHash),
-            new("@Salt", entity.Salt)
-        };
+            [
+                new("@UserId", entity.Id),
+                new("@Email", entity.Email),
+                new("@PasswordHash", entity.PasswordHash),
+                new("@Salt", entity.Salt)
+            ];
 
-        await this._sqlServerService.ExecuteAsync(sql, parameters);
+        return await this._sqlServerService.ExecuteAsync(sql, parameters);
     }
 }
