@@ -14,6 +14,9 @@ internal class Program
         builder.Services.AddSingleton<SqlServerService>();
 
         // Repository の登録
+        builder.Services.AddScoped<IPrefectureRepository, PrefectureRepository>();
+        builder.Services.AddScoped<IUserGradeRepository, UserGradeRepository>();
+        builder.Services.AddScoped<IUserLearningPurposeRepository, UserLearningPurposeRepository>();
         builder.Services.AddScoped<IEnglishTextRepository, EnglishTextRepository>();
         builder.Services.AddScoped<IEnglishChoiceQuestionRepository, EnglishChoiceQuestionRepository>();
 

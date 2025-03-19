@@ -19,4 +19,22 @@ public sealed class RepositoryService(SqlServerService sqlServer) : IRepositoryS
     {
         return this._englishChoiceQuestionRepository ??= new EnglishChoiceQuestionRepository(this._sqlServer);
     }
+
+    private IPrefectureRepository? _prefectureRepository;
+    public IPrefectureRepository PrefectureRepository()
+    {
+        return this._prefectureRepository ??= new PrefectureRepository(this._sqlServer);
+    }
+
+    private IUserGradeRepository? _userGradeRepository;
+    public IUserGradeRepository UserGradeRepository()
+    {
+        return this._userGradeRepository ??= new UserGradeRepository(this._sqlServer);
+    }
+
+    private IUserLearningPurposeRepository? _userLearningPurposeRepository;
+    public IUserLearningPurposeRepository UserLearningPurposeRepository()
+    {
+        return this._userLearningPurposeRepository ??= new UserLearningPurposeRepository(this._sqlServer);
+    }
 }

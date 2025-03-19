@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="EnglishApp.Maui.Views.SignUpView"
              Title="新規登録">
-    <Grid Padding="16" VerticalOptions="Center">
+    <Grid Padding="16">
         <Border Padding="16">
             <ScrollView>
                 <VerticalStackLayout Spacing="24">
@@ -38,15 +38,15 @@
                            HeightRequest="48"/>
                     </VerticalStackLayout>
 
-                    <VerticalStackLayout Spacing="8">
+                    <!--<VerticalStackLayout Spacing="8">
                         <Label Text="ニックネーム" FontSize="16" />
                         <Entry Text="{Binding NickName, Mode=TwoWay}" 
                            Placeholder="ニックネームを入力" 
                            Keyboard="Email"
                            HeightRequest="48"/>
-                    </VerticalStackLayout>
+                    </VerticalStackLayout>-->
 
-                    <StackLayout Spacing="16">
+                    <!--<StackLayout Spacing="16">
                         <FlexLayout Direction="Row" JustifyContent="SpaceBetween" >
                             <VerticalStackLayout Spacing="8" FlexLayout.Grow="1">
                                 <Label Text="性別" FontSize="16"></Label>
@@ -63,7 +63,7 @@
                                     Title="選択してください"
                                     ItemsSource="{Binding GradeList}"
                                     SelectedItem="{Binding SelectedGrade, Mode=TwoWay}"
-                                    ItemDisplayBinding="{Binding Value}"/>
+                                    ItemDisplayBinding="{Binding Name}"/>
                             </VerticalStackLayout>
                         </FlexLayout>
 
@@ -74,7 +74,7 @@
                                         Title="選択してください"
                                         ItemsSource="{Binding LearningPurposeList}"
                                         SelectedItem="{Binding SelectedLearningPurpose, Mode=TwoWay}"
-                                        ItemDisplayBinding="{Binding Value}"/>
+                                        ItemDisplayBinding="{Binding Name}"/>
                             </VerticalStackLayout>
 
                             <VerticalStackLayout Spacing="8" FlexLayout.Grow="1">
@@ -85,8 +85,15 @@
                             </VerticalStackLayout>
                         </FlexLayout>
 
-
-                    </StackLayout>
+                        <VerticalStackLayout Spacing="8" FlexLayout.Grow="1">
+                            <Label Text="都道府県を選択" FontSize="16"/>
+                            <Picker x:Name="PrefecturePicker"
+                                        Title="選択してください"
+                                        ItemsSource="{Binding PrefectureList}"
+                                        SelectedItem="{Binding SelectedPrefecture, Mode=TwoWay}"
+                                        ItemDisplayBinding="{Binding Name}"/>
+                        </VerticalStackLayout>
+                    </StackLayout>-->
 
                     <Button Text="新規登録" 
                         Command="{Binding SignInCommand}" 
