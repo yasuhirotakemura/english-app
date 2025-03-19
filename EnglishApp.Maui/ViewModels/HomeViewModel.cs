@@ -49,6 +49,8 @@ public sealed class HomeViewModel : ViewModelBase
                 return;
             }
 
+            this._selectedEnglishText = englishTextEntity;
+
             this.OnProblemSelected(englishTextEntity);
         }
     }
