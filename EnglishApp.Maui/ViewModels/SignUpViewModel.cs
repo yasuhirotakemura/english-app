@@ -4,6 +4,7 @@ using EnglishApp.Application.Dtos;
 using EnglishApp.Domain.Interfaces;
 using EnglishApp.Domain.Logics;
 using EnglishApp.Maui.ViewModels.Bases;
+using System.Diagnostics;
 
 namespace EnglishApp.Maui.ViewModels;
 
@@ -54,10 +55,13 @@ public sealed class SignUpViewModel : ViewModelBase, IQueryAttributable
             return;
         }
 
-        byte[] salt;
-        byte[] passwordHash = PasswordHasher.HashPassword(this._confirmPassword, out salt);
+        byte[] passwordHash = PasswordHasher.HashPassword(this._confirmPassword, out byte[] salt);
 
-        UserAuthSignUpRequest request = new(this._email, passwordHash, salt);
+        UserAuthSignUpRequest request = new(
+            email: this._email,
+            passwordHash: Convert.ToBase64String(passwordHash),
+            salt: Convert.ToBase64String(salt)
+        );
 
         await this._userAuthApiService.SignUpAsync(request);
     }
