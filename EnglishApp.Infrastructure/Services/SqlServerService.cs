@@ -86,6 +86,8 @@ public sealed class SqlServerService
                 command.Parameters.AddRange(parameters);
             }
 
+            connection.OpenAsync();
+
             if (command.ExecuteNonQuery() < 1)
             {
                 command.CommandText = insert;
@@ -95,7 +97,7 @@ public sealed class SqlServerService
         }
     }
 
-    public Task<int> ExecuteAsync(string sql,
+    public async Task<int> ExecuteAsync(string sql,
                         SqlParameter[] parameters)
     {
         using (SqlConnection connection = new(this._connectionString))
@@ -106,7 +108,9 @@ public sealed class SqlServerService
                 command.Parameters.AddRange(parameters);
             }
 
-            return command.ExecuteNonQueryAsync();
+            await connection.OpenAsync();
+
+            return await command.ExecuteNonQueryAsync();
         }
     }
 
