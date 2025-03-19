@@ -109,4 +109,20 @@ public sealed class SqlServerService
             command.ExecuteNonQuery();
         }
     }
+
+    public async Task<object?> ExecuteScalarAsync(string sql, SqlParameter[]? parameters = null)
+    {
+        using (SqlConnection connection = new(this._connectionString))
+        using (SqlCommand command = new(sql, connection))
+        {
+            if (parameters is not null)
+            {
+                command.Parameters.AddRange(parameters);
+            }
+
+            await connection.OpenAsync();
+
+            return await command.ExecuteScalarAsync();
+        }
+    }
 }
