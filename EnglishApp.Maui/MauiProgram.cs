@@ -62,6 +62,7 @@ public static class MauiProgram
     {
         builder.Services.AddSingleton<HttpClient>();
 
+        builder.Services.AddSingleton<IUserAuthApiService, UserAuthApiService>();
         builder.Services.AddSingleton<IEnglishTextApiService, EnglishTextApiService>();
         builder.Services.AddSingleton<IChoiceQuestionApiService, ChoiceQuestionApiService>();
 
