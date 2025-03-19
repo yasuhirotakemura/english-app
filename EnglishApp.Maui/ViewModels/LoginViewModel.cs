@@ -1,5 +1,4 @@
 ﻿using CommunityToolkit.Mvvm.Input;
-using EnglishApp.Domain.Exceptions;
 using EnglishApp.Domain.Interfaces;
 using EnglishApp.Domain.Logics;
 using EnglishApp.Maui.ViewModels.Bases;

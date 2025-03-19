@@ -86,6 +86,8 @@ public sealed class SqlServerService
                 command.Parameters.AddRange(parameters);
             }
 
+            connection.OpenAsync();
+
             if (command.ExecuteNonQuery() < 1)
             {
                 command.CommandText = insert;
@@ -95,7 +97,7 @@ public sealed class SqlServerService
         }
     }
 
-    public void Execute(string sql,
+    public async Task<int> ExecuteAsync(string sql,
                         SqlParameter[] parameters)
     {
         using (SqlConnection connection = new(this._connectionString))
@@ -106,7 +108,25 @@ public sealed class SqlServerService
                 command.Parameters.AddRange(parameters);
             }
 
-            command.ExecuteNonQuery();
+            await connection.OpenAsync();
+
+            return await command.ExecuteNonQueryAsync();
+        }
+    }
+
+    public async Task<object?> ExecuteScalarAsync(string sql, SqlParameter[]? parameters = null)
+    {
+        using (SqlConnection connection = new(this._connectionString))
+        using (SqlCommand command = new(sql, connection))
+        {
+            if (parameters is not null)
+            {
+                command.Parameters.AddRange(parameters);
+            }
+
+            await connection.OpenAsync();
+
+            return await command.ExecuteScalarAsync();
         }
     }
 }

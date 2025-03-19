@@ -1,4 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Input;
+using EnglishApp.Application.Apis;
+using EnglishApp.Application.Dtos;
 using EnglishApp.Domain.Interfaces;
 using EnglishApp.Domain.Logics;
 using EnglishApp.Maui.ViewModels.Bases;
@@ -9,10 +11,12 @@ namespace EnglishApp.Maui.ViewModels;
 public sealed class SignUpViewModel : ViewModelBase, IQueryAttributable
 {
     private readonly IMessageService _messageService;
+    private readonly IUserAuthApiService _userAuthApiService;
 
-    public SignUpViewModel(IMessageService messageService)
+    public SignUpViewModel(IMessageService messageService, IUserAuthApiService userAuthApiService)
     {
         this._messageService = messageService;
+        this._userAuthApiService = userAuthApiService;
 
         this.SignInCommand = new AsyncRelayCommand(this.OnSignInCommand);
     }
@@ -51,11 +55,15 @@ public sealed class SignUpViewModel : ViewModelBase, IQueryAttributable
             return;
         }
 
-        // API経由でサーバー側に Email とハッシュ化した Password を渡し、応答を見る。
-        byte[] salt;
-        byte[] passwordHash = PasswordHasher.HashPassword(this._confirmPassword, out salt);
+        byte[] passwordHash = PasswordHasher.HashPassword(this._confirmPassword, out byte[] salt);
 
+        UserAuthSignUpRequest request = new(
+            email: this._email,
+            passwordHash: Convert.ToBase64String(passwordHash),
+            salt: Convert.ToBase64String(salt)
+        );
 
+        await this._userAuthApiService.SignUpAsync(request);
     }
 
     private async Task<bool> IsInputCorrect()

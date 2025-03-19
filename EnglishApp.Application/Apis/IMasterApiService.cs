@@ -1,4 +1,4 @@
-﻿namespace EnglishApp.Domain.Apis;
+﻿namespace EnglishApp.Application.Apis;
 
 public interface IMasterApiService
 {
