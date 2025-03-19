@@ -11,6 +11,6 @@ public sealed class EnglishTextApiService(HttpClient httpClient) : IEnglishTextA
 
     public async Task<ImmutableList<EnglishTextEntity>?> GetEnglishTextsAsync()
     {
-        return await this._httpClient.GetFromJsonAsync<ImmutableList<EnglishTextEntity>>("http://10.0.2.2:5249/api/EnglishText");
+        return await this._httpClient.GetFromJsonAsync<ImmutableList<EnglishTextEntity>>("api/EnglishText");
     }
 }

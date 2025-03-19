@@ -10,10 +10,10 @@ public sealed class UserAuthApiService(HttpClient httpClient) : IUserAuthApiServ
 
     public async Task<bool> SignUpAsync(UserAuthSignUpRequest request)
     {
-        HttpResponseMessage response = await this._httpClient.PostAsJsonAsync("http://10.0.2.2:5249/api/user/signup", request);
+        HttpResponseMessage response = await this._httpClient.PostAsJsonAsync("api/user/signup", request);
 
         string jsonString = await response.Content.ReadAsStringAsync();
-        Console.WriteLine($"📌 API Response JSON: {jsonString}");
+        Console.WriteLine($"API Response JSON: {jsonString}");
 
         return response.IsSuccessStatusCode;
     }
