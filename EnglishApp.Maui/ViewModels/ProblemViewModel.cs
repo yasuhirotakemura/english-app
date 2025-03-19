@@ -1,5 +1,6 @@
 ﻿using EnglishApp.Application.Apis;
 using EnglishApp.Domain.Entities;
+using EnglishApp.Domain.Interfaces;
 using EnglishApp.Maui.ViewModels.Bases;
 using System.Collections.Immutable;
 using System.Collections.ObjectModel;
@@ -10,7 +11,7 @@ public class ProblemViewModel : ViewModelBase, IQueryAttributable
 {
     private readonly IChoiceQuestionApiService _choiceQuestionApiService;
 
-    public ProblemViewModel(IChoiceQuestionApiService choiceQuestionApiService)
+    public ProblemViewModel(IMessageService messageService, IChoiceQuestionApiService choiceQuestionApiService) : base(messageService)
     {
         this._choiceQuestionApiService = choiceQuestionApiService;
     }

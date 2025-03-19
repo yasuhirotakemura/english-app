@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using EnglishApp.Application.Apis;
 using EnglishApp.Domain.Entities;
+using EnglishApp.Domain.Interfaces;
 using EnglishApp.Maui.ViewModels.Bases;
 using EnglishApp.Maui.Views;
 using System.Collections.Immutable;
@@ -14,7 +15,7 @@ public sealed class HomeViewModel : ViewModelBase
 
     public ObservableCollection<EnglishTextEntity> EnglishTexts { get; } = [];
 
-    public HomeViewModel(IEnglishTextApiService englishTextApiService)
+    public HomeViewModel(IMessageService messageService, IEnglishTextApiService englishTextApiService) : base(messageService)
     {
         this._englishTextApiService = englishTextApiService;
 

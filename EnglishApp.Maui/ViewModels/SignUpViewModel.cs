@@ -4,18 +4,15 @@ using EnglishApp.Application.Dtos;
 using EnglishApp.Domain.Interfaces;
 using EnglishApp.Domain.Logics;
 using EnglishApp.Maui.ViewModels.Bases;
-using System.Diagnostics;
 
 namespace EnglishApp.Maui.ViewModels;
 
 public sealed class SignUpViewModel : ViewModelBase, IQueryAttributable
 {
-    private readonly IMessageService _messageService;
     private readonly IUserAuthApiService _userAuthApiService;
 
-    public SignUpViewModel(IMessageService messageService, IUserAuthApiService userAuthApiService)
+    public SignUpViewModel(IMessageService messageService, IUserAuthApiService userAuthApiService) : base(messageService)
     {
-        this._messageService = messageService;
         this._userAuthApiService = userAuthApiService;
 
         this.SignInCommand = new AsyncRelayCommand(this.OnSignInCommand);
@@ -50,7 +47,7 @@ public sealed class SignUpViewModel : ViewModelBase, IQueryAttributable
     public IAsyncRelayCommand SignInCommand { get; }
     private async Task OnSignInCommand()
     {
-        if(! await this.IsInputCorrect())
+        if (!await this.IsInputCorrect())
         {
             return;
         }
@@ -70,17 +67,17 @@ public sealed class SignUpViewModel : ViewModelBase, IQueryAttributable
     {
         if (!EmailAnalysis.IsValid(this._email))
         {
-            await this._messageService.Show("エラー", "メールアドレスを正しく入力してください。");
+            await this.MessageService.Show("エラー", "メールアドレスを正しく入力してください。");
             return false;
         }
         else if (String.IsNullOrEmpty(this._password))
         {
-            await this._messageService.Show("エラー", "パスワードを入力してください。");
+            await this.MessageService.Show("エラー", "パスワードを入力してください。");
             return false;
         }
         else if (this._password != this._confirmPassword)
         {
-            await this._messageService.Show("エラー", "パスワードが異なります。");
+            await this.MessageService.Show("エラー", "パスワードが異なります。");
             return false;
         }
 
