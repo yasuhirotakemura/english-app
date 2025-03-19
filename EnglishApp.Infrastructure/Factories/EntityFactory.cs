@@ -1,4 +1,5 @@
 ﻿using EnglishApp.Domain.Entities;
+using EnglishApp.Domain.Interfaces;
 using Microsoft.Data.SqlClient;
 
 namespace EnglishApp.Infrastructure.Factories;
@@ -27,5 +28,14 @@ internal static class EntityFactory
             reader.GetDateTime(reader.GetOrdinal("CreatedAt")),
             reader.GetDateTime(reader.GetOrdinal("UpdatedAt"))
         );
+    }
+
+    public static T CreateMasterEntity<T>(SqlDataReader reader) where T : IMasterEntity
+    {
+        int id = reader.GetInt32(reader.GetOrdinal("Id"));
+        string name = reader.GetString(reader.GetOrdinal("Name"));
+
+        // コンストラクタを取得してインスタンスを作成
+        return (T)Activator.CreateInstance(typeof(T), id, name);
     }
 }

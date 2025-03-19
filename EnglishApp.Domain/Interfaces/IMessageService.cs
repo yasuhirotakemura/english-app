@@ -1,6 +1,6 @@
 ﻿namespace EnglishApp.Domain.Interfaces;
 
-public interface IMessage
+public interface IMessageService
 {
     Task Show(string title, string message, string cancel = "はい");
 

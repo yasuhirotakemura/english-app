@@ -1,6 +1,8 @@
 ﻿using CommunityToolkit.Maui;
-using EnglishApp.Application.Interfaces;
 using EnglishApp.Application.Services;
+using EnglishApp.Domain.Apis;
+using EnglishApp.Domain.Interfaces;
+using EnglishApp.Maui.Utilities;
 using EnglishApp.Maui.ViewModels;
 using Microsoft.Extensions.Logging;
 
@@ -15,6 +17,7 @@ public static class MauiProgram
 			.UseMauiApp<App>()
             .UseMauiCommunityToolkit()
             .RegisterViewModels()
+            .RegisterServices()
             .RegisterApiServices()
             .ConfigureFonts(fonts =>
 			{
@@ -25,14 +28,32 @@ public static class MauiProgram
 #if DEBUG
         builder.Logging.AddDebug();
 #endif
+        MauiApp app = builder.Build();
 
-		return builder.Build();
+        Task.Run(async () =>
+        {
+            IMasterApiService masterApiService = app.Services.GetRequiredService<IMasterApiService>();
+
+            await masterApiService.LoadAllMasterData();
+        });
+
+        return builder.Build();
 	}
 
     public static MauiAppBuilder RegisterViewModels(this MauiAppBuilder builder)
     {
-        builder.Services.AddSingleton<MainViewModel>();
+        builder.Services.AddTransient<WelcomeViewModel>();
+        builder.Services.AddSingleton<LoginViewModel>();
+        builder.Services.AddSingleton<SignUpViewModel>();
+        builder.Services.AddSingleton<HomeViewModel>();
         builder.Services.AddTransient<ProblemViewModel>();
+
+        return builder;
+    }
+
+    public static MauiAppBuilder RegisterServices(this MauiAppBuilder builder)
+    {
+        builder.Services.AddTransient<IMessageService, MessageService>();
 
         return builder;
     }
@@ -41,6 +62,7 @@ public static class MauiProgram
     {
         builder.Services.AddSingleton<HttpClient>();
 
+        builder.Services.AddSingleton<IMasterApiService, MasterApiService>();
         builder.Services.AddSingleton<IEnglishTextApiService, EnglishTextApiService>();
         builder.Services.AddSingleton<IChoiceQuestionApiService, ChoiceQuestionApiService>();
 

@@ -1,7 +1,7 @@
 ﻿using EnglishApp.Domain.Entities;
 using System.Collections.Immutable;
 
-namespace EnglishApp.Application.Interfaces;
+namespace EnglishApp.Domain.Apis;
 
 public interface IEnglishTextApiService
 {
