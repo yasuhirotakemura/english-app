@@ -1,5 +1,5 @@
-﻿using EnglishApp.Application.Dtos;
-using EnglishApp.Domain.Apis;
+﻿using EnglishApp.Application.Apis;
+using EnglishApp.Application.Dtos;
 using EnglishApp.Domain.StaticValues;
 using System.Text.Json;
 
