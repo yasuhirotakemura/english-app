@@ -95,7 +95,7 @@ public sealed class SqlServerService
         }
     }
 
-    public void Execute(string sql,
+    public Task<int> ExecuteAsync(string sql,
                         SqlParameter[] parameters)
     {
         using (SqlConnection connection = new(this._connectionString))
@@ -106,7 +106,7 @@ public sealed class SqlServerService
                 command.Parameters.AddRange(parameters);
             }
 
-            command.ExecuteNonQuery();
+            return command.ExecuteNonQueryAsync();
         }
     }
 
