@@ -19,7 +19,10 @@ public class UserController(IUserRepository userRepository, IUserAuthRepository 
         {
             int userId = await this._userRepository.CreateUser();
 
-            UserAuthEntity entity = new(userId, request.Email, request.PasswordHash, request.Salt);
+            byte[] passwordHash = Convert.FromBase64String(request.PasswordHash);
+            byte[] salt = Convert.FromBase64String(request.Salt);
+
+            UserAuthEntity entity = new(userId, request.Email, passwordHash, salt);
 
             await this._userAuthRepository.CreateUserAuth(entity);
 
