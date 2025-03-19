@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Maui;
+using EnglishApp.Application.Apis;
 using EnglishApp.Application.Services;
-using EnglishApp.Domain.Apis;
 using EnglishApp.Domain.Interfaces;
 using EnglishApp.Maui.Utilities;
 using EnglishApp.Maui.ViewModels;
@@ -62,7 +62,6 @@ public static class MauiProgram
     {
         builder.Services.AddSingleton<HttpClient>();
 
-        builder.Services.AddSingleton<IMasterApiService, MasterApiService>();
         builder.Services.AddSingleton<IEnglishTextApiService, EnglishTextApiService>();
         builder.Services.AddSingleton<IChoiceQuestionApiService, ChoiceQuestionApiService>();
 
