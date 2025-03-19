@@ -4,5 +4,5 @@ namespace EnglishApp.Domain.Repositories;
 
 public interface IUserAuthRepository
 {
-    public Task CreateUserAuth(UserAuthEntity entity);
+    public Task<int> CreateUserAuth(UserAuthEntity entity);
 }
