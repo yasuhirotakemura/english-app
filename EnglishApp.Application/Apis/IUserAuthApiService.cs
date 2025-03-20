@@ -4,5 +4,5 @@ namespace EnglishApp.Application.Apis;
 
 public interface IUserAuthApiService
 {
-    Task<bool> SignUpAsync(UserAuthSignUpRequest request);
+    Task<UserAuthSignUpResponse?> SignUpAsync(UserAuthSignUpRequest request);
 }
