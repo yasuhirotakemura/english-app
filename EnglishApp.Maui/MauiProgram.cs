@@ -28,14 +28,14 @@ public static class MauiProgram
 #if DEBUG
         builder.Logging.AddDebug();
 #endif
-        MauiApp app = builder.Build();
+        //MauiApp app = builder.Build();
 
-        Task.Run(async () =>
-        {
-            IMasterApiService masterApiService = app.Services.GetRequiredService<IMasterApiService>();
+        //Task.Run(async () =>
+        //{
+        //    IMasterApiService masterApiService = app.Services.GetRequiredService<IMasterApiService>();
 
-            await masterApiService.LoadAllMasterData();
-        });
+        //    await masterApiService.LoadAllMasterData();
+        //});
 
         return builder.Build();
 	}
@@ -45,6 +45,7 @@ public static class MauiProgram
         builder.Services.AddTransient<WelcomeViewModel>();
         builder.Services.AddSingleton<LoginViewModel>();
         builder.Services.AddSingleton<SignUpViewModel>();
+        builder.Services.AddSingleton<UserProfileSetupViewModel>();
         builder.Services.AddSingleton<HomeViewModel>();
         builder.Services.AddTransient<ProblemViewModel>();
 
