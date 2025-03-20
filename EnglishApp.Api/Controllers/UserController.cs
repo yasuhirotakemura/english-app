@@ -1,6 +1,7 @@
 ﻿using EnglishApp.Application.Dtos;
 using EnglishApp.Domain.Entities;
 using EnglishApp.Domain.Repositories;
+using EnglishApp.Domain.ValueObjects;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EnglishApp.Api.Controllers;
@@ -19,10 +20,9 @@ public class UserController(IUserRepository userRepository, IUserAuthRepository 
         {
             int userId = await this._userRepository.CreateUser();
 
-            byte[] passwordHash = Convert.FromBase64String(request.PasswordHash);
-            byte[] salt = Convert.FromBase64String(request.Salt);
+            PasswordHash passwordHash = PasswordHash.CreateFromBase64(request.PasswordHash, request.Salt);
 
-            UserAuthEntity entity = new(userId, request.Email, passwordHash, salt);
+            UserAuthEntity entity = new(userId, request.Email, passwordHash.Hash, passwordHash.Salt);
 
             await this._userAuthRepository.CreateUserAuth(entity);
 
