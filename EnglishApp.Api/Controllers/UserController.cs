@@ -26,11 +26,15 @@ public class UserController(IUserRepository userRepository, IUserAuthRepository 
 
             await this._userAuthRepository.CreateUserAuth(entity);
 
-            return this.Ok(new { Message = "登録完了", UserId = userId });
+            UserAuthSignUpResponse response = new(userId, "登録完了");
+
+            return this.Ok(response);
         }
         catch (Exception ex)
         {
-            return this.StatusCode(500, new { Message = "エラーが発生しました", Error = ex.Message });
+            ErrorResponse errorResponse = new(ex.Message, "エラー");
+
+            return this.StatusCode(500, errorResponse);
         }
     }
 }

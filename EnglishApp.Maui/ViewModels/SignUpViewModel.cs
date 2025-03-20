@@ -53,13 +53,16 @@ public sealed class SignUpViewModel : ViewModelBase, IQueryAttributable
             return;
         }
 
-        // 画面への入力制御を行う
+        // 画面への入力制御を行う -> アクションでコードビハインド側に通知
 
         PasswordHash passwordHash = PasswordHash.CreateFromPlainText(this._confirmPassword);
 
         UserAuthSignUpRequest request = UserAuthSignUpRequest.Create(this._email, passwordHash);
 
-        await this._userAuthApiService.SignUpAsync(request);
+        if(await this._userAuthApiService.SignUpAsync(request) is UserAuthSignUpResponse response)
+        {
+
+        }
     }
 
     private async Task<bool> IsInputCorrect()
