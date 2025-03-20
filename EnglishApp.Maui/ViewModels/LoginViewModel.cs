@@ -7,16 +7,10 @@ namespace EnglishApp.Maui.ViewModels;
 
 public sealed class LoginViewModel : ViewModelBase, IQueryAttributable
 {
-    private readonly IMessageService _messageService;
-
-    public LoginViewModel(IMessageService messageService)
+    public LoginViewModel(IMessageService messageService) : base(messageService)
     {
-        this._messageService = messageService;
-
         this.LoginCommand = new AsyncRelayCommand(this.OnLoginCommand);
     }
-
-    public IMessageService MessageService => this._messageService;
 
     public void ApplyQueryAttributes(IDictionary<string, object> query)
     {
@@ -42,7 +36,7 @@ public sealed class LoginViewModel : ViewModelBase, IQueryAttributable
     {
         if(!EmailAnalysis.IsValid(this._userEmail))
         {
-            await this._messageService.Show("エラー", "メールアドレスを正しく入力してください。");
+            await this.MessageService.Show("エラー", "メールアドレスを正しく入力してください。");
         }
 
         // API経由でサーバー側に Email とハッシュ化した Password を渡し、応答を見る。

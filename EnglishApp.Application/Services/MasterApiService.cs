@@ -15,7 +15,7 @@ public sealed class MasterApiService(HttpClient httpClient) : IMasterApiService
 
     public async Task LoadAllMasterData()
     {
-        HttpResponseMessage response = await this._httpClient.GetAsync("http://10.0.2.2:5249/api/master");
+        HttpResponseMessage response = await this._httpClient.GetAsync("api/master");
 
         if (!response.IsSuccessStatusCode)
         {

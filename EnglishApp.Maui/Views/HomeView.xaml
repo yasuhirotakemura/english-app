@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="EnglishApp.Maui.Views.MainView"
+             xmlns:vm="clr-namespace:EnglishApp.Maui.ViewModels"
+             xmlns:domain="clr-namespace:EnglishApp.Domain.Entities;assembly=EnglishApp.Domain"
+             x:Name="HomePage"
+             x:Class="EnglishApp.Maui.Views.HomeView"
+             x:DataType="vm:HomeViewModel"
              Title="ホーム">
     <ContentPage.Content>
         <VerticalStackLayout Padding="10">
@@ -12,7 +16,7 @@
                 SelectedItem="{Binding SelectedEnglishText, Mode=TwoWay}"
                 SelectionMode="Single" >
                 <ListView.ItemTemplate>
-                    <DataTemplate>
+                    <DataTemplate x:DataType="domain:EnglishTextEntity">
                         <ViewCell>
                             <StackLayout Padding="10">
                                 <Label Text="{Binding Title}" FontSize="18" FontAttributes="Bold"/>

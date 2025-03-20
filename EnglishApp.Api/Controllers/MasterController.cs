@@ -1,24 +1,26 @@
-﻿using EnglishApp.Domain.Services;
+﻿using EnglishApp.Domain.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EnglishApp.Api.Controllers;
 
 [Route("api/master")]
 [ApiController]
-public class MasterController(IRepositoryService repositoryService) : ControllerBase
+public class MasterController(IPrefectureRepository prefectureRepository, IUserGradeRepository userGradeRepository, IUserLearningPurposeRepository userLearningPurposeRepository) : ControllerBase
 {
-    private readonly IRepositoryService _repositoryService = repositoryService;
+    private readonly IPrefectureRepository _prefectureRepository = prefectureRepository;
+    private readonly IUserGradeRepository _userGradeRepository = userGradeRepository;
+    private readonly IUserLearningPurposeRepository _userLearningPurposeRepository = userLearningPurposeRepository;
 
     [HttpGet]
     public async Task<IActionResult> GetAllMasters()
     {
         var result = new
         {
-            Prefectures = await this._repositoryService.PrefectureRepository().GetAll(),
-            UserGrades = await this._repositoryService.UserGradeRepository().GetAll(),
-            UserLearningPurposes = await this._repositoryService.UserLearningPurposeRepository().GetAll(),
+            Prefectures = await this._prefectureRepository.GetAll(),
+            UserGrades = await this._userGradeRepository.GetAll(),
+            UserLearningPurposes = await this._userLearningPurposeRepository.GetAll(),
         };
 
-        return Ok(result);
+        return this.Ok(result);
     }
 }

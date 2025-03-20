@@ -60,7 +60,21 @@ public static class MauiProgram
 
     public static MauiAppBuilder RegisterApiServices(this MauiAppBuilder builder)
     {
-        builder.Services.AddSingleton<HttpClient>();
+        builder.Services.AddSingleton<HttpClient>(sp =>
+        {
+            HttpClient client = new()
+            {
+#if DEBUG && ANDROID
+                BaseAddress = new Uri("http://10.0.2.2:5249/")
+#elif DEBUG
+                BaseAddress = new Uri("http://localhost:5249/")
+#else
+                BaseAddress = new Uri("https://your-api-endpoint.com/")
+#endif
+            };
+
+            return client;
+        });
 
         builder.Services.AddSingleton<IUserAuthApiService, UserAuthApiService>();
         builder.Services.AddSingleton<IEnglishTextApiService, EnglishTextApiService>();

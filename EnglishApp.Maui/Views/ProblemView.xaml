@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:EnglishApp.Maui.ViewModels"
+             xmlns:domain="clr-namespace:EnglishApp.Domain.Entities;assembly=EnglishApp.Domain"
+             x:Name="ProblemPage"
              x:Class="EnglishApp.Maui.Views.ProblemView"
+             x:DataType="vm:ProblemViewModel"
              Title="問題一覧">
 
     <ContentPage.Content>
@@ -36,7 +40,7 @@
                     <CollectionView ItemsSource="{Binding Choices}" 
                         SelectionMode="Single">
                         <CollectionView.ItemTemplate>
-                            <DataTemplate>
+                            <DataTemplate x:DataType="domain:EnglishChoiceQuestionEntity">
                                 <Grid Padding="10">
                                     <RadioButton Content="{Binding QuestionText}" 
                                      GroupName="ChoicesGroup"

@@ -2,9 +2,9 @@
 
 namespace EnglishApp.Maui.Views;
 
-public partial class MainView : ContentPage
+public partial class HomeView : ContentPage
 {
-    public MainView(HomeViewModel mainVieModel)
+    public HomeView(HomeViewModel mainVieModel)
     {
         this.InitializeComponent();
 
