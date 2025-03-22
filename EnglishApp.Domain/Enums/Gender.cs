@@ -3,7 +3,7 @@
 namespace EnglishApp.Domain.Enums;
 
 
-public enum Gender : byte
+public enum Gender : int
 {
     [Display(Name = "男性")]
     Male = 0,
