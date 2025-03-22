@@ -9,5 +9,7 @@ public partial class UserProfileSetupView : ContentPage
 		this.InitializeComponent();
 
         this.BindingContext = userProfileSetupViewModel;
-	}
+
+        NavigationPage.SetHasBackButton(this, false);
+    }
 }
