@@ -1,7 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using EnglishApp.Domain.Entities;
-using EnglishApp.Domain.Enums;
-using EnglishApp.Domain.Helpers;
 using EnglishApp.Domain.Interfaces;
 using EnglishApp.Domain.StaticValues;
 using EnglishApp.Maui.ViewModels.Bases;
@@ -13,7 +11,7 @@ public sealed class UserProfileSetupViewModel : ViewModelBase, IQueryAttributabl
 {
     public UserProfileSetupViewModel(IMessageService messageService) : base(messageService)
     {
-        this.GenderList = [.. EnumHelper.ToDictionary<Gender>()];
+        this.GenderList = new ObservableCollection<UserGenderEntity>([new UserGenderEntity(1, "男性"), new UserGenderEntity(2, "女性"), new UserGenderEntity(3, "その他")]);
         this.GradeList = [.. MasterData.UserGrades];
         this.LearningPurposeList = [.. MasterData.UserLearningPurposes];
         this.PrefectureList = [.. MasterData.Prefectures];
@@ -32,40 +30,28 @@ public sealed class UserProfileSetupViewModel : ViewModelBase, IQueryAttributabl
         set => this.SetProperty(ref this._nickName, value);
     }
 
-    public ObservableCollection<KeyValuePair<int, string>> GenderList { get; } = [];
-    private byte _selectedGender;
-    public byte SelectedGender
+    public ObservableCollection<UserGenderEntity> GenderList { get; }
+    private UserGenderEntity? _selectedGender;
+    public UserGenderEntity? SelectedGender
     {
         get => this._selectedGender;
-        set
-        {
-            this._selectedGender = value;
-            this.SetProperty(ref this._selectedGender, value);
-        }
+        set => this.SetProperty(ref this._selectedGender, value);
     }
 
     public ObservableCollection<UserGradeEntity> GradeList { get; }
-    private byte _selectedGrade;
-    public byte SelectedGrade
+    private UserGradeEntity? _selectedGrade;
+    public UserGradeEntity? SelectedGrade
     {
         get => this._selectedGrade;
-        set
-        {
-            this._selectedGrade = value;
-            this.SetProperty(ref this._selectedGrade, value);
-        }
+        set => this.SetProperty(ref this._selectedGrade, value);
     }
 
     public ObservableCollection<UserLearningPurposeEntity> LearningPurposeList { get; }
-    public byte _selectedLearningPurpose;
-    public byte SelectedLearningPurpose
+    public UserLearningPurposeEntity? _selectedLearningPurpose;
+    public UserLearningPurposeEntity? SelectedLearningPurpose
     {
         get => this._selectedLearningPurpose;
-        set
-        {
-            this._selectedLearningPurpose = value;
-            this.SetProperty(ref this._selectedLearningPurpose, value);
-        }
+        set => this.SetProperty(ref this._selectedLearningPurpose, value);
     }
 
     private DateTime _birthDate = DateTime.Today;
@@ -76,8 +62,8 @@ public sealed class UserProfileSetupViewModel : ViewModelBase, IQueryAttributabl
     }
 
     public ObservableCollection<PrefectureEntity> PrefectureList { get; }
-    private byte _selectedPrefecture;
-    public byte SelectedPrefecture
+    private PrefectureEntity? _selectedPrefecture;
+    public PrefectureEntity? SelectedPrefecture
     {
         get => this._selectedPrefecture;
         set => this.SetProperty(ref this._selectedPrefecture, value);
@@ -86,7 +72,10 @@ public sealed class UserProfileSetupViewModel : ViewModelBase, IQueryAttributabl
     public IAsyncRelayCommand StartCommand { get; }
     private async Task OnStartCommand()
     {
-
+        if(! await this.IsInputCorrect())
+        {
+            return;
+        }
     }
 
     private async Task<bool> IsInputCorrect()
@@ -94,6 +83,29 @@ public sealed class UserProfileSetupViewModel : ViewModelBase, IQueryAttributabl
         if(String.IsNullOrEmpty(this._nickName))
         {
             await this.MessageService.Show("エラー", "ニックネームを入力してください。");
+            return false;
         }
+        else if(this._selectedGender is null)
+        {
+            await this.MessageService.Show("エラー", "性別を選択してください。");
+            return false;
+        }
+        else if(this._selectedGrade is null)
+        {
+            await this.MessageService.Show("エラー", "区分を選択してください。");
+            return false;
+        }
+        else if(this._selectedLearningPurpose is null)
+        {
+            await this.MessageService.Show("エラー", "学習目的を選択してください。");
+            return false;
+        }
+        else if(this._selectedPrefecture is null)
+        {
+            await this.MessageService.Show("エラー", "都道府県を選択してください。");
+            return false;
+        }
+
+        return true;
     }
 }
