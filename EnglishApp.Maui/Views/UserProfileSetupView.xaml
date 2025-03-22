@@ -7,6 +7,11 @@
              x:Class="EnglishApp.Maui.Views.UserProfileSetupView"
              x:DataType="vm:UserProfileSetupViewModel"
              Title="ユーザー情報登録">
+    
+    <Shell.BackButtonBehavior>
+        <BackButtonBehavior IsVisible="False" IsEnabled="False" />
+    </Shell.BackButtonBehavior>
+    
     <Grid Padding="16">
         <Border Padding="16">
             <VerticalStackLayout Spacing="16">
@@ -18,15 +23,16 @@
 
                 <FlexLayout Direction="Row" JustifyContent="SpaceBetween">
                     <VerticalStackLayout Spacing="8" FlexLayout.Grow="1">
-                        <Label Text="性別" FontSize="16"/>
+                        <Label Text="性別を選択" FontSize="16"/>
                         <Picker x:Name="GenderPicker"
                                 Title="選択してください"
                                 ItemsSource="{Binding GenderList}"
-                                SelectedItem="{Binding SelectedGender, Mode=TwoWay}"/>
+                                SelectedItem="{Binding SelectedGender, Mode=TwoWay}"
+                                ItemDisplayBinding="{Binding Name}"/>
                     </VerticalStackLayout>
 
                     <VerticalStackLayout Spacing="8" FlexLayout.Grow="1">
-                        <Label Text="学年を選択" FontSize="16"/>
+                        <Label Text="区分を選択" FontSize="16"/>
                         <Picker x:Name="GradePicker"
                                 Title="選択してください"
                                 ItemsSource="{Binding GradeList}"
@@ -49,6 +55,7 @@
                     <VerticalStackLayout Spacing="8" FlexLayout.Grow="1">
                         <Label Text="生年月日" FontSize="16"/>
                         <DatePicker x:Name="BirthDatePicker"
+                                    MinimumDate="1900/01/01"
                                     Date="{Binding BirthDate, Mode=TwoWay}"/>
                     </VerticalStackLayout>
                 </FlexLayout>
@@ -63,8 +70,9 @@
                 </VerticalStackLayout>
 
                 <Button Text="はじめる"
+                        FontSize="16"
                         Command="{Binding StartCommand}" 
-                        Margin="16, 0, 0, 0"/>
+                        Margin="0, 16, 0, 0"/>
             </VerticalStackLayout>
         </Border>
     </Grid>
