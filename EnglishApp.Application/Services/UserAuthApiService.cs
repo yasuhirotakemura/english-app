@@ -9,6 +9,10 @@ namespace EnglishApp.Application.Services;
 public sealed class UserAuthApiService(HttpClient httpClient) : IUserAuthApiService
 {
     private readonly HttpClient _httpClient = httpClient;
+    private readonly JsonSerializerOptions _serializerOptions = new JsonSerializerOptions
+    {
+        PropertyNameCaseInsensitive = true
+    };
 
     public async Task<UserAuthSignUpResponse?> SignUpAsync(UserAuthSignUpRequest request)
     {
@@ -20,7 +24,9 @@ public sealed class UserAuthApiService(HttpClient httpClient) : IUserAuthApiServ
 
             if (response.IsSuccessStatusCode)
             {
-                return JsonSerializer.Deserialize<UserAuthSignUpResponse>(jsonString);
+                UserAuthSignUpResponse? res = JsonSerializer.Deserialize<UserAuthSignUpResponse>(jsonString, this._serializerOptions);
+
+                return res;
             }
             else
             {
