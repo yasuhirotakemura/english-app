@@ -13,9 +13,9 @@ public static class EnumHelper
         return attribute?.Name ?? value.ToString();
     }
 
-    public static Dictionary<byte, string> ToDictionary<T>() where T : Enum
+    public static Dictionary<int, string> ToDictionary<T>() where T : Enum
     {
-        Dictionary<byte, string> dict = [];
+        Dictionary<int, string> dict = [];
 
         foreach (T value in Enum.GetValues(typeof(T)))
         {
