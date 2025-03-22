@@ -2,7 +2,7 @@
 
 namespace EnglishApp.Application.Dtos;
 
-public class UserAuthSignUpRequest(string email,
+public sealed class UserAuthSignUpRequest(string email,
                                    string passwordHash,
                                    string salt)
 {
