@@ -43,11 +43,10 @@ public static class MauiProgram
     public static MauiAppBuilder RegisterViewModels(this MauiAppBuilder builder)
     {
         builder.Services.AddTransient<WelcomeViewModel>();
-        builder.Services.AddSingleton<LoginViewModel>();
+        builder.Services.AddSingleton<SignInViewModel>();
         builder.Services.AddSingleton<SignUpViewModel>();
         builder.Services.AddSingleton<UserProfileSetupViewModel>();
         builder.Services.AddSingleton<HomeViewModel>();
-        builder.Services.AddTransient<ProblemViewModel>();
 
         return builder;
     }

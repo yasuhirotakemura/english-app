@@ -1,35 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+<views:BaseContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:vm="clr-namespace:EnglishApp.Maui.ViewModels"
+             xmlns:views="clr-namespace:EnglishApp.Maui.Views.Bases"
+             xmlns:viewModels="clr-namespace:EnglishApp.Maui.ViewModels"
              xmlns:domain="clr-namespace:EnglishApp.Domain.Entities;assembly=EnglishApp.Domain"
              x:Name="HomePage"
              x:Class="EnglishApp.Maui.Views.HomeView"
-             x:DataType="vm:HomeViewModel"
+             x:DataType="viewModels:HomeViewModel"
              Title="ホーム">
-    
-    <Shell.BackButtonBehavior>
-        <BackButtonBehavior IsVisible="False" IsEnabled="False" />
-    </Shell.BackButtonBehavior>
-    
-    <ContentPage.Content>
-        <VerticalStackLayout Padding="10">
-            <Label Text="問題一覧" FontSize="24" HorizontalOptions="Center"/>
-            <Button Text="データ取得" Command="{Binding LoadTextsCommand}" />
-            <ListView 
-                ItemsSource="{Binding EnglishTexts}" 
-                SelectedItem="{Binding SelectedEnglishText, Mode=TwoWay}"
-                SelectionMode="Single" >
-                <ListView.ItemTemplate>
-                    <DataTemplate x:DataType="domain:EnglishTextEntity">
-                        <ViewCell>
-                            <StackLayout Padding="10">
-                                <Label Text="{Binding Title}" FontSize="18" FontAttributes="Bold"/>
-                            </StackLayout>
-                        </ViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-        </VerticalStackLayout>
-    </ContentPage.Content>
-</ContentPage>
+</views:BaseContentPage>

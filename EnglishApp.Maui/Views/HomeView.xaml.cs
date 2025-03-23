@@ -1,13 +1,14 @@
 ﻿using EnglishApp.Maui.ViewModels;
+using EnglishApp.Maui.Views.Bases;
 
 namespace EnglishApp.Maui.Views;
 
-public partial class HomeView : ContentPage
+public partial class HomeView : BaseContentPage
 {
-    public HomeView(HomeViewModel mainVieModel)
+    public HomeView(HomeViewModel viewModel)
     {
         this.InitializeComponent();
 
-        this.BindingContext = mainVieModel;
+        this.BindingContext = viewModel;
     }
 }

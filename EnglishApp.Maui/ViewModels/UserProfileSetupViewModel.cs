@@ -7,9 +7,7 @@ using EnglishApp.Domain.Entities;
 using EnglishApp.Domain.Interfaces;
 using EnglishApp.Domain.StaticValues;
 using EnglishApp.Maui.ViewModels.Bases;
-using EnglishApp.Maui.Views;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 
 namespace EnglishApp.Maui.ViewModels;
 
@@ -90,9 +88,7 @@ public sealed class UserProfileSetupViewModel : ViewModelBase, IQueryAttributabl
 
         if(await this._userProfileApiService.CreateAsync(request) is UserProfileSetupResponse userProfileSetupResponse)
         {
-            Debug.WriteLine("書き込み成功！");
-
-            await this.NavigateToAsync(nameof(HomeView), []);
+            await this.NavigateToRootAsync("home");
         }
     }
 

@@ -16,7 +16,7 @@ public sealed class WelcomeViewModel : ViewModelBase
     public IAsyncRelayCommand LoginCommand { get; }
     public async Task OnLoginCommand()
     {
-        await this.NavigateToAsync(nameof(LoginView), []);
+        await this.NavigateToAsync(nameof(SignInView), []);
     }
 
     public IAsyncRelayCommand SignUpCommand { get; }
