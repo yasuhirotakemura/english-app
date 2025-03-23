@@ -1,6 +1,6 @@
 ﻿using EnglishApp.Domain.ValueObjects;
 
-namespace EnglishApp.Application.Dtos;
+namespace EnglishApp.Application.Dtos.Requests;
 
 public sealed class UserAuthSignUpRequest(string email,
                                    string passwordHash,

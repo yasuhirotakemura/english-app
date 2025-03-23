@@ -1,4 +1,5 @@
-﻿using EnglishApp.Application.Dtos;
+﻿using EnglishApp.Application.Dtos.Requests;
+using EnglishApp.Application.Dtos.Responses;
 using EnglishApp.Domain.Entities;
 using EnglishApp.Domain.Repositories;
 using EnglishApp.Domain.ValueObjects;

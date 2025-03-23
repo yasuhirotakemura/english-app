@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using EnglishApp.Application.Apis;
-using EnglishApp.Application.Dtos;
+using EnglishApp.Application.Dtos.Requests;
+using EnglishApp.Application.Dtos.Responses;
 using EnglishApp.Domain;
 using EnglishApp.Domain.Interfaces;
 using EnglishApp.Domain.Logics;
