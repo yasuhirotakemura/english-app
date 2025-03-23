@@ -6,6 +6,27 @@ namespace EnglishApp.Infrastructure.Factories;
 
 internal static class EntityFactory
 {
+    public static UserProfileEntity CreateUserProfileEntity(SqlDataReader reader)
+    {
+        return new UserProfileEntity(
+            userId: reader.GetInt32(reader.GetOrdinal("UserId")),
+            nickName: reader.GetString(reader.GetOrdinal("NickName")),
+            gender: reader.GetByte(reader.GetOrdinal("Gender")),
+            gradeId: reader.GetInt32(reader.GetOrdinal("GradeId")),
+            learningPurposeId: reader.GetInt32(reader.GetOrdinal("LearningPurposeId")),
+            prefectureId: reader.GetInt32(reader.GetOrdinal("PrefectureId")),
+            birthDate: reader.IsDBNull(reader.GetOrdinal("BirthDate"))
+                        ? null
+                        : reader.GetDateTime(reader.GetOrdinal("BirthDate")),
+            profileText: reader.IsDBNull(reader.GetOrdinal("ProfileText"))
+                        ? null
+                        : reader.GetString(reader.GetOrdinal("ProfileText")),
+            isDeleted: reader.GetBoolean(reader.GetOrdinal("IsDeleted")),
+            createdAt: reader.GetDateTime(reader.GetOrdinal("CreatedAt")),
+            updatedAt: reader.GetDateTime(reader.GetOrdinal("UpdatedAt"))
+        );
+    }
+
     public static EnglishTextEntity CreateEnglishText(SqlDataReader reader)
     {
         return new
