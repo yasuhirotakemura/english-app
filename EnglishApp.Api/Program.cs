@@ -18,6 +18,7 @@ internal class Program
         builder.Services.AddScoped<IPrefectureRepository, PrefectureRepository>();
         builder.Services.AddScoped<IUserGradeRepository, UserGradeRepository>();
         builder.Services.AddScoped<IUserLearningPurposeRepository, UserLearningPurposeRepository>();
+        builder.Services.AddScoped<IUserProfileRepository, UserProfileRepository>();
 
         builder.Services.AddControllers();
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
