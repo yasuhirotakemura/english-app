@@ -7,6 +7,11 @@
              x:Class="EnglishApp.Maui.Views.HomeView"
              x:DataType="vm:HomeViewModel"
              Title="ホーム">
+    
+    <Shell.BackButtonBehavior>
+        <BackButtonBehavior IsVisible="False" IsEnabled="False" />
+    </Shell.BackButtonBehavior>
+    
     <ContentPage.Content>
         <VerticalStackLayout Padding="10">
             <Label Text="問題一覧" FontSize="24" HorizontalOptions="Center"/>
