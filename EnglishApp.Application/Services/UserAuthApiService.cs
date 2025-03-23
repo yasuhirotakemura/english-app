@@ -1,5 +1,6 @@
 ﻿using EnglishApp.Application.Apis;
-using EnglishApp.Application.Dtos;
+using EnglishApp.Application.Dtos.Requests;
+using EnglishApp.Application.Dtos.Responses;
 using System.Diagnostics;
 using System.Net.Http.Json;
 using System.Text.Json;
