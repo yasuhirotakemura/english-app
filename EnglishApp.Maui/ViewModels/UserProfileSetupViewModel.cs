@@ -1,15 +1,23 @@
 ﻿using CommunityToolkit.Mvvm.Input;
+using EnglishApp.Application.Apis;
+using EnglishApp.Application.Dtos.Requests;
+using EnglishApp.Application.Dtos.Responses;
+using EnglishApp.Domain;
 using EnglishApp.Domain.Entities;
 using EnglishApp.Domain.Interfaces;
 using EnglishApp.Domain.StaticValues;
 using EnglishApp.Maui.ViewModels.Bases;
+using EnglishApp.Maui.Views;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 
 namespace EnglishApp.Maui.ViewModels;
 
 public sealed class UserProfileSetupViewModel : ViewModelBase, IQueryAttributable
 {
-    public UserProfileSetupViewModel(IMessageService messageService) : base(messageService)
+    private readonly IUserProfileApiService _userProfileApiService;
+
+    public UserProfileSetupViewModel(IMessageService messageService, IUserProfileApiService userProfileApiService) : base(messageService)
     {
         this.GenderList = new ObservableCollection<UserGenderEntity>([new UserGenderEntity(1, "男性"), new UserGenderEntity(2, "女性"), new UserGenderEntity(3, "その他")]);
         this.GradeList = [.. MasterData.UserGrades];
@@ -17,6 +25,7 @@ public sealed class UserProfileSetupViewModel : ViewModelBase, IQueryAttributabl
         this.PrefectureList = [.. MasterData.Prefectures];
 
         this.StartCommand = new AsyncRelayCommand(this.OnStartCommand);
+        this._userProfileApiService = userProfileApiService;
     }
 
     public void ApplyQueryAttributes(IDictionary<string, object> query)
@@ -75,6 +84,15 @@ public sealed class UserProfileSetupViewModel : ViewModelBase, IQueryAttributabl
         if(! await this.IsInputCorrect())
         {
             return;
+        }
+
+        UserProfileSetupRequest request = new(Shared.UserId, this._nickName, this._selectedGender!.Id, this._selectedGrade!.Id, this._selectedLearningPurpose!.Id, this._selectedPrefecture!.Id, this._birthDate, "");
+
+        if(await this._userProfileApiService.CreateAsync(request) is UserProfileSetupResponse userProfileSetupResponse)
+        {
+            Debug.WriteLine("書き込み成功！");
+
+            await this.NavigateToAsync(nameof(HomeView), []);
         }
     }
 
