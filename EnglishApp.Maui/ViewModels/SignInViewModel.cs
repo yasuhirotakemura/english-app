@@ -5,9 +5,9 @@ using EnglishApp.Maui.ViewModels.Bases;
 
 namespace EnglishApp.Maui.ViewModels;
 
-public sealed class LoginViewModel : ViewModelBase, IQueryAttributable
+public sealed class SignInViewModel : ViewModelBase, IQueryAttributable
 {
-    public LoginViewModel(IMessageService messageService) : base(messageService)
+    public SignInViewModel(IMessageService messageService) : base(messageService)
     {
         this.LoginCommand = new AsyncRelayCommand(this.OnLoginCommand);
     }

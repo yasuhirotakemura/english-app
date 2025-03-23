@@ -8,10 +8,8 @@
     Title="EnglishApp.Maui">
 
     <TabBar>
-        <ShellContent
-            Title="HOME"
-            ContentTemplate="{DataTemplate local:WelcomeView}"
-            Route="WelcomeView" />
+        <ShellContent Route="welcome" ContentTemplate="{DataTemplate local:WelcomeView}" />
+        <ShellContent Route="home" ContentTemplate="{DataTemplate local:HomeView}"/>
     </TabBar>
 
 </Shell>

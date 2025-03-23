@@ -3,14 +3,12 @@ using EnglishApp.Maui.Views.Bases;
 
 namespace EnglishApp.Maui.Views;
 
-public partial class UserProfileSetupView : BaseContentPage
+public partial class SignInView : BaseContentPage
 {
-	public UserProfileSetupView(UserProfileSetupViewModel viewModel)
+	public SignInView(SignInViewModel viewModel)
 	{
 		this.InitializeComponent();
 
         this.BindingContext = viewModel;
-
-        this.HideBackButton();
-    }
+	}
 }

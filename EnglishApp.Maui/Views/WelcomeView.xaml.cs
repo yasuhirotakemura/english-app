@@ -1,13 +1,16 @@
 ﻿using EnglishApp.Maui.ViewModels;
+using EnglishApp.Maui.Views.Bases;
 
 namespace EnglishApp.Maui.Views;
 
-public partial class WelcomeView : ContentPage
+public partial class WelcomeView : BaseContentPage
 {
-	public WelcomeView(WelcomeViewModel welcomeViewModel)
+	public WelcomeView(WelcomeViewModel viewModel)
 	{
 		this.InitializeComponent();
 
-        this.BindingContext = welcomeViewModel;
-	}
+        this.BindingContext = viewModel;
+
+        this.HideNavigationBar();
+    }
 }
