@@ -1,10 +1,14 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using EnglishApp.Application.Apis;
-using EnglishApp.Application.Dtos;
+using EnglishApp.Application.Dtos.Requests;
+using EnglishApp.Application.Dtos.Responses;
+using EnglishApp.Domain;
 using EnglishApp.Domain.Interfaces;
 using EnglishApp.Domain.Logics;
 using EnglishApp.Domain.ValueObjects;
 using EnglishApp.Maui.ViewModels.Bases;
+using EnglishApp.Maui.Views;
+using System.Diagnostics;
 
 namespace EnglishApp.Maui.ViewModels;
 
@@ -53,13 +57,18 @@ public sealed class SignUpViewModel : ViewModelBase, IQueryAttributable
             return;
         }
 
-        // 画面への入力制御を行う
+        // 画面への入力制御を行う -> アクションでコードビハインド側に通知
 
         PasswordHash passwordHash = PasswordHash.CreateFromPlainText(this._confirmPassword);
 
         UserAuthSignUpRequest request = UserAuthSignUpRequest.Create(this._email, passwordHash);
 
-        await this._userAuthApiService.SignUpAsync(request);
+        if(await this._userAuthApiService.SignUpAsync(request) is UserAuthSignUpResponse response)
+        {
+            Shared.UserId = response.UserId;
+
+            await this.NavigateToAsync(nameof(UserProfileSetupView), []);
+        }
     }
 
     private async Task<bool> IsInputCorrect()
@@ -82,62 +91,4 @@ public sealed class SignUpViewModel : ViewModelBase, IQueryAttributable
 
         return true;
     }
-
-    //private string _nickName = String.Empty;
-    //public string NickName
-    //{
-    //    get => this._nickName;
-    //    set => this.SetProperty(ref this._nickName, value);
-    //}
-
-    //public ObservableCollection<KeyValuePair<byte, string>> GenderList { get; }
-    //private byte _selectedGender;
-    //public byte SelectedGender
-    //{
-    //    get => this._selectedGender;
-    //    set
-    //    {
-    //        this._selectedGender = value;
-    //        this.SetProperty(ref this._selectedGender, value);
-    //    }
-    //}
-
-    //public ObservableCollection<UserGradeEntity> GradeList { get; }
-    //private byte _selectedGrade;
-    //public byte SelectedGrade
-    //{
-    //    get => this._selectedGrade;
-    //    set
-    //    {
-    //        this._selectedGrade = value;
-    //        this.SetProperty(ref this._selectedGrade, value);
-    //    }
-    //}
-
-    //public ObservableCollection<UserLearningPurposeEntity> LearningPurposeList { get; }
-    //public byte _selectedLearningPurpose;
-    //public byte SelectedLearningPurpose
-    //{
-    //    get => this._selectedLearningPurpose;
-    //    set
-    //    {
-    //        this._selectedLearningPurpose = value;
-    //        this.SetProperty(ref this._selectedLearningPurpose, value);
-    //    }
-    //}
-
-    //private DateTime _birthDate = DateTime.Today;
-    //public DateTime BirthDate
-    //{
-    //    get => this._birthDate;
-    //    set => this.SetProperty(ref this._birthDate, value);
-    //}
-
-    //public ObservableCollection<PrefectureEntity> PrefectureList { get; }
-    //private byte _selectedPrefecture;
-    //public byte SelectedPrefecture
-    //{
-    //    get => this._selectedPrefecture;
-    //    set => this.SetProperty(ref this._selectedPrefecture, value);
-    //}
 }

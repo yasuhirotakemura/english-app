@@ -3,7 +3,7 @@ using EnglishApp.Application.Dtos.Responses;
 
 namespace EnglishApp.Application.Apis;
 
-public interface IUserAuthApiService
+public interface IUserProfileApiService
 {
-    Task<UserAuthSignUpResponse?> SignUpAsync(UserAuthSignUpRequest request);
+    Task<UserProfileSetupResponse?> CreateAsync(UserProfileSetupRequest request);
 }

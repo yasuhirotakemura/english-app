@@ -45,6 +45,7 @@ public static class MauiProgram
         builder.Services.AddTransient<WelcomeViewModel>();
         builder.Services.AddSingleton<LoginViewModel>();
         builder.Services.AddSingleton<SignUpViewModel>();
+        builder.Services.AddSingleton<UserProfileSetupViewModel>();
         builder.Services.AddSingleton<HomeViewModel>();
         builder.Services.AddTransient<ProblemViewModel>();
 
@@ -76,7 +77,9 @@ public static class MauiProgram
             return client;
         });
 
+        builder.Services.AddSingleton<IMasterApiService, MasterApiService>();
         builder.Services.AddSingleton<IUserAuthApiService, UserAuthApiService>();
+        builder.Services.AddSingleton<IUserProfileApiService, UserProfileSetupApiService>();
         builder.Services.AddSingleton<IEnglishTextApiService, EnglishTextApiService>();
         builder.Services.AddSingleton<IChoiceQuestionApiService, ChoiceQuestionApiService>();
 

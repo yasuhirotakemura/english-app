@@ -1,10 +1,10 @@
 ﻿using EnglishApp.Domain.ValueObjects;
 
-namespace EnglishApp.Application.Dtos;
+namespace EnglishApp.Application.Dtos.Requests;
 
-public class UserAuthSignUpRequest(string email,
-                                          string passwordHash,
-                                          string salt)
+public sealed class UserAuthSignUpRequest(string email,
+                                   string passwordHash,
+                                   string salt)
 {
     public string Email { get; } = email;
     public string PasswordHash { get; } = passwordHash;
