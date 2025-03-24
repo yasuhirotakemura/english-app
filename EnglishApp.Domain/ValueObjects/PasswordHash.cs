@@ -20,6 +20,14 @@ public sealed class PasswordHash(byte[] hash, byte[] salt) : ValueObject<Passwor
         return new PasswordHash(Convert.FromBase64String(base64Hash), Convert.FromBase64String(base64Salt));
     }
 
+    public static PasswordHash CreateFromPlainTextAndSaltBase64(string password, string base64Salt)
+    {
+        byte[] salt = Convert.FromBase64String(base64Salt);
+        byte[] hash = PasswordHasher.HashPassword(password, salt);
+
+        return new PasswordHash(hash, salt);
+    }
+
     public string GetBase64Hash() => Convert.ToBase64String(this.Hash);
     public string GetBase64Salt() => Convert.ToBase64String(this.Salt);
 

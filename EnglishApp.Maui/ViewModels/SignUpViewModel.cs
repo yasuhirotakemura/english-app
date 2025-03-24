@@ -8,7 +8,6 @@ using EnglishApp.Domain.Logics;
 using EnglishApp.Domain.ValueObjects;
 using EnglishApp.Maui.ViewModels.Bases;
 using EnglishApp.Maui.Views;
-using System.Diagnostics;
 
 namespace EnglishApp.Maui.ViewModels;
 
