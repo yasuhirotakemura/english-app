@@ -5,13 +5,17 @@ namespace EnglishApp.Domain.Logics;
 
 public static class PasswordHasher
 {
+    public static string ConvertToBase64String(byte[] byteArray) => Convert.ToBase64String(byteArray);
+    public static byte[] ConvertFromBase64String(string base64String) => Convert.FromBase64String(base64String);
+
+
     public static byte[] HashPassword(string password, out byte[] salt)
     {
         salt = GenerateSalt();
         return HashPassword(password, salt);
     }
 
-    private static byte[] HashPassword(string password, byte[] salt)
+    public static byte[] HashPassword(string password, byte[] salt)
     {
         using (SHA256 sha256 = SHA256.Create())
         {
