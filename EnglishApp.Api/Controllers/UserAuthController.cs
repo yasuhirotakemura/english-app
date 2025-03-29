@@ -2,6 +2,7 @@
 using EnglishApp.Application.Dtos.Requests;
 using EnglishApp.Application.Dtos.Responses;
 using EnglishApp.Domain.Entities;
+using EnglishApp.Domain.Exceptions;
 using EnglishApp.Domain.Logics;
 using EnglishApp.Domain.Repositories;
 using EnglishApp.Domain.ValueObjects;
@@ -11,7 +12,7 @@ namespace EnglishApp.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class UserController(JwtService jwtService, IUserRepository userRepository, IUserAuthRepository userAuthRepository) : ControllerBase
+public class UserAuthController(JwtService jwtService, IUserRepository userRepository, IUserAuthRepository userAuthRepository) : ControllerBase
 {
     private readonly JwtService _jwtService = jwtService;
     private readonly IUserRepository _userRepository = userRepository;
@@ -61,10 +62,10 @@ public class UserController(JwtService jwtService, IUserRepository userRepositor
             }
             else
             {
-                ErrorResponse errorResponse = new("メールアドレスとパスワードが一致しません。", "エラー");
+                ErrorResponse errorResponse = new("メールアドレスとパスワードが一致しません。", "認証失敗");
 
-                return this.StatusCode(500, errorResponse);
-            }
+                return this.Unauthorized(errorResponse);
+            }   
         }
         catch (Exception ex)
         {
@@ -86,6 +87,12 @@ public class UserController(JwtService jwtService, IUserRepository userRepositor
             UserAuthSaltResponse response = new(saltString, "文字列Salt返却");
 
             return this.Ok(response);
+        }
+        catch (EmailNotFoundException ex)
+        {
+            ErrorResponse errorResponse = new(ex.Message, "認証失敗");
+
+            return this.Unauthorized(errorResponse);
         }
         catch (Exception ex)
         {

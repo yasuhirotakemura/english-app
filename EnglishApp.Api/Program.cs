@@ -1,6 +1,10 @@
-﻿using EnglishApp.Domain.Repositories;
+﻿using EnglishApp.Api.Services;
+using EnglishApp.Domain.Repositories;
 using EnglishApp.Infrastructure.Repositories;
 using EnglishApp.Infrastructure.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 internal class Program
 {
@@ -11,6 +15,7 @@ internal class Program
         // Add services to the container.
         // SQL Server Service の登録
         builder.Services.AddSingleton<SqlServerService>();
+        builder.Services.AddSingleton<JwtService>();
 
         // Repository の登録
         builder.Services.AddScoped<IUserRepository, UserRepository>();
@@ -24,6 +29,24 @@ internal class Program
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
+
+        builder.Services
+            .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options => {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            // ここで発行元や署名鍵などをチェックする
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            ValidAudience = builder.Configuration["Jwt:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!)
+            )
+        };
+    });
 
         WebApplication app = builder.Build();
 

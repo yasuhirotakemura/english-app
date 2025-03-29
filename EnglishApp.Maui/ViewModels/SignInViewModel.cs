@@ -57,6 +57,10 @@ public sealed class SignInViewModel : ViewModelBase, IQueryAttributable
         {
             return;
         }
+        else
+        {
+            Debug.WriteLine("HELLO");
+        }
 
         PasswordHash passwordHash = PasswordHash.CreateFromPlainTextAndSaltBase64(this._password, userAuthSaltResponse.SaltBase64);
         UserAuthSignInRequest userAuthSignInRequest = UserAuthSignInRequest.Create(this._email, passwordHash);

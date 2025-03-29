@@ -8,6 +8,7 @@ using EnglishApp.Domain.Logics;
 using EnglishApp.Domain.ValueObjects;
 using EnglishApp.Maui.ViewModels.Bases;
 using EnglishApp.Maui.Views;
+using System.Diagnostics;
 
 namespace EnglishApp.Maui.ViewModels;
 
@@ -64,6 +65,8 @@ public sealed class SignUpViewModel : ViewModelBase, IQueryAttributable
 
         if(await this._userAuthApiService.SignUpAsync(request) is UserAuthSignUpResponse response)
         {
+            await SecureStorage.SetAsync("AccessToken", response.AccessToken);
+
             Shared.UserId = response.UserId;
 
             await this.NavigateToAsync(nameof(UserProfileSetupView), []);

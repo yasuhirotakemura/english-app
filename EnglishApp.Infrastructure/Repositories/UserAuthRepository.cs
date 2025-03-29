@@ -1,4 +1,5 @@
 ﻿using EnglishApp.Domain.Entities;
+using EnglishApp.Domain.Exceptions;
 using EnglishApp.Domain.Repositories;
 using EnglishApp.Infrastructure.Factories;
 using EnglishApp.Infrastructure.Services;
@@ -61,6 +62,6 @@ WHERE
         return
             await this._sqlServerService.ExecuteScalarAsync(query, parameters) is byte[] salt
             ? salt
-            : throw new Exception("メールアドレスが存在しません。");
+            : throw new EmailNotFoundException("メールアドレスが存在しません。");
     }
 }
