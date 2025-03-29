@@ -7,9 +7,9 @@ public abstract class ViewModelBase(IMessageService messageService) : Observable
 {
     protected readonly IMessageService MessageService = messageService;
 
-    protected Task NavigateToRootAsync(string route)
+    protected Task NavigateToRootAsync(string route, Dictionary<string, object> parameter)
     {
-        return Shell.Current.GoToAsync($"//{route}");
+        return Shell.Current.GoToAsync($"//{route}", parameter);
     }
 
 

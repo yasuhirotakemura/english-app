@@ -8,4 +8,21 @@
              x:Class="EnglishApp.Maui.Views.HomeView"
              x:DataType="viewModels:HomeViewModel"
              Title="ホーム">
+    <ScrollView>
+        <VerticalStackLayout Padding="16" Spacing="24">
+
+            <Label 
+                Text="{Binding NickName}" 
+                FontSize="32"
+                FontAttributes="Bold"
+                HorizontalOptions="Center" />
+
+            <Label 
+                Text="ここにダッシュボード的な要素が入ります" 
+                FontSize="16"
+                TextColor="Gray"
+                HorizontalOptions="Center" />
+
+        </VerticalStackLayout>
+    </ScrollView>
 </views:BaseContentPage>

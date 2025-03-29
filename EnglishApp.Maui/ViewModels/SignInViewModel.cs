@@ -3,6 +3,7 @@ using EnglishApp.Application.Apis;
 using EnglishApp.Application.Dtos.Requests;
 using EnglishApp.Application.Dtos.Responses;
 using EnglishApp.Domain;
+using EnglishApp.Domain.Entities;
 using EnglishApp.Domain.Interfaces;
 using EnglishApp.Domain.Logics;
 using EnglishApp.Domain.ValueObjects;
@@ -65,12 +66,14 @@ public sealed class SignInViewModel : ViewModelBase, IQueryAttributable
         {
             Shared.UserId = userAuthSignInResponse.UserId;
 
-            Debug.WriteLine("メッセージ : " + userAuthSignInResponse.Message);
-            Debug.WriteLine("ユーザーID : " + userAuthSignInResponse.UserId);
-            Debug.WriteLine("ニックネーム : " + userAuthSignInResponse.NickName);
-            Debug.WriteLine("メール認証済み : " + userAuthSignInResponse.IsEmailVerified);
+            UserSignInEntity entity = new(userAuthSignInResponse.UserId, userAuthSignInResponse.NickName, userAuthSignInResponse.IsEmailVerified);
 
-            await this.NavigateToRootAsync("home");
+            Dictionary<string, object> dict = new()
+            {
+                {nameof(UserSignInEntity), entity}
+            };
+
+            await this.NavigateToRootAsync("home", dict);
         }
     }
 

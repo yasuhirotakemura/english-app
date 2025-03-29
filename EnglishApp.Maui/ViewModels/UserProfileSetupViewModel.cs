@@ -88,7 +88,7 @@ public sealed class UserProfileSetupViewModel : ViewModelBase, IQueryAttributabl
 
         if(await this._userProfileApiService.CreateAsync(request) is UserProfileSetupResponse userProfileSetupResponse)
         {
-            await this.NavigateToRootAsync("home");
+            await this.NavigateToRootAsync("home", []);
         }
     }
 
