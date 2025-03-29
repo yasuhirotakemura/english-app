@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<views:BaseContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:views="clr-namespace:EnglishApp.Maui.Views.Bases"
+             xmlns:viewModels="clr-namespace:EnglishApp.Maui.ViewModels"
+             xmlns:domain="clr-namespace:EnglishApp.Domain.Entities;assembly=EnglishApp.Domain"
+             x:Name="FavoritesPage"
+             x:Class="EnglishApp.Maui.Views.FavoritesView"
+             x:DataType="viewModels:FavoritesViewModel"
+             Title="お気に入り">
+    <VerticalStackLayout>
+        <Label 
+            Text="お気に入り"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" />
+    </VerticalStackLayout>
+</views:BaseContentPage>

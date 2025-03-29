@@ -1,8 +1,6 @@
-﻿using EnglishApp.Application.Dtos.Responses.Bases;
+﻿namespace EnglishApp.Application.Dtos.Responses;
 
-namespace EnglishApp.Application.Dtos.Responses;
-
-public sealed class ErrorResponse(string content, string message) : ResponseBase(message)
+public sealed class ErrorResponse(string message)
 {
-    public string Content { get; } = content;
+    public string Message { get; } = message;
 }

@@ -7,14 +7,24 @@ public abstract class ViewModelBase(IMessageService messageService) : Observable
 {
     protected readonly IMessageService MessageService = messageService;
 
-    protected Task NavigateToRootAsync(string route, Dictionary<string, object> parameter)
+    protected Task NavigateToRootAsync(string route, Dictionary<string, object>? parameter = null)
     {
+        if (parameter is null)
+        {
+            return Shell.Current.GoToAsync($"//{route}");
+        }
+
         return Shell.Current.GoToAsync($"//{route}", parameter);
     }
 
 
-    protected Task NavigateToAsync(string route, Dictionary<string, object> parameter)
+    protected Task NavigateToAsync(string route, Dictionary<string, object>? parameter = null)
     {
+        if(parameter is null)
+        {
+            return Shell.Current.GoToAsync(route);
+        }
+
         return Shell.Current.GoToAsync(route, parameter);
     }
 }

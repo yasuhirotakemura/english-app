@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Input;
+using EnglishApp.Application;
 using EnglishApp.Application.Apis;
 using EnglishApp.Application.Dtos.Requests;
 using EnglishApp.Application.Dtos.Responses;
@@ -6,8 +7,8 @@ using EnglishApp.Domain;
 using EnglishApp.Domain.Interfaces;
 using EnglishApp.Domain.Logics;
 using EnglishApp.Domain.ValueObjects;
+using EnglishApp.Maui.Routes;
 using EnglishApp.Maui.ViewModels.Bases;
-using EnglishApp.Maui.Views;
 
 namespace EnglishApp.Maui.ViewModels;
 
@@ -62,11 +63,19 @@ public sealed class SignUpViewModel : ViewModelBase, IQueryAttributable
 
         UserAuthSignUpRequest request = UserAuthSignUpRequest.Create(this._email, passwordHash);
 
-        if(await this._userAuthApiService.SignUpAsync(request) is UserAuthSignUpResponse response)
-        {
-            Shared.UserId = response.UserId;
+        ApiResult<UserAuthSignUpResponse> response = await this._userAuthApiService.SignUpAsync(request);
 
-            await this.NavigateToAsync(nameof(UserProfileSetupView), []);
+        if (response.IsSuccess && response.Data is UserAuthSignUpResponse userAuthSignUpResponse)
+        {
+            await SecureStorage.SetAsync("AccessToken", userAuthSignUpResponse.AccessToken);
+
+            Shared.UserId = userAuthSignUpResponse.UserId;
+
+            await this.NavigateToAsync(AppShellRoute.UserProfileSetupView);
+        }
+        else if(response.ErrorMessage is string errorMessage)
+        {
+            await this.MessageService.Show("エラー", errorMessage);
         }
     }
 

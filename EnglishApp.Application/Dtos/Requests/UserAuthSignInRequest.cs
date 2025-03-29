@@ -1,8 +1,9 @@
 ﻿using EnglishApp.Domain.ValueObjects;
 
-namespace EnglishApp.Application.Dtos.Responses;
+namespace EnglishApp.Application.Dtos.Requests;
 
-public sealed class UserAuthSignInRequest(string email, string passwordHash)
+public sealed class UserAuthSignInRequest(string email,
+                                          string passwordHash)
 {
     public string Email { get; } = email;
     public string PasswordHash { get; } = passwordHash;

@@ -30,13 +30,6 @@ public static class MauiProgram
 #endif
         MauiApp app = builder.Build();
 
-        Task.Run(async () =>
-        {
-            IMasterApiService masterApiService = app.Services.GetRequiredService<IMasterApiService>();
-
-            await masterApiService.LoadAllMasterData();
-        });
-
         return builder.Build();
 	}
 
@@ -47,6 +40,10 @@ public static class MauiProgram
         builder.Services.AddSingleton<SignUpViewModel>();
         builder.Services.AddSingleton<UserProfileSetupViewModel>();
         builder.Services.AddSingleton<HomeViewModel>();
+        builder.Services.AddSingleton<TextListViewModel>();
+        builder.Services.AddSingleton<FavoritesViewModel>();
+        builder.Services.AddSingleton<WordBookViewModel>();
+        builder.Services.AddSingleton<SettingsViewModel>();
 
         return builder;
     }
@@ -60,7 +57,7 @@ public static class MauiProgram
 
     public static MauiAppBuilder RegisterApiServices(this MauiAppBuilder builder)
     {
-        builder.Services.AddSingleton<HttpClient>(sp =>
+        builder.Services.AddSingleton(sp =>
         {
             HttpClient client = new()
             {
@@ -75,12 +72,11 @@ public static class MauiProgram
 
             return client;
         });
+        builder.Services.AddSingleton<ApiRequestHandler>();
 
         builder.Services.AddSingleton<IMasterApiService, MasterApiService>();
         builder.Services.AddSingleton<IUserAuthApiService, UserAuthApiService>();
         builder.Services.AddSingleton<IUserProfileApiService, UserProfileSetupApiService>();
-        builder.Services.AddSingleton<IEnglishTextApiService, EnglishTextApiService>();
-        builder.Services.AddSingleton<IChoiceQuestionApiService, ChoiceQuestionApiService>();
 
         return builder;
     }
