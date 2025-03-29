@@ -1,18 +1,19 @@
-﻿using EnglishApp.Application.Dtos.Requests;
+﻿using EnglishApp.Api.Services;
+using EnglishApp.Application.Dtos.Requests;
 using EnglishApp.Application.Dtos.Responses;
 using EnglishApp.Domain.Entities;
 using EnglishApp.Domain.Logics;
 using EnglishApp.Domain.Repositories;
 using EnglishApp.Domain.ValueObjects;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
 
 namespace EnglishApp.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class UserController(IUserRepository userRepository, IUserAuthRepository userAuthRepository) : ControllerBase
+public class UserController(JwtService jwtService, IUserRepository userRepository, IUserAuthRepository userAuthRepository) : ControllerBase
 {
+    private readonly JwtService _jwtService = jwtService;
     private readonly IUserRepository _userRepository = userRepository;
     private readonly IUserAuthRepository _userAuthRepository = userAuthRepository;
 
@@ -29,7 +30,9 @@ public class UserController(IUserRepository userRepository, IUserAuthRepository 
 
             await this._userAuthRepository.SignUp(entity);
 
-            UserAuthSignUpResponse response = new(userId, "登録完了");
+            string token = this._jwtService.GenerateToken(userId);
+
+            UserAuthSignUpResponse response = new(userId, token, "登録完了");
 
             return this.Ok(response);
         }
