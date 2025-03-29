@@ -4,5 +4,7 @@ namespace EnglishApp.Domain.Repositories;
 
 public interface IUserAuthRepository
 {
-    public Task<int> CreateUserAuth(UserAuthEntity entity);
+    Task SignUp(UserAuthEntity entity);
+    Task<byte[]> GetSaltByEmail(string email);
+    Task<UserSignInEntity?> SignIn(string email, byte[] passwordHash);
 }

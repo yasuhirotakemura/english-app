@@ -27,6 +27,16 @@ internal static class EntityFactory
         );
     }
 
+    public static UserSignInEntity CreateUserSignInEntity(SqlDataReader reader)
+    {
+        return new
+        (
+            reader.GetInt32(reader.GetOrdinal("UserId")),
+            reader.GetString(reader.GetOrdinal("NickName")),
+            reader.GetBoolean(reader.GetOrdinal("IsEmailVerified"))
+         );
+    }
+
     public static EnglishTextEntity CreateEnglishText(SqlDataReader reader)
     {
         return new

@@ -7,9 +7,41 @@
     Shell.FlyoutBehavior="Disabled"
     Title="EnglishApp.Maui">
 
+    <ShellContent
+            Route="welcome"
+            ContentTemplate="{DataTemplate local:WelcomeView}" />
+
     <TabBar>
-        <ShellContent Route="welcome" ContentTemplate="{DataTemplate local:WelcomeView}" />
-        <ShellContent Route="home" ContentTemplate="{DataTemplate local:HomeView}"/>
+        <ShellContent
+            Title="ホーム"
+            Icon="home.png"
+            Route="home"
+            ContentTemplate="{DataTemplate local:HomeView}" />
+
+        <ShellContent
+            Title="問題集"
+            Icon="textbook.png"
+            Route="textlist"
+            ContentTemplate="{DataTemplate local:HomeView}" />
+
+        <ShellContent
+            Title="お気に入り"
+            Icon="star.png"
+            Route="favorites"
+            ContentTemplate="{DataTemplate local:HomeView}" />
+
+        <ShellContent
+            Title="単語帳"
+            Icon="book.png"
+            Route="wordbook"
+            ContentTemplate="{DataTemplate local:HomeView}" />
+
+        <ShellContent
+            Title="設定"
+            Icon="settings.png"
+            Route="settings"
+            ContentTemplate="{DataTemplate local:HomeView}" />
     </TabBar>
+
 
 </Shell>

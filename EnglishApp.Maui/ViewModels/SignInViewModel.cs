@@ -1,14 +1,25 @@
 ﻿using CommunityToolkit.Mvvm.Input;
+using EnglishApp.Application.Apis;
+using EnglishApp.Application.Dtos.Requests;
+using EnglishApp.Application.Dtos.Responses;
+using EnglishApp.Domain;
+using EnglishApp.Domain.Entities;
 using EnglishApp.Domain.Interfaces;
 using EnglishApp.Domain.Logics;
+using EnglishApp.Domain.ValueObjects;
 using EnglishApp.Maui.ViewModels.Bases;
+using System.Diagnostics;
 
 namespace EnglishApp.Maui.ViewModels;
 
 public sealed class SignInViewModel : ViewModelBase, IQueryAttributable
 {
-    public SignInViewModel(IMessageService messageService) : base(messageService)
+    private readonly IUserAuthApiService _userAuthApiService;
+
+    public SignInViewModel(IMessageService messageService, IUserAuthApiService userAuthApiService) : base(messageService)
     {
+        this._userAuthApiService = userAuthApiService;
+
         this.LoginCommand = new AsyncRelayCommand(this.OnLoginCommand);
     }
 
@@ -17,28 +28,62 @@ public sealed class SignInViewModel : ViewModelBase, IQueryAttributable
 
     }
 
-    private string _userEmail = String.Empty;
-    public string UserEmail
+    private string _email = String.Empty;
+    public string Email
     {
-        get => this._userEmail;
-        set => this.SetProperty(ref this._userEmail, value);
+        get => this._email;
+        set => this.SetProperty(ref this._email, value);
     }
 
-    private string _userPassword = String.Empty;
-    public string UserPassword
+    private string _password = String.Empty;
+    public string Password
     {
-        get => this._userPassword;
-        set => this.SetProperty(ref this._userPassword, value);
+        get => this._password;
+        set => this.SetProperty(ref this._password, value);
     }
 
     public IAsyncRelayCommand LoginCommand { get; }
     private async Task OnLoginCommand()
     {
-        if(!EmailAnalysis.IsValid(this._userEmail))
+        if(! await this.IsInputCorrect())
+        {
+            return;
+        }
+
+        UserAuthSaltRequest saltRequest = new(this._email);
+        UserAuthSaltResponse? saltResponse = await this._userAuthApiService.GetSaltAsync(new(this._email));
+
+        if(saltResponse is not UserAuthSaltResponse userAuthSaltResponse)
+        {
+            return;
+        }
+
+        PasswordHash passwordHash = PasswordHash.CreateFromPlainTextAndSaltBase64(this._password, userAuthSaltResponse.SaltBase64);
+        UserAuthSignInRequest userAuthSignInRequest = UserAuthSignInRequest.Create(this._email, passwordHash);
+        UserAuthSignInResponse? signInResponse = await this._userAuthApiService.SignInAsync(userAuthSignInRequest);
+
+        if(signInResponse is UserAuthSignInResponse userAuthSignInResponse)
+        {
+            Shared.UserId = userAuthSignInResponse.UserId;
+
+            UserSignInEntity entity = new(userAuthSignInResponse.UserId, userAuthSignInResponse.NickName, userAuthSignInResponse.IsEmailVerified);
+
+            Dictionary<string, object> dict = new()
+            {
+                {nameof(UserSignInEntity), entity}
+            };
+
+            await this.NavigateToRootAsync("home", dict);
+        }
+    }
+
+    private async Task<bool> IsInputCorrect()
+    {
+        if (!EmailAnalysis.IsValid(this._email))
         {
             await this.MessageService.Show("エラー", "メールアドレスを正しく入力してください。");
         }
 
-        // API経由でサーバー側に Email とハッシュ化した Password を渡し、応答を見る。
+        return true;
     }
 }

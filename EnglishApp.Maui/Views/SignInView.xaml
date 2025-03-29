@@ -17,7 +17,7 @@
 
                 <VerticalStackLayout Spacing="8">
                     <Label Text="メールアドレス" FontSize="16" />
-                    <Entry Text="{Binding UserEmail, Mode=TwoWay}" 
+                    <Entry Text="{Binding Email, Mode=TwoWay}" 
                            Placeholder="メールアドレスを入力" 
                            Keyboard="Email"
                            HeightRequest="48"/>
@@ -25,7 +25,7 @@
 
                 <VerticalStackLayout Spacing="8">
                     <Label Text="パスワード" FontSize="16" />
-                    <Entry Text="{Binding UserPassword, Mode=TwoWay}" 
+                    <Entry Text="{Binding Password, Mode=TwoWay}" 
                            Placeholder="パスワードを入力"
                            IsPassword="True"
                            MaxLength="50"
