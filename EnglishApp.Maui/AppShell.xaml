@@ -3,45 +3,44 @@
     x:Class="EnglishApp.Maui.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:EnglishApp.Maui.Views"
+    xmlns:view="clr-namespace:EnglishApp.Maui.Views"
+    xmlns:route="clr-namespace:EnglishApp.Maui.Routes"
     Shell.FlyoutBehavior="Disabled"
     Title="EnglishApp.Maui">
 
     <ShellContent
-            Route="welcome"
-            ContentTemplate="{DataTemplate local:WelcomeView}" />
+            Route="{x:Static route:AppShellRoute.WelcomeView}"
+            ContentTemplate="{DataTemplate view:WelcomeView}" />
 
     <TabBar>
         <ShellContent
             Title="ホーム"
             Icon="home.png"
-            Route="home"
-            ContentTemplate="{DataTemplate local:HomeView}" />
+            Route="{x:Static route:AppShellRoute.HomeView}"
+            ContentTemplate="{DataTemplate view:HomeView}" />
 
         <ShellContent
             Title="問題集"
             Icon="textbook.png"
-            Route="textlist"
-            ContentTemplate="{DataTemplate local:HomeView}" />
+            Route="{x:Static route:AppShellRoute.TextListView}"
+            ContentTemplate="{DataTemplate view:TextListView}" />
 
         <ShellContent
             Title="お気に入り"
             Icon="star.png"
-            Route="favorites"
-            ContentTemplate="{DataTemplate local:HomeView}" />
+            Route="{x:Static route:AppShellRoute.FavoritesView}"
+            ContentTemplate="{DataTemplate view:FavoritesView}" />
 
         <ShellContent
             Title="単語帳"
             Icon="book.png"
-            Route="wordbook"
-            ContentTemplate="{DataTemplate local:HomeView}" />
+            Route="{x:Static route:AppShellRoute.WordBookView}"
+            ContentTemplate="{DataTemplate view:WordBookView}" />
 
         <ShellContent
             Title="設定"
             Icon="settings.png"
-            Route="settings"
-            ContentTemplate="{DataTemplate local:HomeView}" />
+            Route="{x:Static route:AppShellRoute.SettingsView}"
+            ContentTemplate="{DataTemplate view:SettingsView}" />
     </TabBar>
-
-
 </Shell>

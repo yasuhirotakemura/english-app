@@ -5,8 +5,10 @@ namespace EnglishApp.Application.Apis;
 
 public interface IUserAuthApiService
 {
-    bool TryAutoLoginAsync(string? token);
-    Task<UserAuthSignUpResponse?> SignUpAsync(UserAuthSignUpRequest request);
-    Task<UserAuthSaltResponse?> GetSaltAsync(UserAuthSaltRequest request);
-    Task<UserAuthSignInResponse?> SignInAsync(UserAuthSignInRequest request);
+    bool CanAutoLoginAsync(string? token);
+
+    Task<ApiResult<UserAuthSignInResponse>> AutoSignInAsync();
+    Task<ApiResult<UserAuthSignInResponse>> SignInAsync(UserAuthSignInRequest request);
+    Task<ApiResult<UserAuthSignUpResponse>> SignUpAsync(UserAuthSignUpRequest request);
+    Task<ApiResult<UserAuthSaltResponse>> GetSaltAsync(UserAuthSaltRequest request);
 }

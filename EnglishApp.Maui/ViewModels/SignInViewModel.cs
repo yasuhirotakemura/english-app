@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Input;
+using EnglishApp.Application;
 using EnglishApp.Application.Apis;
 using EnglishApp.Application.Dtos.Requests;
 using EnglishApp.Application.Dtos.Responses;
@@ -8,7 +9,6 @@ using EnglishApp.Domain.Interfaces;
 using EnglishApp.Domain.Logics;
 using EnglishApp.Domain.ValueObjects;
 using EnglishApp.Maui.ViewModels.Bases;
-using System.Diagnostics;
 
 namespace EnglishApp.Maui.ViewModels;
 
@@ -51,22 +51,25 @@ public sealed class SignInViewModel : ViewModelBase, IQueryAttributable
         }
 
         UserAuthSaltRequest saltRequest = new(this._email);
-        UserAuthSaltResponse? saltResponse = await this._userAuthApiService.GetSaltAsync(new(this._email));
+        ApiResult<UserAuthSaltResponse> saltResponse = await this._userAuthApiService.GetSaltAsync(new(this._email));
 
-        if(saltResponse is not UserAuthSaltResponse userAuthSaltResponse)
+        if(saltResponse.ErrorMessage is string saltErrorMessage)
+        {
+            await this.MessageService.Show("エラー", saltErrorMessage);
+            return; 
+        }
+
+        if(saltResponse.Data is not UserAuthSaltResponse userAuthSaltResponse)
         {
             return;
         }
-        else
-        {
-            Debug.WriteLine("HELLO");
-        }
 
         PasswordHash passwordHash = PasswordHash.CreateFromPlainTextAndSaltBase64(this._password, userAuthSaltResponse.SaltBase64);
-        UserAuthSignInRequest userAuthSignInRequest = UserAuthSignInRequest.Create(this._email, passwordHash);
-        UserAuthSignInResponse? signInResponse = await this._userAuthApiService.SignInAsync(userAuthSignInRequest);
 
-        if(signInResponse is UserAuthSignInResponse userAuthSignInResponse)
+        UserAuthSignInRequest userAuthSignInRequest = UserAuthSignInRequest.Create(this._email, passwordHash);
+        ApiResult<UserAuthSignInResponse> signInResponse = await this._userAuthApiService.SignInAsync(userAuthSignInRequest);
+
+        if(signInResponse.IsSuccess && signInResponse.Data is UserAuthSignInResponse userAuthSignInResponse)
         {
             Shared.UserId = userAuthSignInResponse.UserId;
 
@@ -78,6 +81,10 @@ public sealed class SignInViewModel : ViewModelBase, IQueryAttributable
             };
 
             await this.NavigateToRootAsync("home", dict);
+        }
+        else if(signInResponse.ErrorMessage is string signInErrorMessage)
+        {
+            await this.MessageService.Show("エラー", signInErrorMessage);
         }
     }
 

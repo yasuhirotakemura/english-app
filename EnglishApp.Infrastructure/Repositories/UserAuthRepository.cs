@@ -30,21 +30,46 @@ public sealed class UserAuthRepository(SqlServerService sqlServerService) : IUse
 
     public async Task<UserSignInEntity?> SignIn(string email, byte[] passwordHash)
     {
-        const string query = @"SELECT 
-    UserAuth.UserId, 
-    UserProfile.NickName,
-    UserAuth.IsEmailVerified
-FROM 
-    UserAuth
-INNER JOIN 
-    UserProfile ON UserAuth.UserId = UserProfile.UserId
-WHERE 
-    UserAuth.Email = @Email AND UserAuth.PasswordHash = @PasswordHash;";
+        const string query = @"
+    SELECT 
+        UserAuth.UserId, 
+        UserProfile.NickName,
+        UserAuth.IsEmailVerified
+    FROM 
+        UserAuth
+    INNER JOIN 
+        UserProfile ON UserAuth.UserId = UserProfile.UserId
+    WHERE 
+        UserAuth.Email = @Email 
+        AND UserAuth.PasswordHash = @PasswordHash;";
+
 
         SqlParameter[] parameters =
             [
                 new("@Email", email),
                 new("@PasswordHash", passwordHash)
+            ];
+
+        return await this._sqlServerService.QuerySingleAsync(query, parameters, EntityFactory.CreateUserSignInEntity);
+    }
+
+    public async Task<UserSignInEntity?> AutoSignIn(int userId)
+    {
+        const string query = @"
+    SELECT 
+        UserAuth.UserId,
+        UserProfile.NickName,
+        UserAuth.IsEmailVerified
+    FROM 
+        UserAuth
+    INNER JOIN 
+        UserProfile ON UserAuth.UserId = UserProfile.UserId
+    WHERE 
+        UserAuth.UserId = @UserId";
+
+        SqlParameter[] parameters =
+            [
+                new("@UserId", userId)
             ];
 
         return await this._sqlServerService.QuerySingleAsync(query, parameters, EntityFactory.CreateUserSignInEntity);

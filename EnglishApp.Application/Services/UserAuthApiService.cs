@@ -2,24 +2,20 @@
 using EnglishApp.Application.Dtos.Requests;
 using EnglishApp.Application.Dtos.Responses;
 using System.Net.Http.Headers;
-using System.Net.Http.Json;
-using System.Text.Json;
 
 namespace EnglishApp.Application.Services;
 
-public sealed class UserAuthApiService(HttpClient httpClient) : IUserAuthApiService
+public sealed class UserAuthApiService(ApiRequestHandler handlePostRequestAsync) : IUserAuthApiService
 {
-    private readonly HttpClient _httpClient = httpClient;
-    private readonly JsonSerializerOptions _serializerOptions = new()
-    {
-        PropertyNameCaseInsensitive = true
-    };
+    private readonly ApiRequestHandler _handlePostRequestAsync = handlePostRequestAsync;
 
-    public bool TryAutoLoginAsync(string? token)
+    public bool CanAutoLoginAsync(string? token)
     {
-        if (!String.IsNullOrEmpty(token))
+        if (!String.IsNullOrWhiteSpace(token))
         {
-            this._httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            AuthenticationHeaderValue header = new("Bearer", token);
+
+            this._handlePostRequestAsync.SetAuthenticationHeaderValue(header);
 
             return true;
         }
@@ -27,84 +23,23 @@ public sealed class UserAuthApiService(HttpClient httpClient) : IUserAuthApiServ
         return false;
     }
 
-    public async Task<UserAuthSignUpResponse?> SignUpAsync(UserAuthSignUpRequest request)
+    public async Task<ApiResult<UserAuthSignInResponse>> AutoSignInAsync()
     {
-        try
-        {
-            HttpResponseMessage response = await this._httpClient.PostAsJsonAsync("api/userauth/signup", request);
-
-            string jsonString = await response.Content.ReadAsStringAsync();
-
-            if (response.IsSuccessStatusCode)
-            {
-                UserAuthSignUpResponse? res = JsonSerializer.Deserialize<UserAuthSignUpResponse>(jsonString, this._serializerOptions);
-
-                return res;
-            }
-            else
-            {
-                ErrorResponse? errorResponse = JsonSerializer.Deserialize<ErrorResponse>(jsonString);
-
-                return null;
-            }
-        }
-        catch (Exception)
-        {
-            return null;
-        }
+        return await this._handlePostRequestAsync.GetAsync<UserAuthSignInRequest, UserAuthSignInResponse>("api/userauth/validate");
     }
 
-    public async Task<UserAuthSignInResponse?> SignInAsync(UserAuthSignInRequest request)
+    public async Task<ApiResult<UserAuthSignInResponse>> SignInAsync(UserAuthSignInRequest request)
     {
-        try
-        {
-            HttpResponseMessage response = await this._httpClient.PostAsJsonAsync("api/userauth/signin", request);
-
-            string jsonString = await response.Content.ReadAsStringAsync();
-
-            if (response.IsSuccessStatusCode)
-            {
-                UserAuthSignInResponse? res = JsonSerializer.Deserialize<UserAuthSignInResponse>(jsonString, this._serializerOptions);
-
-                return res;
-            }
-            else
-            {
-                ErrorResponse? errorResponse = JsonSerializer.Deserialize<ErrorResponse>(jsonString);
-
-                return null;
-            }
-        }
-        catch (Exception)
-        {
-            return null;
-        }
+        return await this._handlePostRequestAsync.PostAsync<UserAuthSignInRequest, UserAuthSignInResponse>("api/userauth/signin", request);
     }
 
-    public async Task<UserAuthSaltResponse?> GetSaltAsync(UserAuthSaltRequest request)
+    public async Task<ApiResult<UserAuthSignUpResponse>> SignUpAsync(UserAuthSignUpRequest request)
     {
-        try
-        {
-            HttpResponseMessage response = await this._httpClient.PostAsJsonAsync("api/userauth/signin/salt", request);
+        return await this._handlePostRequestAsync.PostAsync<UserAuthSignUpRequest, UserAuthSignUpResponse>("api/userauth/signup", request);
+    }
 
-            string jsonString = await response.Content.ReadAsStringAsync();
-
-            if (response.IsSuccessStatusCode)
-            {
-                UserAuthSaltResponse? res = JsonSerializer.Deserialize<UserAuthSaltResponse>(jsonString, this._serializerOptions);
-
-                return res;
-            }
-            else
-            {
-                ErrorResponse? errorResponse = JsonSerializer.Deserialize<ErrorResponse>(jsonString);
-
-                return null;
-            }
-        }
-        catch (Exception)
-        {
-            return null;
-        }
+    public async Task<ApiResult<UserAuthSaltResponse>> GetSaltAsync(UserAuthSaltRequest request)
+    {
+        return await this._handlePostRequestAsync.PostAsync<UserAuthSaltRequest, UserAuthSaltResponse>("api/userauth/signin/salt", request);
     }
 }

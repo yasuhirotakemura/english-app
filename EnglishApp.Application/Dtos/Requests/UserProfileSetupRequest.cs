@@ -1,13 +1,13 @@
 ﻿namespace EnglishApp.Application.Dtos.Requests;
 
 public sealed class UserProfileSetupRequest(int userId,
-                                      string nickName,
-                                      byte gender,
-                                      int gradeId,
-                                      int learningPurposeId,
-                                      int prefectureId,
-                                      DateTime? birthDate,
-                                      string? profileText)
+                                            string nickName,
+                                            byte gender,
+                                            int gradeId,
+                                            int learningPurposeId,
+                                            int prefectureId,
+                                            DateTime? birthDate,
+                                            string? profileText)
 {
     public int UserId { get; } = userId;
     public string NickName { get; } = nickName;

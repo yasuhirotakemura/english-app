@@ -25,23 +25,28 @@ public class UserAuthController(JwtService jwtService, IUserRepository userRepos
         {
             int userId = await this._userRepository.CreateUser();
 
-            PasswordHash passwordHash = PasswordHash.CreateFromBase64(request.PasswordHash, request.Salt);
+            PasswordHash passwordHash = PasswordHash.CreateFromBase64(base64Hash: request.PasswordHash,
+                                                                      base64Salt: request.Salt);
 
-            UserAuthEntity entity = new(userId, request.Email, passwordHash.Hash, passwordHash.Salt);
+            UserAuthEntity entity = new(id: userId,
+                                        email: request.Email,
+                                        passwordHash: passwordHash.Hash,
+                                        salt: passwordHash.Salt);
 
             await this._userAuthRepository.SignUp(entity);
 
-            string token = this._jwtService.GenerateToken(userId);
+            string accessToken = this._jwtService.GenerateToken(userId);
 
-            UserAuthSignUpResponse response = new(userId, token, "登録完了");
+            UserAuthSignUpResponse response = new(message: "登録完了",
+                                                  userId: userId,
+                                                  accessToken: accessToken);
 
             return this.Ok(response);
         }
-        catch (Exception ex)
+        catch
         {
-            ErrorResponse errorResponse = new(ex.Message, "エラー");
-
-            return this.StatusCode(500, errorResponse);
+            // loggingの追加
+            return this.StatusCode(500, new ErrorResponse("サーバー側でエラーが発生しました。"));
         }
     }
 
@@ -52,26 +57,27 @@ public class UserAuthController(JwtService jwtService, IUserRepository userRepos
         {
             byte[] passwordHash = PasswordHasher.ConvertFromBase64String(request.PasswordHash);
 
-            UserSignInEntity? entity = await this._userAuthRepository.SignIn(request.Email, passwordHash);
+            UserSignInEntity? entity = await this._userAuthRepository.SignIn(email: request.Email,
+                                                                             passwordHash: passwordHash);
 
             if(entity is UserSignInEntity userSignInEntity)
             {
-                UserAuthSignInResponse response = new("ログイン完了！", userSignInEntity.UserId, userSignInEntity.NickName, userSignInEntity.IsEmailVerified);
+                UserAuthSignInResponse response = new(message: "ログイン完了",
+                                                      userId: userSignInEntity.UserId,
+                                                      nickName: userSignInEntity.NickName,
+                                                      isEmailVerified: userSignInEntity.IsEmailVerified);
 
                 return this.Ok(response);
             }
             else
             {
-                ErrorResponse errorResponse = new("メールアドレスとパスワードが一致しません。", "認証失敗");
-
-                return this.Unauthorized(errorResponse);
+                return this.Unauthorized(new ErrorResponse("パスワードが間違っています。"));
             }   
         }
-        catch (Exception ex)
+        catch
         {
-            ErrorResponse errorResponse = new(ex.Message, "エラー");
-
-            return this.StatusCode(500, errorResponse);
+            // loggingの追加
+            return this.StatusCode(500, new ErrorResponse("サーバー側でエラーが発生しました。"));
         }
     }
 
@@ -82,23 +88,63 @@ public class UserAuthController(JwtService jwtService, IUserRepository userRepos
         {
             byte[] salt = await this._userAuthRepository.GetSaltByEmail(request.Email);
 
-            string saltString = PasswordHasher.ConvertToBase64String(salt);
+            string saltBase64 = PasswordHasher.ConvertToBase64String(salt);
 
-            UserAuthSaltResponse response = new(saltString, "文字列Salt返却");
+            UserAuthSaltResponse response = new(message: "データベースからSaltを取得",
+                                                saltBase64: saltBase64);
 
             return this.Ok(response);
         }
         catch (EmailNotFoundException ex)
         {
-            ErrorResponse errorResponse = new(ex.Message, "認証失敗");
-
-            return this.Unauthorized(errorResponse);
+            return this.Unauthorized(new ErrorResponse(ex.Message));
         }
-        catch (Exception ex)
+        catch
         {
-            ErrorResponse errorResponse = new(ex.Message, "エラー");
-
-            return this.StatusCode(500, errorResponse);
+            // loggingの追加
+            return this.StatusCode(500, new ErrorResponse("サーバー側でエラーが発生しました。"));
         }
     }
+
+    [HttpGet("validate")]
+    public async Task<IActionResult> ValidateToken()
+    {
+        try
+        {
+            string? token = this.HttpContext.Request.Headers.Authorization.ToString().Replace("Bearer ", "");
+
+            if (String.IsNullOrWhiteSpace(token))
+            {
+                return this.Unauthorized(new ErrorResponse("トークンが指定されていません。"));
+            }
+
+            int? value = this._jwtService.ValidateToken(token);
+
+            if (value is not int userId)
+            {
+                return this.Unauthorized(new ErrorResponse("トークンが無効または期限切れです。"));
+            }
+
+            UserSignInEntity? user = await this._userAuthRepository.AutoSignIn(userId);
+
+            if (user == null)
+            {
+                return this.Unauthorized(new ErrorResponse("ユーザーが存在しません。"));
+            }
+
+            UserAuthSignInResponse response = new(
+                message: "自動ログイン成功",
+                userId: user.UserId,
+                nickName: user.NickName,
+                isEmailVerified: user.IsEmailVerified
+            );
+
+            return this.Ok(response);
+        }
+        catch
+        {
+            return this.StatusCode(500, new ErrorResponse("サーバー側でエラーが発生しました。"));
+        }
+    }
+
 }

@@ -5,5 +5,5 @@ namespace EnglishApp.Application.Apis;
 
 public interface IUserProfileApiService
 {
-    Task<UserProfileSetupResponse?> CreateAsync(UserProfileSetupRequest request);
+    Task<ApiResult<UserProfileSetupResponse>> CreateAsync(UserProfileSetupRequest request);
 }

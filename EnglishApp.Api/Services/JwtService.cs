@@ -30,14 +30,32 @@ namespace EnglishApp.Api.Services;
  * トークンカード（JWT）を見せるだけで、図書館に入れるのです。
  */
 
-public class JwtService(IConfiguration configuration)
+public class JwtService
 {
-    private readonly IConfiguration _configuration = configuration;
+    private readonly IConfiguration _configuration;
+    private readonly string _jwtSecret;
+    private readonly TokenValidationParameters _validationParameters;
+
+    public JwtService(IConfiguration configuration)
+    {
+        this._configuration = configuration;
+        this._jwtSecret = this._configuration["Jwt:Key"]!;
+
+        this._validationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = false,
+            ValidateAudience = false,
+            ValidateIssuerSigningKey = true,
+            ValidateLifetime = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this._jwtSecret)),
+            ClockSkew = TimeSpan.Zero
+        };
+    }
 
     public string GenerateToken(int userId)
     {
         // この図書館だけが知ってる“秘密のトークン”を準備(APIキーのバイト列から生成)する。
-        SymmetricSecurityKey key = new(Encoding.UTF8.GetBytes(this._configuration["Jwt:Key"]!));
+        SymmetricSecurityKey key = new(Encoding.UTF8.GetBytes(this._jwtSecret));
 
         // "どのトークン(APIキーのバイト列から生成したトークン)"で、
         // "どんな押し方("HmacSha256"という作り方)"でトークンを押すか決定する。
@@ -87,5 +105,31 @@ public class JwtService(IConfiguration configuration)
         // スタンプカード（トークン）を「文字のかたち」にするよ！
         // この文字は、アプリやブラウザでサーバーに送れるようにするためのもの
         return new JwtSecurityTokenHandler().WriteToken(token);
+    }
+
+    public int? ValidateToken(string token)
+    {
+        JwtSecurityTokenHandler handler = new();
+
+        try
+        {
+            ClaimsPrincipal principal = handler.ValidateToken(token, this._validationParameters, out SecurityToken validatedToken);
+
+            Claim? userIdClaim = principal.FindFirst(JwtRegisteredClaimNames.Sub)
+                              ?? principal.FindFirst("userId")
+                              ?? principal.FindFirst(ClaimTypes.NameIdentifier);
+
+            if (userIdClaim != null && Int32.TryParse(userIdClaim.Value, out int userId))
+            {
+                return userId;
+            }
+
+            return null;
+        }
+        catch
+        {
+            // トークンが不正または期限切れ
+            return null;
+        }
     }
 }

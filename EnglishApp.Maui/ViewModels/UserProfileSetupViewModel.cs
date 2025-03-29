@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Input;
+using EnglishApp.Application;
 using EnglishApp.Application.Apis;
 using EnglishApp.Application.Dtos.Requests;
 using EnglishApp.Application.Dtos.Responses;
@@ -6,6 +7,7 @@ using EnglishApp.Domain;
 using EnglishApp.Domain.Entities;
 using EnglishApp.Domain.Interfaces;
 using EnglishApp.Domain.StaticValues;
+using EnglishApp.Maui.Routes;
 using EnglishApp.Maui.ViewModels.Bases;
 using System.Collections.ObjectModel;
 
@@ -86,9 +88,15 @@ public sealed class UserProfileSetupViewModel : ViewModelBase, IQueryAttributabl
 
         UserProfileSetupRequest request = new(Shared.UserId, this._nickName, this._selectedGender!.Id, this._selectedGrade!.Id, this._selectedLearningPurpose!.Id, this._selectedPrefecture!.Id, this._birthDate, "");
 
-        if(await this._userProfileApiService.CreateAsync(request) is UserProfileSetupResponse userProfileSetupResponse)
+        ApiResult<UserProfileSetupResponse> response = await this._userProfileApiService.CreateAsync(request);
+
+        if(response.IsSuccess && response.Data is UserProfileSetupResponse userProfileSetupResponse)
         {
-            await this.NavigateToRootAsync("home", []);
+            await this.NavigateToRootAsync(AppShellRoute.HomeView);
+        }
+        else if (response.ErrorMessage is string profileSetupErrorMessage)
+        {
+            await this.MessageService.Show("エラー", profileSetupErrorMessage);
         }
     }
 
