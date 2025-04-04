@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<views:BaseContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:views="clr-namespace:EnglishApp.Maui.Views.Bases"
+             xmlns:viewModels="clr-namespace:EnglishApp.Maui.ViewModels"
+             xmlns:domain="clr-namespace:EnglishApp.Domain.Entities;assembly=EnglishApp.Domain"
+             x:Name="UserProfilePage"
+             x:Class="EnglishApp.Maui.Views.UserProfileView"
+             x:DataType="viewModels:UserProfileViewModel"
+             Title="プロフィール">
+    <ScrollView>
+        <VerticalStackLayout Padding="24" Spacing="20">
+
+            <!-- ユーザー名とアイコン -->
+            <HorizontalStackLayout Spacing="16" VerticalOptions="Center">
+                <Border Stroke="#ccc"
+                                        StrokeThickness="2"
+                                        StrokeShape="Ellipse"
+                                        Margin="4"
+                                        WidthRequest="80"
+                                        HeightRequest="80"
+                                        HorizontalOptions="Center"
+                                        VerticalOptions="Center">
+                    <Image Source="{Binding IconUri}"
+                                           Aspect="AspectFit"
+                                           WidthRequest="64"
+                                           HeightRequest="64" />
+                </Border>
+                <Label Text="{x:Binding NickName}" FontSize="28" FontAttributes="Bold"
+                   VerticalOptions="Center" TextColor="#333" />
+            </HorizontalStackLayout>
+
+            <!-- セクション見出し -->
+            <Label Text="基本情報" FontSize="20" FontAttributes="Bold" TextColor="#555" />
+
+            <Border Stroke="#e0e0e0" StrokeThickness="1" StrokeShape="RoundRectangle 16"
+        BackgroundColor="#ffffff" Padding="16">
+                <Grid ColumnDefinitions="Auto,*"
+          RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto"
+          RowSpacing="12" ColumnSpacing="12">
+
+                    <Label Text="性別" TextColor="#666" />
+                    <Label Text="{x:Binding Gender}" TextColor="#000" Grid.Column="1" />
+
+                    <Label Text="学年" TextColor="#666" Grid.Row="1" />
+                    <Label Text="{x:Binding Grade}" TextColor="#000" Grid.Column="1" Grid.Row="1" />
+
+                    <Label Text="目的" TextColor="#666" Grid.Row="2" />
+                    <Label Text="{x:Binding LearningPurpose}" TextColor="#000" Grid.Column="1" Grid.Row="2" />
+
+                    <Label Text="都道府県" TextColor="#666" Grid.Row="3" />
+                    <Label Text="{x:Binding Prefecture}" TextColor="#000" Grid.Column="1" Grid.Row="3" />
+
+                    <Label Text="誕生日" TextColor="#666" Grid.Row="4" />
+                    <Label Text="{x:Binding BirthDate}" TextColor="#000" Grid.Column="1" Grid.Row="4" />
+
+                    <Label Text="最終ログイン" TextColor="#666" Grid.Row="5" />
+                    <Label Text="{x:Binding LastLoginAt}" TextColor="#000" Grid.Column="1" Grid.Row="5" />
+                </Grid>
+            </Border>
+
+            <!-- 自己紹介 -->
+            <Label Text="自己紹介" FontSize="20" FontAttributes="Bold" TextColor="#555" />
+
+            <Border Stroke="#e0e0e0" StrokeThickness="1" StrokeShape="RoundRectangle 16"
+                Padding="16" BackgroundColor="#ffffff">
+                <Label Text="{x:Binding ProfileText}" TextColor="#333" FontSize="16"
+                   LineBreakMode="WordWrap" />
+            </Border>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</views:BaseContentPage>

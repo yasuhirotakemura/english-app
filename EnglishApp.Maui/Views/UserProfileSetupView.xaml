@@ -8,68 +8,104 @@
              x:Class="EnglishApp.Maui.Views.UserProfileSetupView"
              x:DataType="viewModels:UserProfileSetupViewModel"
              Title="ユーザー情報登録">
-    <Grid Padding="16" VerticalOptions="Center">
-        <Border Padding="16">
-            <VerticalStackLayout Spacing="16">
-                <Label Text="ニックネーム" FontSize="16" />
-                <Entry Text="{Binding NickName, Mode=TwoWay}"
-                       Placeholder="ニックネームを入力"
-                       Keyboard="Email"
-                       HeightRequest="48"/>
 
-                <FlexLayout Direction="Row" JustifyContent="SpaceBetween">
-                    <VerticalStackLayout Spacing="8" FlexLayout.Grow="1">
-                        <Label Text="性別を選択" FontSize="16"/>
-                        <Picker x:Name="GenderPicker"
-                                Title="選択してください"
-                                ItemsSource="{Binding GenderList}"
-                                SelectedItem="{Binding SelectedGender, Mode=TwoWay}"
-                                ItemDisplayBinding="{Binding Name}"/>
-                    </VerticalStackLayout>
+    <ScrollView>
+        <Grid Padding="16" VerticalOptions="Center">
+            <Border Padding="16">
+                <VerticalStackLayout Spacing="16">
 
-                    <VerticalStackLayout Spacing="8" FlexLayout.Grow="1">
-                        <Label Text="区分を選択" FontSize="16"/>
-                        <Picker x:Name="GradePicker"
-                                Title="選択してください"
-                                ItemsSource="{Binding GradeList}"
-                                SelectedItem="{Binding SelectedGrade, Mode=TwoWay}"
-                                ItemDisplayBinding="{Binding Name}">
-                        </Picker>
-                    </VerticalStackLayout>
-                </FlexLayout>
 
-                <FlexLayout Direction="Row" JustifyContent="SpaceBetween">
-                    <VerticalStackLayout Spacing="8" FlexLayout.Grow="1">
-                        <Label Text="学習目的を選択" FontSize="16"/>
-                        <Picker x:Name="LearningPurposePicker"
-                                Title="選択してください"
-                                ItemsSource="{Binding LearningPurposeList}"
-                                SelectedItem="{Binding SelectedLearningPurpose, Mode=TwoWay}"
-                                ItemDisplayBinding="{Binding Name}"/>
-                    </VerticalStackLayout>
+                    <Label Text="アイコン" FontSize="18" FontAttributes="Bold" Margin="0,16,0,4" />
+                    <CollectionView ItemsSource="{Binding IconUris}"
+                                    SelectionMode="Single"
+                                    SelectedItem="{Binding SelectedIconUri}"
+                                    Margin="0,0,0,16">
+                        <CollectionView.ItemsLayout>
+                            <GridItemsLayout Orientation="Vertical" Span="4" />
+                        </CollectionView.ItemsLayout>
 
-                    <VerticalStackLayout Spacing="8" FlexLayout.Grow="1">
-                        <Label Text="生年月日" FontSize="16"/>
-                        <DatePicker x:Name="BirthDatePicker"
-                                    MinimumDate="1900/01/01"
-                                    Date="{Binding BirthDate, Mode=TwoWay}"/>
-                    </VerticalStackLayout>
-                </FlexLayout>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="domain:IconUri">
+                                <Border Stroke="#ccc"
+                                        StrokeThickness="2"
+                                        StrokeShape="Ellipse"
+                                        Margin="4"
+                                        WidthRequest="80"
+                                        HeightRequest="80"
+                                        HorizontalOptions="Center"
+                                        VerticalOptions="Center">
+                                    <Image Source="{Binding Uri}"
+                                           Aspect="AspectFit"
+                                           WidthRequest="64"
+                                           HeightRequest="64" />
+                                </Border>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
 
-                <VerticalStackLayout Spacing="8" FlexLayout.Grow="1">
-                    <Label Text="都道府県を選択" FontSize="16"/>
-                    <Picker x:Name="PrefecturePicker"
+
+                    <Label Text="ニックネーム" FontSize="16" />
+                    <Entry Text="{Binding NickName, Mode=TwoWay}"
+                   Placeholder="ニックネームを入力"
+                   Keyboard="Email"
+                   HeightRequest="48"/>
+
+                    <FlexLayout Direction="Row" JustifyContent="SpaceBetween">
+                        <VerticalStackLayout Spacing="8" FlexLayout.Grow="1">
+                            <Label Text="性別を選択" FontSize="16"/>
+                            <Picker x:Name="GenderPicker"
+                                    x:DataType="viewModels:UserProfileSetupViewModel"
                             Title="選択してください"
-                            ItemsSource="{Binding PrefectureList}"
-                            SelectedItem="{Binding SelectedPrefecture, Mode=TwoWay}"
+                            ItemsSource="{x:Binding Genders}"
+                            SelectedItem="{Binding SelectedGender, Mode=TwoWay}"
                             ItemDisplayBinding="{Binding Name}"/>
-                </VerticalStackLayout>
+                        </VerticalStackLayout>
 
-                <Button Text="はじめる"
-                        FontSize="16"
-                        Command="{Binding StartCommand}" 
-                        Margin="0, 16, 0, 0"/>
-            </VerticalStackLayout>
-        </Border>
-    </Grid>
+                        <VerticalStackLayout Spacing="8" FlexLayout.Grow="1">
+                            <Label Text="区分を選択" FontSize="16"/>
+                            <Picker x:Name="GradePicker"
+                            Title="選択してください"
+                            ItemsSource="{Binding Grades}"
+                            SelectedItem="{Binding SelectedGrade, Mode=TwoWay}"
+                            ItemDisplayBinding="{Binding Name}">
+                            </Picker>
+                        </VerticalStackLayout>
+                    </FlexLayout>
+
+                    <FlexLayout Direction="Row" JustifyContent="SpaceBetween">
+                        <VerticalStackLayout Spacing="8" FlexLayout.Grow="1">
+                            <Label Text="学習目的を選択" FontSize="16"/>
+                            <Picker x:Name="LearningPurposePicker"
+                            Title="選択してください"
+                            ItemsSource="{Binding LearningPurposes}"
+                            SelectedItem="{Binding SelectedLearningPurpose, Mode=TwoWay}"
+                            ItemDisplayBinding="{Binding Name}"/>
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout Spacing="8" FlexLayout.Grow="1">
+                            <Label Text="生年月日" FontSize="16"/>
+                            <DatePicker x:Name="BirthDatePicker"
+                                MinimumDate="1900/01/01"
+                                Date="{Binding BirthDate, Mode=TwoWay}"/>
+                        </VerticalStackLayout>
+                    </FlexLayout>
+
+                    <VerticalStackLayout Spacing="8" FlexLayout.Grow="1">
+                        <Label Text="都道府県を選択" FontSize="16"/>
+                        <Picker x:Name="PrefecturePicker"
+                        Title="選択してください"
+                        ItemsSource="{Binding Prefectures}"
+                        SelectedItem="{Binding SelectedPrefecture, Mode=TwoWay}"
+                        ItemDisplayBinding="{Binding Name}"/>
+                    </VerticalStackLayout>
+
+                    <Button Text="はじめる"
+                    FontSize="16"
+                    Command="{Binding StartCommand}" 
+                    Margin="0, 16, 0, 0"/>
+                </VerticalStackLayout>
+            </Border>
+        </Grid>
+    </ScrollView>
+
 </views:BaseContentPage>

@@ -8,10 +8,4 @@
              x:Class="EnglishApp.Maui.Views.FavoritesView"
              x:DataType="viewModels:FavoritesViewModel"
              Title="お気に入り">
-    <VerticalStackLayout>
-        <Label 
-            Text="お気に入り"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
 </views:BaseContentPage>

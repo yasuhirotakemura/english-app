@@ -18,5 +18,6 @@ public partial class AppShell : Shell
         Routing.RegisterRoute(AppShellRoute.FavoritesView, typeof(FavoritesView));
         Routing.RegisterRoute(AppShellRoute.WordBookView, typeof(WordBookView));
         Routing.RegisterRoute(AppShellRoute.SettingsView, typeof(SettingsView));
+        Routing.RegisterRoute(AppShellRoute.UserProfileView, typeof(UserProfileView));
     }
 }

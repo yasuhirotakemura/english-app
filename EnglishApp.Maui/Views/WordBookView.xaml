@@ -8,10 +8,4 @@
              x:Class="EnglishApp.Maui.Views.WordBookView"
              x:DataType="viewModels:WordBookViewModel"
              Title="単語帳">
-    <VerticalStackLayout>
-        <Label 
-            Text="単語帳"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
 </views:BaseContentPage>

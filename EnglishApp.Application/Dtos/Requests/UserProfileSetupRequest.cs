@@ -7,7 +7,8 @@ public sealed class UserProfileSetupRequest(int userId,
                                             int learningPurposeId,
                                             int prefectureId,
                                             DateTime? birthDate,
-                                            string? profileText)
+                                            string? profileText,
+                                            string iconUri)
 {
     public int UserId { get; } = userId;
     public string NickName { get; } = nickName;
@@ -17,4 +18,5 @@ public sealed class UserProfileSetupRequest(int userId,
     public int PrefectureId { get; } = prefectureId;
     public DateTime? BirthDate { get; } = birthDate;
     public string? ProfileText { get; } = profileText;
+    public string IconUri { get; } = iconUri;
 }
