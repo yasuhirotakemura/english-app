@@ -62,10 +62,13 @@ public class UserAuthController(JwtService jwtService, IUserRepository userRepos
 
             if(entity is UserSignInEntity userSignInEntity)
             {
+                string accessToken = this._jwtService.GenerateToken(userSignInEntity.UserId);
+
                 UserAuthSignInResponse response = new(message: "ログイン完了",
                                                       userId: userSignInEntity.UserId,
                                                       nickName: userSignInEntity.NickName,
-                                                      isEmailVerified: userSignInEntity.IsEmailVerified);
+                                                      isEmailVerified: userSignInEntity.IsEmailVerified,
+                                                      accessToken: accessToken);
 
                 return this.Ok(response);
             }
@@ -136,7 +139,8 @@ public class UserAuthController(JwtService jwtService, IUserRepository userRepos
                 message: "自動ログイン成功",
                 userId: user.UserId,
                 nickName: user.NickName,
-                isEmailVerified: user.IsEmailVerified
+                isEmailVerified: user.IsEmailVerified,
+                String.Empty
             );
 
             return this.Ok(response);

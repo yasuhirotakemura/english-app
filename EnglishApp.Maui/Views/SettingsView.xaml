@@ -8,10 +8,10 @@
              x:Class="EnglishApp.Maui.Views.SettingsView"
              x:DataType="viewModels:SettingsViewModel"
              Title="設定">
-    <VerticalStackLayout>
-        <Label 
-            Text="設定"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+    <VerticalStackLayout Padding="24" Margin="0,40,0,0">
+        <Button Text="プロフィール" 
+                FontSize="24"
+                CornerRadius="12"
+                Command="{x:Binding UserProfileSettingCommand}"></Button>
     </VerticalStackLayout>
 </views:BaseContentPage>

@@ -2,7 +2,6 @@
 using EnglishApp.Application;
 using EnglishApp.Application.Apis;
 using EnglishApp.Application.Dtos.Requests;
-using EnglishApp.Application.Dtos.Responses;
 using EnglishApp.Domain;
 using EnglishApp.Domain.Entities;
 using EnglishApp.Domain.Interfaces;
@@ -19,13 +18,43 @@ public sealed class UserProfileSetupViewModel : ViewModelBase, IQueryAttributabl
 
     public UserProfileSetupViewModel(IMessageService messageService, IUserProfileApiService userProfileApiService) : base(messageService)
     {
-        this.GenderList = new ObservableCollection<UserGenderEntity>([new UserGenderEntity(1, "男性"), new UserGenderEntity(2, "女性"), new UserGenderEntity(3, "その他")]);
-        this.GradeList = [.. MasterData.UserGrades];
-        this.LearningPurposeList = [.. MasterData.UserLearningPurposes];
-        this.PrefectureList = [.. MasterData.Prefectures];
+        this._userProfileApiService = userProfileApiService;
 
         this.StartCommand = new AsyncRelayCommand(this.OnStartCommand);
-        this._userProfileApiService = userProfileApiService;
+
+        this.IconUris = [];
+        // 性別どうにかしないと
+        this.Genders = new ObservableCollection<UserGenderEntity>([new UserGenderEntity(1, "男性"), new UserGenderEntity(2, "女性"), new UserGenderEntity(3, "その他")]);
+        this.Grades = [.. MasterData.UserGrades];
+        this.LearningPurposes = [.. MasterData.UserLearningPurposes];
+        this.Prefectures = [.. MasterData.Prefectures];
+
+        Task.Run(this.LoadProfileIcons);
+    }
+
+    public ObservableCollection<IconUri> IconUris { get; }
+    private IconUri? _selectedIconUri;
+    public IconUri? SelectedIconUri
+    {
+        get => this._selectedIconUri;
+        set => this.SetProperty(ref this._selectedIconUri, value);
+    }
+
+    private async Task LoadProfileIcons()
+    {
+        ApiResult<IconUri[]> iconUrlsResult = await this._userProfileApiService.GetProfileImageUris();
+
+        if(iconUrlsResult.IsSuccess && iconUrlsResult.Data is IconUri[] profileIconsUrls)
+        {
+            foreach (IconUri iconUrl in profileIconsUrls)
+            {
+                this.IconUris.Add(iconUrl);
+            }
+        }
+        else if(iconUrlsResult.ErrorMessage is string errorMesseage)
+        {
+            await this.MessageService.Show("エラー", errorMesseage);
+        }
     }
 
     public void ApplyQueryAttributes(IDictionary<string, object> query)
@@ -39,7 +68,7 @@ public sealed class UserProfileSetupViewModel : ViewModelBase, IQueryAttributabl
         set => this.SetProperty(ref this._nickName, value);
     }
 
-    public ObservableCollection<UserGenderEntity> GenderList { get; }
+    public ObservableCollection<UserGenderEntity> Genders { get; }
     private UserGenderEntity? _selectedGender;
     public UserGenderEntity? SelectedGender
     {
@@ -47,7 +76,7 @@ public sealed class UserProfileSetupViewModel : ViewModelBase, IQueryAttributabl
         set => this.SetProperty(ref this._selectedGender, value);
     }
 
-    public ObservableCollection<UserGradeEntity> GradeList { get; }
+    public ObservableCollection<UserGradeEntity> Grades { get; }
     private UserGradeEntity? _selectedGrade;
     public UserGradeEntity? SelectedGrade
     {
@@ -55,7 +84,7 @@ public sealed class UserProfileSetupViewModel : ViewModelBase, IQueryAttributabl
         set => this.SetProperty(ref this._selectedGrade, value);
     }
 
-    public ObservableCollection<UserLearningPurposeEntity> LearningPurposeList { get; }
+    public ObservableCollection<UserLearningPurposeEntity> LearningPurposes { get; }
     public UserLearningPurposeEntity? _selectedLearningPurpose;
     public UserLearningPurposeEntity? SelectedLearningPurpose
     {
@@ -70,7 +99,7 @@ public sealed class UserProfileSetupViewModel : ViewModelBase, IQueryAttributabl
         set => this.SetProperty(ref this._birthDate, value);
     }
 
-    public ObservableCollection<PrefectureEntity> PrefectureList { get; }
+    public ObservableCollection<PrefectureEntity> Prefectures { get; }
     private PrefectureEntity? _selectedPrefecture;
     public PrefectureEntity? SelectedPrefecture
     {
@@ -86,11 +115,19 @@ public sealed class UserProfileSetupViewModel : ViewModelBase, IQueryAttributabl
             return;
         }
 
-        UserProfileSetupRequest request = new(Shared.UserId, this._nickName, this._selectedGender!.Id, this._selectedGrade!.Id, this._selectedLearningPurpose!.Id, this._selectedPrefecture!.Id, this._birthDate, "");
+        UserProfileSetupRequest request = new(Shared.UserId,
+                                              this._nickName,
+                                              this._selectedGender!.Id,
+                                              this._selectedGrade!.Id,
+                                              this._selectedLearningPurpose!.Id,
+                                              this._selectedPrefecture!.Id,
+                                              this._birthDate,
+                                              "",
+                                              this._selectedIconUri!.Uri);
 
-        ApiResult<UserProfileSetupResponse> response = await this._userProfileApiService.CreateAsync(request);
+        ApiResult<UserProfileEntity> response = await this._userProfileApiService.CreateAsync(request);
 
-        if(response.IsSuccess && response.Data is UserProfileSetupResponse userProfileSetupResponse)
+        if(response.IsSuccess && response.Data is UserProfileEntity userProfileEntity)
         {
             await this.NavigateToRootAsync(AppShellRoute.HomeView);
         }
@@ -102,27 +139,32 @@ public sealed class UserProfileSetupViewModel : ViewModelBase, IQueryAttributabl
 
     private async Task<bool> IsInputCorrect()
     {
-        if(String.IsNullOrEmpty(this._nickName))
+        if (this._selectedIconUri is null)
+        {
+            await this.MessageService.Show("エラー", "アイコンを選択してください。");
+            return false;
+        }
+        else if (String.IsNullOrEmpty(this._nickName))
         {
             await this.MessageService.Show("エラー", "ニックネームを入力してください。");
             return false;
         }
-        else if(this._selectedGender is null)
+        else if (this._selectedGender is null)
         {
             await this.MessageService.Show("エラー", "性別を選択してください。");
             return false;
         }
-        else if(this._selectedGrade is null)
+        else if (this._selectedGrade is null)
         {
             await this.MessageService.Show("エラー", "区分を選択してください。");
             return false;
         }
-        else if(this._selectedLearningPurpose is null)
+        else if (this._selectedLearningPurpose is null)
         {
             await this.MessageService.Show("エラー", "学習目的を選択してください。");
             return false;
         }
-        else if(this._selectedPrefecture is null)
+        else if (this._selectedPrefecture is null)
         {
             await this.MessageService.Show("エラー", "都道府県を選択してください。");
             return false;

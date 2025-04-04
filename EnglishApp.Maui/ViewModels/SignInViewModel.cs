@@ -8,6 +8,7 @@ using EnglishApp.Domain.Entities;
 using EnglishApp.Domain.Interfaces;
 using EnglishApp.Domain.Logics;
 using EnglishApp.Domain.ValueObjects;
+using EnglishApp.Maui.Routes;
 using EnglishApp.Maui.ViewModels.Bases;
 
 namespace EnglishApp.Maui.ViewModels;
@@ -71,16 +72,11 @@ public sealed class SignInViewModel : ViewModelBase, IQueryAttributable
 
         if(signInResponse.IsSuccess && signInResponse.Data is UserAuthSignInResponse userAuthSignInResponse)
         {
+            await SecureStorage.SetAsync("AccessToken", userAuthSignInResponse.AccessToken);
+
             Shared.UserId = userAuthSignInResponse.UserId;
 
-            UserSignInEntity entity = new(userAuthSignInResponse.UserId, userAuthSignInResponse.NickName, userAuthSignInResponse.IsEmailVerified);
-
-            Dictionary<string, object> dict = new()
-            {
-                {nameof(UserSignInEntity), entity}
-            };
-
-            await this.NavigateToRootAsync("home", dict);
+            await this.NavigateToRootAsync(AppShellRoute.HomeView);
         }
         else if(signInResponse.ErrorMessage is string signInErrorMessage)
         {

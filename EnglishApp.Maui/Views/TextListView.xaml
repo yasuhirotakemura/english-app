@@ -8,10 +8,4 @@
              x:Class="EnglishApp.Maui.Views.TextListView"
              x:DataType="viewModels:TextListViewModel"
              Title="問題集">
-    <VerticalStackLayout>
-        <Label 
-            Text="問題集"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
 </views:BaseContentPage>

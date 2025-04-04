@@ -44,6 +44,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<FavoritesViewModel>();
         builder.Services.AddSingleton<WordBookViewModel>();
         builder.Services.AddSingleton<SettingsViewModel>();
+        builder.Services.AddSingleton<UserProfileViewModel>();
 
         return builder;
     }
@@ -76,7 +77,7 @@ public static class MauiProgram
 
         builder.Services.AddSingleton<IMasterApiService, MasterApiService>();
         builder.Services.AddSingleton<IUserAuthApiService, UserAuthApiService>();
-        builder.Services.AddSingleton<IUserProfileApiService, UserProfileSetupApiService>();
+        builder.Services.AddSingleton<IUserProfileApiService, UserProfileApiService>();
 
         return builder;
     }

@@ -21,7 +21,8 @@ public sealed class UserProfileRepository(SqlServerService sqlServerService) : I
         LearningPurposeId,
         PrefectureId,
         BirthDate,
-        ProfileText
+        ProfileText,
+        IconUri
     )
     VALUES (
         @UserId,
@@ -31,7 +32,8 @@ public sealed class UserProfileRepository(SqlServerService sqlServerService) : I
         @LearningPurposeId,
         @PrefectureId,
         @BirthDate,
-        @ProfileText
+        @ProfileText,
+        @IconUri
     );";
 
         SqlParameter[] parameters =
@@ -44,6 +46,7 @@ public sealed class UserProfileRepository(SqlServerService sqlServerService) : I
                 new("@PrefectureId", entity.PrefectureId),
                 new("@BirthDate", entity.BirthDate),
                 new("@ProfileText", entity.ProfileText),
+                new("@IconUri", entity.IconUri)
             ];
 
         await this._sqlServerService.ExecuteAsync(query, parameters);
@@ -53,7 +56,28 @@ public sealed class UserProfileRepository(SqlServerService sqlServerService) : I
 
     public async Task<UserProfileEntity?> GetByUserId(int id)
     {
-        const string query = "SELECT UserId, NickName, Gender, GradeId, LearningPurposeId, PrefectureId, BirthDate, ProfileText, IsDeleted, CreatedAt, UpdatedAt FROM UserProfile WHERE UserId = @UserId";
+        const string query = @"
+SELECT 
+    UserId,
+    NickName,
+    Gender,
+    GradeId,
+    LearningPurposeId,
+    PrefectureId,
+    Grade,
+    LearningPurpose,
+    Prefecture,
+    BirthDate,
+    ProfileText,
+    IsDeleted,
+    AccountCreatedAt,
+    ProfileUpdatedAt,
+    LastLoginAt,
+    IconUri
+FROM 
+    UserProfileView
+WHERE 
+    UserId = @UserId";
 
         SqlParameter[] parameters =
         [

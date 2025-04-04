@@ -12,5 +12,9 @@ public partial class WelcomeView : BaseContentPage
         this.BindingContext = viewModel;
 
         this.HideNavigationBar();
+
+        viewModel.OnRequestVisibilityChange += this.OnRequestVisibilityChange;
+
+        Task.Run(viewModel.TryAutoLoginAsync);
     }
 }

@@ -11,4 +11,5 @@ public static class AppShellRoute
     public const string FavoritesView = nameof(Views.FavoritesView);
     public const string WordBookView = nameof(Views.WordBookView);
     public const string SettingsView = nameof(Views.SettingsView);
+    public const string UserProfileView = nameof(Views.UserProfileView);
 }

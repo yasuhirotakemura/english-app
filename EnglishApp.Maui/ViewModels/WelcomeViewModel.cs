@@ -2,6 +2,7 @@
 using EnglishApp.Application;
 using EnglishApp.Application.Apis;
 using EnglishApp.Application.Dtos.Responses;
+using EnglishApp.Domain;
 using EnglishApp.Domain.Entities;
 using EnglishApp.Domain.Interfaces;
 using EnglishApp.Maui.Routes;
@@ -24,7 +25,6 @@ public sealed class WelcomeViewModel : ViewModelBase
         this.SignUpCommand = new AsyncRelayCommand(this.OnSignUpCommand);
 
         Task.Run(this.LoadMaster);
-        Task.Run(this.TryAutoLoginAsync);
     }
 
     private async Task LoadMaster()
@@ -46,8 +46,6 @@ public sealed class WelcomeViewModel : ViewModelBase
 
     public async Task TryAutoLoginAsync()
     {
-        // Visibleをfalseにする
-
         string? token = await SecureStorage.GetAsync("AccessToken");
 
         if (!String.IsNullOrWhiteSpace(token))
@@ -60,16 +58,9 @@ public sealed class WelcomeViewModel : ViewModelBase
 
                 if (result.IsSuccess && result.Data is UserAuthSignInResponse userAuthSignInResponse)
                 {
-                    UserSignInEntity entity = new(userId: userAuthSignInResponse.UserId,
-                                                  nickName: userAuthSignInResponse.NickName,
-                                                  isEmailVerified: userAuthSignInResponse.IsEmailVerified);
+                    Shared.UserId = userAuthSignInResponse.UserId;
 
-                    Dictionary<string, object> dict = new()
-                    {
-                        { nameof(UserSignInEntity), entity}
-                    };
-
-                    await this.NavigateToRootAsync(AppShellRoute.HomeView, dict);
+                    await this.NavigateToRootAsync(AppShellRoute.HomeView);
 
                     return;
                 }

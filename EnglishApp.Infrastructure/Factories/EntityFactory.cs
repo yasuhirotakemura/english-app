@@ -15,6 +15,9 @@ internal static class EntityFactory
             gradeId: reader.GetInt32(reader.GetOrdinal("GradeId")),
             learningPurposeId: reader.GetInt32(reader.GetOrdinal("LearningPurposeId")),
             prefectureId: reader.GetInt32(reader.GetOrdinal("PrefectureId")),
+            grade: reader.GetString(reader.GetOrdinal("Grade")),
+            learningPurpose: reader.GetString(reader.GetOrdinal("LearningPurpose")),
+            prefecture: reader.GetString(reader.GetOrdinal("Prefecture")),
             birthDate: reader.IsDBNull(reader.GetOrdinal("BirthDate"))
                         ? null
                         : reader.GetDateTime(reader.GetOrdinal("BirthDate")),
@@ -22,8 +25,10 @@ internal static class EntityFactory
                         ? null
                         : reader.GetString(reader.GetOrdinal("ProfileText")),
             isDeleted: reader.GetBoolean(reader.GetOrdinal("IsDeleted")),
-            createdAt: reader.GetDateTime(reader.GetOrdinal("CreatedAt")),
-            updatedAt: reader.GetDateTime(reader.GetOrdinal("UpdatedAt"))
+            accountCreatedAt: reader.GetDateTime(reader.GetOrdinal("AccountCreatedAt")),
+            profileUpdatedAt: reader.GetDateTime(reader.GetOrdinal("ProfileUpdatedAt")),
+            lastLoginAt: reader.GetDateTime(reader.GetOrdinal("LastLoginAt")),
+            iconUri: reader.GetString(reader.GetOrdinal("IconUri"))
         );
     }
 
