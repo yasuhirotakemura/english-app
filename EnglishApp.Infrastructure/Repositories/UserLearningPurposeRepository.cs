@@ -12,8 +12,8 @@ public sealed class UserLearningPurposeRepository(SqlServerService sqlServer) : 
 
     public Task<ImmutableList<UserLearningPurposeEntity>> GetAll()
     {
-        string query = "SELECT Id, Name FROM UserLearningPurpose";
+        string query = "SELECT Id, Name, CreatedAt, UpdatedAt FROM UserLearningPurpose";
 
-        return this._sqlServer.QueryAsync(query, EntityFactory.CreateMasterEntity<UserLearningPurposeEntity>);
+        return this._sqlServer.QueryAsync(query, EntityFactory.CreateUserLearningPurposeEntity);
     }
 }

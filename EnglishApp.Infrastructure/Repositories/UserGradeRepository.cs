@@ -12,8 +12,8 @@ public sealed class UserGradeRepository(SqlServerService sqlServer) : IUserGrade
 
     public Task<ImmutableList<UserGradeEntity>> GetAll()
     {
-        string query = "SELECT Id, Name FROM UserGrade";
+        string query = "SELECT Id, Name, CreatedAt, UpdatedAt FROM UserGrade";
 
-        return this._sqlServer.QueryAsync(query, EntityFactory.CreateMasterEntity<UserGradeEntity>);
+        return this._sqlServer.QueryAsync(query, EntityFactory.CreateUserGradeEntity);
     }
 }
