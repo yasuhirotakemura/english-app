@@ -1,9 +1,8 @@
-﻿using EnglishApp.Domain.Interfaces;
+﻿namespace EnglishApp.Domain.Entities;
 
-namespace EnglishApp.Domain.Entities;
-
-public sealed class UserLearningPurposeEntity(int id, string name) : IMasterEntity
+public sealed class UserLearningPurposeEntity(int id,
+                                              string name,
+                                              DateTime createdAt,
+                                              DateTime updatedAt) : MasterEntityBase(id, name, createdAt, updatedAt)
 {
-    public int Id { get; } = id;
-    public string Name { get; } = name;
 }
