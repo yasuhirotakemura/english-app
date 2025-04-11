@@ -1,7 +1,8 @@
 ﻿namespace EnglishApp.Domain.Entities;
 
-public sealed class UserGenderEntity(byte id, string name)
+public sealed class UserGenderEntity(int id,
+                                     string name,
+                                     DateTime createdAt,
+                                     DateTime updatedAt) : MasterEntityBase(id, name, createdAt, updatedAt)
 {
-    public byte Id { get; } = id;
-    public string Name { get; } = name;
 }
