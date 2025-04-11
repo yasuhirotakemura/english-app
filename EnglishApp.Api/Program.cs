@@ -12,7 +12,14 @@ internal class Program
     {
         WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
-        builder.Services.AddSingleton<SqlServerService>();
+        builder.Services.AddSingleton(provider =>
+        {
+            IConfiguration configuration = provider.GetRequiredService<IConfiguration>();
+
+            string connectionString = configuration.GetConnectionString("DefaultConnection")!;
+
+            return new SqlServerService(connectionString);
+        });
         builder.Services.AddSingleton<JwtService>();
 
         builder.Services.AddScoped<IUserRepository, UserRepository>();

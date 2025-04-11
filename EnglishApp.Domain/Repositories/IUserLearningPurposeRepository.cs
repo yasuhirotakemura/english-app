@@ -5,5 +5,5 @@ namespace EnglishApp.Domain.Repositories;
 
 public interface IUserLearningPurposeRepository
 {
-    Task<ImmutableList<UserLearningPurposeEntity>> GetAll();
+    Task<ImmutableList<LearningPurposeEntity>> GetAll();
 }

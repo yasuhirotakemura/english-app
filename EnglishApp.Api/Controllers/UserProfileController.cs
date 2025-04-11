@@ -1,16 +1,26 @@
-﻿using EnglishApp.Application.Dtos.Responses;
+﻿using EnglishApp.Application.Dtos.Master;
+using EnglishApp.Application.Dtos.Responses;
 using EnglishApp.Application.Dtos.UserProfile;
 using EnglishApp.Domain.Entities;
 using EnglishApp.Domain.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Immutable;
 
 namespace EnglishApp.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class UserProfileController(IUserProfileRepository userProfileRepository) : ControllerBase
+public class UserProfileController(IUserProfileRepository userProfileRepository,
+                                   IPrefectureRepository prefectureRepository,
+                                   IUserGenderRepository userGenderRepository,
+                                   IUserGradeRepository userGradeRepository,
+                                   IUserLearningPurposeRepository userLearningPurposeRepository) : ControllerBase
 {
     private readonly IUserProfileRepository _userProfileRepository = userProfileRepository;
+    private readonly IPrefectureRepository _prefectureRepository = prefectureRepository;
+    private readonly IUserGenderRepository _userGenderRepository = userGenderRepository;
+    private readonly IUserGradeRepository _userGradeRepository = userGradeRepository;
+    private readonly IUserLearningPurposeRepository _userLearningPurposeRepository = userLearningPurposeRepository;
 
     [HttpPost]
     public async Task<IActionResult> Create(UserProfileSetupRequest request)
@@ -70,8 +80,28 @@ public class UserProfileController(IUserProfileRepository userProfileRepository)
         }
     }
 
-    [HttpGet("icons")]
-    public IActionResult GetAvailableIcons()
+    [HttpGet("setup")]
+    public async Task<IActionResult> GetUserSetupData()
+    {
+        try
+        {
+            UserSetupDataResponse result = new(prefectures: await this._prefectureRepository.GetAll(),
+                                               userGenders: await this._userGenderRepository.GetAll(),
+                                               userGrades: await this._userGradeRepository.GetAll(),
+                                               userLearningPurposes: await this._userLearningPurposeRepository.GetAll(),
+                                               iconUris: this.GetAvailableIcons());
+
+            return this.Ok(result);
+        }
+        catch(Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+
+            return this.StatusCode(500, new ErrorResponse("サーバーエラーが発生しました。"));
+        }
+    }
+
+    private ImmutableList<IconUri> GetAvailableIcons()
     {
         string iconFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "icons");
         string[] iconFiles = Directory.GetFiles(iconFolder);
@@ -90,8 +120,6 @@ public class UserProfileController(IUserProfileRepository userProfileRepository)
 
         string baseUrl = $"{this.Request.Scheme}://{this.Request.Host}/icons/";
 
-        IconUri[] iconUrls = [.. fileNames.Select(f => new IconUri(baseUrl + f))];
-
-        return this.Ok(iconUrls);
+        return [.. fileNames.Select(f => new IconUri(baseUrl + f))];
     }
 }

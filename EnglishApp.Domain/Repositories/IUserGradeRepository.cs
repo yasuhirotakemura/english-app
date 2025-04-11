@@ -5,5 +5,5 @@ namespace EnglishApp.Domain.Repositories;
 
 public interface IUserGradeRepository
 {
-    Task<ImmutableList<UserGradeEntity>> GetAll();
+    Task<ImmutableList<GradeEntity>> GetAll();
 }

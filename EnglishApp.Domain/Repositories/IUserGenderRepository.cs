@@ -5,5 +5,5 @@ namespace EnglishApp.Domain.Repositories;
 
 public interface IUserGenderRepository
 {
-    Task<ImmutableList<UserGenderEntity>> GetAll();
+    Task<ImmutableList<GenderEntity>> GetAll();
 }

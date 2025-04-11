@@ -1,36 +1,73 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using EnglishApp.Application;
+using EnglishApp.Application.Dtos.Master;
 using EnglishApp.Application.Dtos.UserProfile;
 using EnglishApp.Application.Interfaces;
 using EnglishApp.Domain;
 using EnglishApp.Domain.Entities;
 using EnglishApp.Domain.Interfaces;
-using EnglishApp.Domain.StaticValues;
 using EnglishApp.Maui.Routes;
 using EnglishApp.Maui.ViewModels.Bases;
 using System.Collections.ObjectModel;
 
 namespace EnglishApp.Maui.ViewModels;
 
-public sealed class UserProfileSetupViewModel : ViewModelBase, IQueryAttributable
+public sealed class UserProfileSetupViewModel : ViewModelBase
 {
-    private readonly IUserProfileApiClient _userProfileApiService;
+    private readonly IUserProfileApiClient _userProfileApiClient;
 
     public UserProfileSetupViewModel(IMessageService messageService, IUserProfileApiClient userProfileApiService) : base(messageService)
     {
-        this._userProfileApiService = userProfileApiService;
+        this._userProfileApiClient = userProfileApiService;
+
+        this.Genders = [];
+        this.Grades = [];
+        this.LearningPurposes = [];
+        this.Prefectures = [];
+        this.IconUris = [];
 
         this.StartCommand = new AsyncRelayCommand(this.OnStartCommand);
 
-        this.IconUris = [];
-        // 性別どうにかしないと
-        this.Genders = [.. MasterData.UserGenders];
-        this.Grades = [.. MasterData.UserGrades];
-        this.LearningPurposes = [.. MasterData.UserLearningPurposes];
-        this.Prefectures = [.. MasterData.Prefectures];
-
-        Task.Run(this.LoadProfileIcons);
+        Task.Run(this.LoadProfileSetupData);
     }
+
+    private async Task LoadProfileSetupData()
+    {
+        ApiResult<UserSetupDataResponse> result = await this._userProfileApiClient.GetUserSetupDataAsync();
+
+        if(result.IsSuccess && result.Data is UserSetupDataResponse response)
+        {
+            foreach (IconUri iconUri in response.IconUris)
+            {
+                this.IconUris.Add(iconUri);
+            }
+
+            foreach (GenderEntity genderEntity in response.Genders)
+            {
+                this.Genders.Add(genderEntity);
+            }
+
+            foreach (GradeEntity gradeEntity in response.Grades)
+            {
+                this.Grades.Add(gradeEntity);
+            }
+
+            foreach (LearningPurposeEntity learningPurpose in response.LearningPurposes)
+            {
+                this.LearningPurposes.Add(learningPurpose);
+            }
+
+            foreach (PrefectureEntity prefecture in response.Prefectures)
+            {
+                this.Prefectures.Add(prefecture);
+            }
+        }
+        else if (result.ErrorMessage is string errorMesseage)
+        {
+            await this.MessageService.Show("エラー", errorMesseage);
+        }
+    }
+
 
     public ObservableCollection<IconUri> IconUris { get; }
     private IconUri? _selectedIconUri;
@@ -40,27 +77,6 @@ public sealed class UserProfileSetupViewModel : ViewModelBase, IQueryAttributabl
         set => this.SetProperty(ref this._selectedIconUri, value);
     }
 
-    private async Task LoadProfileIcons()
-    {
-        ApiResult<IconUri[]> iconUrisResult = await this._userProfileApiService.GetProfileImageUris();
-
-        if(iconUrisResult.IsSuccess && iconUrisResult.Data is IconUri[] profileIconsUris)
-        {
-            foreach (IconUri iconUri in profileIconsUris)
-            {
-                this.IconUris.Add(iconUri);
-            }
-        }
-        else if(iconUrisResult.ErrorMessage is string errorMesseage)
-        {
-            await this.MessageService.Show("エラー", errorMesseage);
-        }
-    }
-
-    public void ApplyQueryAttributes(IDictionary<string, object> query)
-    {
-    }
-
     private string _nickName = String.Empty;
     public string NickName
     {
@@ -68,25 +84,25 @@ public sealed class UserProfileSetupViewModel : ViewModelBase, IQueryAttributabl
         set => this.SetProperty(ref this._nickName, value);
     }
 
-    public ObservableCollection<UserGenderEntity> Genders { get; }
-    private UserGenderEntity? _selectedGender;
-    public UserGenderEntity? SelectedGender
+    public ObservableCollection<GenderEntity> Genders { get; }
+    private GenderEntity? _selectedGender;
+    public GenderEntity? SelectedGender
     {
         get => this._selectedGender;
         set => this.SetProperty(ref this._selectedGender, value);
     }
 
-    public ObservableCollection<UserGradeEntity> Grades { get; }
-    private UserGradeEntity? _selectedGrade;
-    public UserGradeEntity? SelectedGrade
+    public ObservableCollection<GradeEntity> Grades { get; }
+    private GradeEntity? _selectedGrade;
+    public GradeEntity? SelectedGrade
     {
         get => this._selectedGrade;
         set => this.SetProperty(ref this._selectedGrade, value);
     }
 
-    public ObservableCollection<UserLearningPurposeEntity> LearningPurposes { get; }
-    public UserLearningPurposeEntity? _selectedLearningPurpose;
-    public UserLearningPurposeEntity? SelectedLearningPurpose
+    public ObservableCollection<LearningPurposeEntity> LearningPurposes { get; }
+    public LearningPurposeEntity? _selectedLearningPurpose;
+    public LearningPurposeEntity? SelectedLearningPurpose
     {
         get => this._selectedLearningPurpose;
         set => this.SetProperty(ref this._selectedLearningPurpose, value);
@@ -125,13 +141,13 @@ public sealed class UserProfileSetupViewModel : ViewModelBase, IQueryAttributabl
                                               "",
                                               this._selectedIconUri!.Uri);
 
-        ApiResult<UserProfileEntity> response = await this._userProfileApiService.CreateAsync(request);
+        ApiResult<UserProfileEntity> result = await this._userProfileApiClient.CreateAsync(request);
 
-        if(response.IsSuccess && response.Data is UserProfileEntity userProfileEntity)
+        if(result.IsSuccess && result.Data is UserProfileEntity userProfileEntity)
         {
             await this.NavigateToRootAsync(AppShellRoute.HomeView);
         }
-        else if (response.ErrorMessage is string profileSetupErrorMessage)
+        else if (result.ErrorMessage is string profileSetupErrorMessage)
         {
             await this.MessageService.Show("エラー", profileSetupErrorMessage);
         }

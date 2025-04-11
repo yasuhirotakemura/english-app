@@ -1,4 +1,5 @@
-﻿using EnglishApp.Application.Dtos.UserProfile;
+﻿using EnglishApp.Application.Dtos.Master;
+using EnglishApp.Application.Dtos.UserProfile;
 using EnglishApp.Application.Interfaces;
 using EnglishApp.Domain.Entities;
 
@@ -10,16 +11,16 @@ public sealed class UserProfileApiClient(ApiRequestHandler apiRequestHandler) : 
 
     public async Task<ApiResult<UserProfileEntity>> CreateAsync(UserProfileSetupRequest request)
     {
-        return await this._apiRequestHandler.PostAsync<UserProfileSetupRequest, UserProfileEntity>("api/userprofile", request);
+        return await this._apiRequestHandler.PostAsync<UserProfileSetupRequest, UserProfileEntity>("userprofile", request);
     }
 
     public async Task<ApiResult<UserProfileEntity>> GetAsync(int userId)
     {
-        return await this._apiRequestHandler.GetAsync<UserProfileEntity>($"api/userprofile/{userId}");
+        return await this._apiRequestHandler.GetAsync<UserProfileEntity>($"userprofile/{userId}");
     }
 
-    public async Task<ApiResult<IconUri[]>> GetProfileImageUris()
+    public async Task<ApiResult<UserSetupDataResponse>> GetUserSetupDataAsync()
     {
-        return await this._apiRequestHandler.GetAsync<IconUri[]>("api/userprofile/icons");
+        return await this._apiRequestHandler.GetAsync<UserSetupDataResponse>("userprofile/setup");
     }
 }

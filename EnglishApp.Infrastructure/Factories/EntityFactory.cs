@@ -54,7 +54,7 @@ internal static class EntityFactory
         );
     }
 
-    public static UserGenderEntity CreateUserGenderEntity(SqlDataReader reader)
+    public static GenderEntity CreateUserGenderEntity(SqlDataReader reader)
     {
         return new
         (
@@ -65,7 +65,7 @@ internal static class EntityFactory
         );
     }
 
-    public static UserGradeEntity CreateUserGradeEntity(SqlDataReader reader)
+    public static GradeEntity CreateUserGradeEntity(SqlDataReader reader)
     {
         return new
         (
@@ -76,7 +76,7 @@ internal static class EntityFactory
         );
     }
 
-    public static UserLearningPurposeEntity CreateUserLearningPurposeEntity(SqlDataReader reader)
+    public static LearningPurposeEntity CreateUserLearningPurposeEntity(SqlDataReader reader)
     {
         return new
         (

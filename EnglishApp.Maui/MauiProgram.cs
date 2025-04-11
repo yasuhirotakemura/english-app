@@ -64,11 +64,11 @@ public static class MauiProgram
             HttpClient client = new()
             {
 #if DEBUG && ANDROID
-                BaseAddress = new Uri("http://10.0.2.2:5249/")
+                BaseAddress = new Uri("http://10.0.2.2:5249/api/")
 #elif DEBUG
-                BaseAddress = new Uri("http://localhost:5249/")
+                BaseAddress = new Uri("http://localhost:5249/api/")
 #else
-                BaseAddress = new Uri("https://your-api-endpoint.com/")
+                BaseAddress = new Uri("https://your-api-endpoint.com/api/")
 #endif
             };
 
@@ -76,7 +76,6 @@ public static class MauiProgram
         });
         builder.Services.AddSingleton<ApiRequestHandler>();
 
-        builder.Services.AddSingleton<IMasterApiClient, MasterApiClient>();
         builder.Services.AddSingleton<IUserAuthApiClient, UserAuthApiClient>();
         builder.Services.AddSingleton<IUserProfileApiClient, UserProfileApiClient>();
 

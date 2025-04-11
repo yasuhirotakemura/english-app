@@ -17,21 +17,21 @@ public sealed class UserAuthApiClient(ApiRequestHandler apiRequestHandler) : IUs
 
     public async Task<ApiResult<UserAuthSignInResponse>> AutoSignInAsync()
     {
-        return await this._apiRequestHandler.GetAsync<UserAuthSignInResponse>("api/userauth/validate");
+        return await this._apiRequestHandler.GetAsync<UserAuthSignInResponse>("userauth/validate");
     }
 
     public async Task<ApiResult<UserAuthSignInResponse>> SignInAsync(UserAuthSignInRequest request)
     {
-        return await this._apiRequestHandler.PostAsync<UserAuthSignInRequest, UserAuthSignInResponse>("api/userauth/signin", request);
+        return await this._apiRequestHandler.PostAsync<UserAuthSignInRequest, UserAuthSignInResponse>("userauth/signin", request);
     }
 
     public async Task<ApiResult<UserAuthSignUpResponse>> SignUpAsync(UserAuthSignUpRequest request)
     {
-        return await this._apiRequestHandler.PostAsync<UserAuthSignUpRequest, UserAuthSignUpResponse>("api/userauth/signup", request);
+        return await this._apiRequestHandler.PostAsync<UserAuthSignUpRequest, UserAuthSignUpResponse>("userauth/signup", request);
     }
 
     public async Task<ApiResult<UserAuthSaltResponse>> GetSaltAsync(UserAuthSaltRequest request)
     {
-        return await this._apiRequestHandler.PostAsync<UserAuthSaltRequest, UserAuthSaltResponse>("api/userauth/signin/salt", request);
+        return await this._apiRequestHandler.PostAsync<UserAuthSaltRequest, UserAuthSaltResponse>("userauth/signin/salt", request);
     }
 }

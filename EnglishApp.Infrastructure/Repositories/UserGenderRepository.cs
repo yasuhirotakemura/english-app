@@ -10,7 +10,7 @@ public sealed class UserGenderRepository(SqlServerService sqlServer) : IUserGend
 {
     private readonly SqlServerService _sqlServer = sqlServer;
 
-    public Task<ImmutableList<UserGenderEntity>> GetAll()
+    public Task<ImmutableList<GenderEntity>> GetAll()
     {
         string query = "SELECT Id, Name, CreatedAt, UpdatedAt FROM UserGender";
 

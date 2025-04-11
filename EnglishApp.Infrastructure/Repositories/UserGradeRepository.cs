@@ -10,7 +10,7 @@ public sealed class UserGradeRepository(SqlServerService sqlServer) : IUserGrade
 {
     private readonly SqlServerService _sqlServer = sqlServer;
 
-    public Task<ImmutableList<UserGradeEntity>> GetAll()
+    public Task<ImmutableList<GradeEntity>> GetAll()
     {
         string query = "SELECT Id, Name, CreatedAt, UpdatedAt FROM UserGrade";
 

@@ -10,7 +10,7 @@ public sealed class UserLearningPurposeRepository(SqlServerService sqlServer) : 
 {
     private readonly SqlServerService _sqlServer = sqlServer;
 
-    public Task<ImmutableList<UserLearningPurposeEntity>> GetAll()
+    public Task<ImmutableList<LearningPurposeEntity>> GetAll()
     {
         string query = "SELECT Id, Name, CreatedAt, UpdatedAt FROM UserLearningPurpose";
 

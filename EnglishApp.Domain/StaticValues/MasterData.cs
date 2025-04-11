@@ -6,13 +6,13 @@ namespace EnglishApp.Domain.StaticValues;
 public static class MasterData
 {
     public static ImmutableList<PrefectureEntity> Prefectures = [];
-    public static ImmutableList<UserGenderEntity> UserGenders = [];
-    public static ImmutableList<UserGradeEntity> UserGrades = [];
-    public static ImmutableList<UserLearningPurposeEntity> UserLearningPurposes = [];
+    public static ImmutableList<GenderEntity> UserGenders = [];
+    public static ImmutableList<GradeEntity> UserGrades = [];
+    public static ImmutableList<LearningPurposeEntity> UserLearningPurposes = [];
 
     public static void Update(List<PrefectureEntity> prefectures,
-                              List<UserGradeEntity> userGrades,
-                              List<UserLearningPurposeEntity> userLearningPurposes)
+                              List<GradeEntity> userGrades,
+                              List<LearningPurposeEntity> userLearningPurposes)
     {
         Prefectures = [.. prefectures];
         UserGrades = [.. userGrades];
