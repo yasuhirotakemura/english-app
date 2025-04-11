@@ -12,8 +12,8 @@ public sealed class PrefectureRepository(SqlServerService sqlServer) : IPrefectu
 
     public Task<ImmutableList<PrefectureEntity>> GetAll()
     {
-        string query = "SELECT Id, Name FROM Prefecture";
+        string query = "SELECT Id, Name, CreatedAt, UpdatedAt FROM Prefecture";
 
-        return this._sqlServer.QueryAsync(query, EntityFactory.CreateMasterEntity<PrefectureEntity>);
+        return this._sqlServer.QueryAsync(query, EntityFactory.CreatePrefectureEntity);
     }
 }

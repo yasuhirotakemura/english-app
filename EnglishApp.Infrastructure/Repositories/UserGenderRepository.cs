@@ -6,14 +6,14 @@ using System.Collections.Immutable;
 
 namespace EnglishApp.Infrastructure.Repositories;
 
-public sealed class UserGradeRepository(SqlServerService sqlServer) : IUserGradeRepository
+public sealed class UserGenderRepository(SqlServerService sqlServer) : IUserGenderRepository
 {
     private readonly SqlServerService _sqlServer = sqlServer;
 
-    public Task<ImmutableList<GradeEntity>> GetAll()
+    public Task<ImmutableList<GenderEntity>> GetAll()
     {
-        string query = "SELECT Id, Name, CreatedAt, UpdatedAt FROM UserGrade";
+        string query = "SELECT Id, Name, CreatedAt, UpdatedAt FROM UserGender";
 
-        return this._sqlServer.QueryAsync(query, EntityFactory.CreateUserGradeEntity);
+        return this._sqlServer.QueryAsync(query, EntityFactory.CreateUserGenderEntity);
     }
 }

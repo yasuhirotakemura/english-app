@@ -3,7 +3,7 @@ using System.Collections.Immutable;
 
 namespace EnglishApp.Domain.Repositories;
 
-public interface IUserLearningPurposeRepository
+public interface IUserGenderRepository
 {
-    Task<ImmutableList<LearningPurposeEntity>> GetAll();
+    Task<ImmutableList<GenderEntity>> GetAll();
 }

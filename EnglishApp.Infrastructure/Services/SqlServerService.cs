@@ -3,10 +3,9 @@ using System.Collections.Immutable;
 
 namespace EnglishApp.Infrastructure.Services;
 
-public sealed class SqlServerService
+public sealed class SqlServerService(string connectionString)
 {
-    private readonly string _connectionString
-        = "Server=JUPITER4823;Database=EnglishApp;Integrated Security=True;TrustServerCertificate=True;\r\n";
+    private readonly string _connectionString = connectionString;
 
     public async Task<ImmutableList<T>> QueryAsync<T>(string sql,
                                                       Func<SqlDataReader, T> createEntity)
