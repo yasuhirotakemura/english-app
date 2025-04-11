@@ -1,0 +1,9 @@
+﻿using EnglishApp.Domain.Entities;
+using System.Collections.Immutable;
+
+namespace EnglishApp.Domain.Repositories;
+
+public interface IExamLevelRepository
+{
+    Task<ImmutableList<ExamLevelEntity>> GetAll();
+}
