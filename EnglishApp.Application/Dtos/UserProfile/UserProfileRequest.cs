@@ -1,4 +1,4 @@
-﻿namespace EnglishApp.Application.Dtos.Requests;
+﻿namespace EnglishApp.Application.Dtos.UserProfile;
 
 public sealed class UserProfileRequest(int userId)
 {

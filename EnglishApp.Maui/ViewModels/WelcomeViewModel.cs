@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using EnglishApp.Application;
-using EnglishApp.Application.Apis;
-using EnglishApp.Application.Dtos.Responses;
+using EnglishApp.Application.Dtos.UserAuth;
+using EnglishApp.Application.Interfaces;
 using EnglishApp.Domain;
 using EnglishApp.Domain.Entities;
 using EnglishApp.Domain.Interfaces;
@@ -13,10 +13,10 @@ namespace EnglishApp.Maui.ViewModels;
 
 public sealed class WelcomeViewModel : ViewModelBase
 {
-    private readonly IMasterApiService _masterApiService;
-    private readonly IUserAuthApiService _userAuthApiService;
+    private readonly IMasterApiClient _masterApiService;
+    private readonly IUserAuthApiClient _userAuthApiService;
 
-    public WelcomeViewModel(IMessageService messageService, IMasterApiService masterApiService, IUserAuthApiService userAuthApiService) : base(messageService)
+    public WelcomeViewModel(IMessageService messageService, IMasterApiClient masterApiService, IUserAuthApiClient userAuthApiService) : base(messageService)
     {
         this._masterApiService = masterApiService;
         this._userAuthApiService = userAuthApiService;
@@ -29,7 +29,7 @@ public sealed class WelcomeViewModel : ViewModelBase
 
     private async Task LoadMaster()
     {
-        await this._masterApiService.LoadAllMasterData();
+        await this._masterApiService.GetAsync();
     }
 
     public IAsyncRelayCommand LoginCommand { get; }
@@ -50,20 +50,17 @@ public sealed class WelcomeViewModel : ViewModelBase
 
         if (!String.IsNullOrWhiteSpace(token))
         {
-            bool setHeaderResult = this._userAuthApiService.CanAutoLoginAsync(token);
+            this._userAuthApiService.SetAuthenticationHeaderValue(token);
 
-            if (setHeaderResult)
+            ApiResult<UserAuthSignInResponse> result = await this._userAuthApiService.AutoSignInAsync();
+
+            if (result.IsSuccess && result.Data is UserAuthSignInResponse userAuthSignInResponse)
             {
-                ApiResult<UserAuthSignInResponse> result = await this._userAuthApiService.AutoSignInAsync();
+                Shared.UserId = userAuthSignInResponse.UserId;
 
-                if (result.IsSuccess && result.Data is UserAuthSignInResponse userAuthSignInResponse)
-                {
-                    Shared.UserId = userAuthSignInResponse.UserId;
+                await this.NavigateToRootAsync(AppShellRoute.HomeView);
 
-                    await this.NavigateToRootAsync(AppShellRoute.HomeView);
-
-                    return;
-                }
+                return;
             }
         }
     }

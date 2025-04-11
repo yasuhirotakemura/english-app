@@ -1,5 +1,5 @@
-﻿using EnglishApp.Application.Dtos.Requests;
-using EnglishApp.Application.Dtos.Responses;
+﻿using EnglishApp.Application.Dtos.Responses;
+using EnglishApp.Application.Dtos.UserProfile;
 using EnglishApp.Domain.Entities;
 using EnglishApp.Domain.Repositories;
 using Microsoft.AspNetCore.Mvc;

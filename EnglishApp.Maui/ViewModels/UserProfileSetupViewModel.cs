@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using EnglishApp.Application;
-using EnglishApp.Application.Apis;
-using EnglishApp.Application.Dtos.Requests;
+using EnglishApp.Application.Dtos.UserProfile;
+using EnglishApp.Application.Interfaces;
 using EnglishApp.Domain;
 using EnglishApp.Domain.Entities;
 using EnglishApp.Domain.Interfaces;
@@ -14,9 +14,9 @@ namespace EnglishApp.Maui.ViewModels;
 
 public sealed class UserProfileSetupViewModel : ViewModelBase, IQueryAttributable
 {
-    private readonly IUserProfileApiService _userProfileApiService;
+    private readonly IUserProfileApiClient _userProfileApiService;
 
-    public UserProfileSetupViewModel(IMessageService messageService, IUserProfileApiService userProfileApiService) : base(messageService)
+    public UserProfileSetupViewModel(IMessageService messageService, IUserProfileApiClient userProfileApiService) : base(messageService)
     {
         this._userProfileApiService = userProfileApiService;
 
@@ -24,7 +24,7 @@ public sealed class UserProfileSetupViewModel : ViewModelBase, IQueryAttributabl
 
         this.IconUris = [];
         // 性別どうにかしないと
-        this.Genders = new ObservableCollection<UserGenderEntity>([new UserGenderEntity(1, "男性"), new UserGenderEntity(2, "女性"), new UserGenderEntity(3, "その他")]);
+        this.Genders = [.. MasterData.UserGenders];
         this.Grades = [.. MasterData.UserGrades];
         this.LearningPurposes = [.. MasterData.UserLearningPurposes];
         this.Prefectures = [.. MasterData.Prefectures];
@@ -42,16 +42,16 @@ public sealed class UserProfileSetupViewModel : ViewModelBase, IQueryAttributabl
 
     private async Task LoadProfileIcons()
     {
-        ApiResult<IconUri[]> iconUrlsResult = await this._userProfileApiService.GetProfileImageUris();
+        ApiResult<IconUri[]> iconUrisResult = await this._userProfileApiService.GetProfileImageUris();
 
-        if(iconUrlsResult.IsSuccess && iconUrlsResult.Data is IconUri[] profileIconsUrls)
+        if(iconUrisResult.IsSuccess && iconUrisResult.Data is IconUri[] profileIconsUris)
         {
-            foreach (IconUri iconUrl in profileIconsUrls)
+            foreach (IconUri iconUri in profileIconsUris)
             {
-                this.IconUris.Add(iconUrl);
+                this.IconUris.Add(iconUri);
             }
         }
-        else if(iconUrlsResult.ErrorMessage is string errorMesseage)
+        else if(iconUrisResult.ErrorMessage is string errorMesseage)
         {
             await this.MessageService.Show("エラー", errorMesseage);
         }

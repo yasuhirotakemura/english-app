@@ -1,9 +1,9 @@
-﻿using EnglishApp.Application.Dtos.Requests;
+﻿using EnglishApp.Application.Dtos.UserProfile;
 using EnglishApp.Domain.Entities;
 
-namespace EnglishApp.Application.Apis;
+namespace EnglishApp.Application.Interfaces;
 
-public interface IUserProfileApiService
+public interface IUserProfileApiClient
 {
     Task<ApiResult<UserProfileEntity>> CreateAsync(UserProfileSetupRequest request);
     Task<ApiResult<UserProfileEntity>> GetAsync(int userId);

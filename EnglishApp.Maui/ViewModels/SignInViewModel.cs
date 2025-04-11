@@ -1,8 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using EnglishApp.Application;
-using EnglishApp.Application.Apis;
-using EnglishApp.Application.Dtos.Requests;
-using EnglishApp.Application.Dtos.Responses;
+using EnglishApp.Application.Dtos.UserAuth;
+using EnglishApp.Application.Interfaces;
 using EnglishApp.Domain;
 using EnglishApp.Domain.Entities;
 using EnglishApp.Domain.Interfaces;
@@ -15,9 +14,9 @@ namespace EnglishApp.Maui.ViewModels;
 
 public sealed class SignInViewModel : ViewModelBase, IQueryAttributable
 {
-    private readonly IUserAuthApiService _userAuthApiService;
+    private readonly IUserAuthApiClient _userAuthApiService;
 
-    public SignInViewModel(IMessageService messageService, IUserAuthApiService userAuthApiService) : base(messageService)
+    public SignInViewModel(IMessageService messageService, IUserAuthApiClient userAuthApiService) : base(messageService)
     {
         this._userAuthApiService = userAuthApiService;
 

@@ -3,7 +3,7 @@ using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
 
-namespace EnglishApp.Application.Services;
+namespace EnglishApp.Application;
 
 public sealed class ApiRequestHandler(HttpClient httpClient)
 {
@@ -34,7 +34,7 @@ public sealed class ApiRequestHandler(HttpClient httpClient)
         }
     }
 
-    public async Task<ApiResult<TResponse>> GetAsync<TRequest, TResponse>(string url)
+    public async Task<ApiResult<TResponse>> GetAsync<TResponse>(string url)
     {
         try
         {

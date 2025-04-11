@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Maui;
-using EnglishApp.Application.Apis;
-using EnglishApp.Application.Services;
+using EnglishApp.Application;
+using EnglishApp.Application.ApiClients;
+using EnglishApp.Application.Interfaces;
 using EnglishApp.Domain.Interfaces;
 using EnglishApp.Maui.Utilities;
 using EnglishApp.Maui.ViewModels;
@@ -75,9 +76,9 @@ public static class MauiProgram
         });
         builder.Services.AddSingleton<ApiRequestHandler>();
 
-        builder.Services.AddSingleton<IMasterApiService, MasterApiService>();
-        builder.Services.AddSingleton<IUserAuthApiService, UserAuthApiService>();
-        builder.Services.AddSingleton<IUserProfileApiService, UserProfileApiService>();
+        builder.Services.AddSingleton<IMasterApiClient, MasterApiClient>();
+        builder.Services.AddSingleton<IUserAuthApiClient, UserAuthApiClient>();
+        builder.Services.AddSingleton<IUserProfileApiClient, UserProfileApiClient>();
 
         return builder;
     }

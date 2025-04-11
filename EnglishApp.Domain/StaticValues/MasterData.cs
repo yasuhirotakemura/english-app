@@ -6,6 +6,7 @@ namespace EnglishApp.Domain.StaticValues;
 public static class MasterData
 {
     public static ImmutableList<PrefectureEntity> Prefectures = [];
+    public static ImmutableList<UserGenderEntity> UserGenders = [];
     public static ImmutableList<UserGradeEntity> UserGrades = [];
     public static ImmutableList<UserLearningPurposeEntity> UserLearningPurposes = [];
 

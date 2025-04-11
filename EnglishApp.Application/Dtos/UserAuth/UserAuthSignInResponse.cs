@@ -1,6 +1,6 @@
-﻿using EnglishApp.Application.Dtos.Responses.Bases;
+﻿using EnglishApp.Application.Dtos.Bases;
 
-namespace EnglishApp.Application.Dtos.Responses;
+namespace EnglishApp.Application.Dtos.UserAuth;
 
 public sealed class UserAuthSignInResponse(string message,
                                            int userId,

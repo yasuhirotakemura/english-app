@@ -1,4 +1,4 @@
-﻿namespace EnglishApp.Application.Dtos.Responses.Bases;
+﻿namespace EnglishApp.Application.Dtos.Bases;
 
 public abstract class ResponseBase(string message)
 {

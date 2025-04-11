@@ -1,4 +1,4 @@
-﻿namespace EnglishApp.Application.Dtos.Requests;
+﻿namespace EnglishApp.Application.Dtos.UserAuth;
 
 public sealed class UserAuthSaltRequest(string email)
 {

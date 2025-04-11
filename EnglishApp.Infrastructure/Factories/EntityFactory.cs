@@ -42,7 +42,7 @@ internal static class EntityFactory
     }
 
 
-    // --- 以下のマスタEntityFactoryは改善しないと。 ---
+    // --- 以下のマスタメソッドは改善しないと。 ---
     public static PrefectureEntity CreatePrefectureEntity(SqlDataReader reader)
     {
         return new

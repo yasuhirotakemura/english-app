@@ -1,5 +1,5 @@
 ﻿using EnglishApp.Application;
-using EnglishApp.Application.Apis;
+using EnglishApp.Application.Interfaces;
 using EnglishApp.Domain;
 using EnglishApp.Domain.Entities;
 using EnglishApp.Domain.Interfaces;
@@ -9,9 +9,9 @@ namespace EnglishApp.Maui.ViewModels;
 
 public sealed class UserProfileViewModel : ViewModelBase
 {
-    private readonly IUserProfileApiService _userProfileApiService;
+    private readonly IUserProfileApiClient _userProfileApiService;
 
-    public UserProfileViewModel(IMessageService messageService, IUserProfileApiService userProfileApiService) : base(messageService)
+    public UserProfileViewModel(IMessageService messageService, IUserProfileApiClient userProfileApiService) : base(messageService)
     {
         this._userProfileApiService = userProfileApiService;
 

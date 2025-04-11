@@ -1,12 +1,10 @@
-﻿using EnglishApp.Application.Dtos.Requests;
-using EnglishApp.Application.Dtos.Responses;
+﻿using EnglishApp.Application.Dtos.UserAuth;
 
-namespace EnglishApp.Application.Apis;
+namespace EnglishApp.Application.Interfaces;
 
-public interface IUserAuthApiService
+public interface IUserAuthApiClient
 {
-    bool CanAutoLoginAsync(string? token);
-
+    void SetAuthenticationHeaderValue(string token);
     Task<ApiResult<UserAuthSignInResponse>> AutoSignInAsync();
     Task<ApiResult<UserAuthSignInResponse>> SignInAsync(UserAuthSignInRequest request);
     Task<ApiResult<UserAuthSignUpResponse>> SignUpAsync(UserAuthSignUpRequest request);

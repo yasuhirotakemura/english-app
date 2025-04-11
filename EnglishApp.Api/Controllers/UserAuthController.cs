@@ -1,12 +1,13 @@
 ﻿using EnglishApp.Api.Services;
-using EnglishApp.Application.Dtos.Requests;
 using EnglishApp.Application.Dtos.Responses;
+using EnglishApp.Application.Dtos.UserAuth;
 using EnglishApp.Domain.Entities;
 using EnglishApp.Domain.Exceptions;
 using EnglishApp.Domain.Logics;
 using EnglishApp.Domain.Repositories;
 using EnglishApp.Domain.ValueObjects;
 using Microsoft.AspNetCore.Mvc;
+using System.Transactions;
 
 namespace EnglishApp.Api.Controllers;
 
@@ -23,25 +24,30 @@ public class UserAuthController(JwtService jwtService, IUserRepository userRepos
     {
         try
         {
-            int userId = await this._userRepository.CreateUser();
+            using(TransactionScope scope = new())
+            {
+                int userId = await this._userRepository.CreateUser();
 
-            PasswordHash passwordHash = PasswordHash.CreateFromBase64(base64Hash: request.PasswordHash,
-                                                                      base64Salt: request.Salt);
+                PasswordHash passwordHash = PasswordHash.CreateFromBase64(base64Hash: request.PasswordHash,
+                                                                          base64Salt: request.Salt);
 
-            UserAuthEntity entity = new(id: userId,
-                                        email: request.Email,
-                                        passwordHash: passwordHash.Hash,
-                                        salt: passwordHash.Salt);
+                UserAuthEntity entity = new(id: userId,
+                                            email: request.Email,
+                                            passwordHash: passwordHash.Hash,
+                                            salt: passwordHash.Salt);
 
-            await this._userAuthRepository.SignUp(entity);
+                await this._userAuthRepository.SignUp(entity);
 
-            string accessToken = this._jwtService.GenerateToken(userId);
+                string accessToken = this._jwtService.GenerateToken(userId);
 
-            UserAuthSignUpResponse response = new(message: "登録完了",
-                                                  userId: userId,
-                                                  accessToken: accessToken);
+                UserAuthSignUpResponse response = new(message: "登録完了",
+                                                      userId: userId,
+                                                      accessToken: accessToken);
 
-            return this.Ok(response);
+                scope.Complete();
+
+                return this.Ok(response);
+            }
         }
         catch
         {
