@@ -1,5 +1,4 @@
 ﻿using EnglishApp.Domain.Entities;
-using EnglishApp.Domain.Interfaces;
 using Microsoft.Data.SqlClient;
 
 namespace EnglishApp.Infrastructure.Factories;
@@ -42,36 +41,83 @@ internal static class EntityFactory
          );
     }
 
-    public static EnglishTextEntity CreateEnglishText(SqlDataReader reader)
+
+    // --- 以下のマスタEntityFactoryは改善しないと。 ---
+    public static PrefectureEntity CreatePrefectureEntity(SqlDataReader reader)
     {
         return new
         (
             reader.GetInt32(reader.GetOrdinal("Id")),
-            reader.GetString(reader.GetOrdinal("Title")),
-            reader.GetString(reader.GetOrdinal("Content")),
+            reader.GetString(reader.GetOrdinal("Name")),
             reader.GetDateTime(reader.GetOrdinal("CreatedAt")),
             reader.GetDateTime(reader.GetOrdinal("UpdatedAt"))
         );
     }
 
-    public static EnglishChoiceQuestionEntity CreateEnglishChoiceQuestionEntity(SqlDataReader reader)
+    public static UserGenderEntity CreateUserGenderEntity(SqlDataReader reader)
     {
         return new
         (
             reader.GetInt32(reader.GetOrdinal("Id")),
-            reader.GetInt32(reader.GetOrdinal("EnglishTextId")),
-            reader.GetString(reader.GetOrdinal("QuestionText")),
+            reader.GetString(reader.GetOrdinal("Name")),
             reader.GetDateTime(reader.GetOrdinal("CreatedAt")),
             reader.GetDateTime(reader.GetOrdinal("UpdatedAt"))
         );
     }
 
-    public static T CreateMasterEntity<T>(SqlDataReader reader) where T : IMasterEntity
+    public static UserGradeEntity CreateUserGradeEntity(SqlDataReader reader)
     {
-        int id = reader.GetInt32(reader.GetOrdinal("Id"));
-        string name = reader.GetString(reader.GetOrdinal("Name"));
-
-        // コンストラクタを取得してインスタンスを作成
-        return (T)Activator.CreateInstance(typeof(T), id, name);
+        return new
+        (
+            reader.GetInt32(reader.GetOrdinal("Id")),
+            reader.GetString(reader.GetOrdinal("Name")),
+            reader.GetDateTime(reader.GetOrdinal("CreatedAt")),
+            reader.GetDateTime(reader.GetOrdinal("UpdatedAt"))
+        );
     }
+
+    public static UserLearningPurposeEntity CreateUserLearningPurposeEntity(SqlDataReader reader)
+    {
+        return new
+        (
+            reader.GetInt32(reader.GetOrdinal("Id")),
+            reader.GetString(reader.GetOrdinal("Name")),
+            reader.GetDateTime(reader.GetOrdinal("CreatedAt")),
+            reader.GetDateTime(reader.GetOrdinal("UpdatedAt"))
+        );
+    }
+
+    public static ReadingLevelEntity CreateReadingLevelEntity(SqlDataReader reader)
+    {
+        return new
+        (
+            reader.GetInt32(reader.GetOrdinal("Id")),
+            reader.GetString(reader.GetOrdinal("Name")),
+            reader.GetDateTime(reader.GetOrdinal("CreatedAt")),
+            reader.GetDateTime(reader.GetOrdinal("UpdatedAt"))
+        );
+    }
+
+    public static ExamLevelEntity CreateExamLevelEntity(SqlDataReader reader)
+    {
+        return new
+        (
+            reader.GetInt32(reader.GetOrdinal("Id")),
+            reader.GetString(reader.GetOrdinal("Name")),
+            reader.GetDateTime(reader.GetOrdinal("CreatedAt")),
+            reader.GetDateTime(reader.GetOrdinal("UpdatedAt"))
+        );
+    }
+
+    public static ReadingCategoryEntity CreateReadingCategoryEntity(SqlDataReader reader)
+    {
+        return new
+        (
+            reader.GetInt32(reader.GetOrdinal("Id")),
+            reader.GetString(reader.GetOrdinal("Name")),
+            reader.GetDateTime(reader.GetOrdinal("CreatedAt")),
+            reader.GetDateTime(reader.GetOrdinal("UpdatedAt"))
+        );
+    }
+    // ------
 }
