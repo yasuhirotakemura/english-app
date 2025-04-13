@@ -8,5 +8,5 @@ public interface IUserAuthApiClient
     Task<ApiResult<UserAuthSignInResponse>> AutoSignInAsync();
     Task<ApiResult<UserAuthSignInResponse>> SignInAsync(UserAuthSignInRequest request);
     Task<ApiResult<UserAuthSignUpResponse>> SignUpAsync(UserAuthSignUpRequest request);
-    Task<ApiResult<UserAuthSaltResponse>> GetSaltAsync(UserAuthSaltRequest request);
+    Task<ApiResult<UserAuthSaltResponse>> GetSaltAsync(string email);
 }

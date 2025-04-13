@@ -11,7 +11,10 @@ public sealed class UserProfileViewModel : ViewModelBase
 {
     private readonly IUserProfileApiClient _userProfileApiService;
 
-    public UserProfileViewModel(IMessageService messageService, IUserProfileApiClient userProfileApiService) : base(messageService)
+    public UserProfileViewModel(IMessageService messageService,
+                                INavigationService navigationService,
+                                IUserProfileApiClient userProfileApiService) : base(messageService,
+                                                                                    navigationService)
     {
         this._userProfileApiService = userProfileApiService;
 

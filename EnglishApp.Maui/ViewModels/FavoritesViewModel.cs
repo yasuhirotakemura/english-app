@@ -5,5 +5,7 @@ namespace EnglishApp.Maui.ViewModels;
 
 public sealed class FavoritesViewModel: ViewModelBase
 {
-    public FavoritesViewModel(IMessageService messageService) : base(messageService) { }
+    public FavoritesViewModel(IMessageService messageService,
+                              INavigationService navigationService) : base(messageService,
+                                                                           navigationService) { }
 }

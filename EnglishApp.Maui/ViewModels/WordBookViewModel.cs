@@ -5,5 +5,7 @@ namespace EnglishApp.Maui.ViewModels;
 
 public sealed class WordBookViewModel : ViewModelBase
 {
-    public WordBookViewModel(IMessageService messageService) : base(messageService) { }
+    public WordBookViewModel(IMessageService messageService,
+                             INavigationService navigationService) : base(messageService,
+                                                                          navigationService) { }
 }

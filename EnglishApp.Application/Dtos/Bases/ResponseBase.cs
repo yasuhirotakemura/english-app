@@ -1,6 +1,7 @@
 ﻿namespace EnglishApp.Application.Dtos.Bases;
 
-public abstract class ResponseBase(string message)
+public abstract class ResponseBase
 {
-    public string Message { get; } = message;
+    public string? Message { get; init; }
+    public List<WarningMessage>? Warnings { get; init; }
 }

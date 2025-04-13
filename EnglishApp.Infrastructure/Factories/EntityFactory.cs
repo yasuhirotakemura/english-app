@@ -10,7 +10,7 @@ internal static class EntityFactory
         return new UserProfileEntity(
             userId: reader.GetInt32(reader.GetOrdinal("UserId")),
             nickName: reader.GetString(reader.GetOrdinal("NickName")),
-            gender: reader.GetByte(reader.GetOrdinal("Gender")),
+            genderId: reader.GetInt32(reader.GetOrdinal("Gender")),
             gradeId: reader.GetInt32(reader.GetOrdinal("GradeId")),
             learningPurposeId: reader.GetInt32(reader.GetOrdinal("LearningPurposeId")),
             prefectureId: reader.GetInt32(reader.GetOrdinal("PrefectureId")),
@@ -35,18 +35,17 @@ internal static class EntityFactory
     {
         return new
         (
-            reader.GetInt32(reader.GetOrdinal("UserId")),
-            reader.GetString(reader.GetOrdinal("NickName")),
-            reader.GetBoolean(reader.GetOrdinal("IsEmailVerified"))
+            userId: reader.GetInt32(reader.GetOrdinal("UserId")),
+            nickName: reader.GetString(reader.GetOrdinal("NickName")),
+            isEmailVerified: reader.GetBoolean(reader.GetOrdinal("IsEmailVerified"))
          );
     }
 
 
-    // --- 以下のマスタメソッドは改善しないと。 ---
-    public static PrefectureEntity CreatePrefectureEntity(SqlDataReader reader)
+    public static T CreateMasterEntitiy<T>(SqlDataReader reader, Func<int, string, DateTime, DateTime, T> constructor)
+        where T : MasterEntityBase
     {
-        return new
-        (
+        return constructor(
             reader.GetInt32(reader.GetOrdinal("Id")),
             reader.GetString(reader.GetOrdinal("Name")),
             reader.GetDateTime(reader.GetOrdinal("CreatedAt")),
@@ -54,14 +53,15 @@ internal static class EntityFactory
         );
     }
 
+    // --- 以下のマスタメソッドは改善しないと。 ---
     public static GenderEntity CreateUserGenderEntity(SqlDataReader reader)
     {
         return new
         (
-            reader.GetInt32(reader.GetOrdinal("Id")),
-            reader.GetString(reader.GetOrdinal("Name")),
-            reader.GetDateTime(reader.GetOrdinal("CreatedAt")),
-            reader.GetDateTime(reader.GetOrdinal("UpdatedAt"))
+            id: reader.GetInt32(reader.GetOrdinal("Id")),
+            name: reader.GetString(reader.GetOrdinal("Name")),
+            createdAt: reader.GetDateTime(reader.GetOrdinal("CreatedAt")),
+            updatedAt: reader.GetDateTime(reader.GetOrdinal("UpdatedAt"))
         );
     }
 
@@ -77,6 +77,17 @@ internal static class EntityFactory
     }
 
     public static LearningPurposeEntity CreateUserLearningPurposeEntity(SqlDataReader reader)
+    {
+        return new
+        (
+            reader.GetInt32(reader.GetOrdinal("Id")),
+            reader.GetString(reader.GetOrdinal("Name")),
+            reader.GetDateTime(reader.GetOrdinal("CreatedAt")),
+            reader.GetDateTime(reader.GetOrdinal("UpdatedAt"))
+        );
+    }
+
+    public static PrefectureEntity CreatePrefectureEntity(SqlDataReader reader)
     {
         return new
         (

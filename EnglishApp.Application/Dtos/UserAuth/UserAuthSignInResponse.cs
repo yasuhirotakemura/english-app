@@ -2,11 +2,10 @@
 
 namespace EnglishApp.Application.Dtos.UserAuth;
 
-public sealed class UserAuthSignInResponse(string message,
-                                           int userId,
+public sealed class UserAuthSignInResponse(int userId,
                                            string nickName,
                                            bool isEmailVerified,
-                                           string accessToken) : ResponseBase(message)
+                                           string accessToken) : ResponseBase
 {
     public int UserId { get; } = userId;
     public string NickName { get; } = nickName;

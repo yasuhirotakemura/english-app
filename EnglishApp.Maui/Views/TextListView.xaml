@@ -8,4 +8,9 @@
              x:Class="EnglishApp.Maui.Views.TextListView"
              x:DataType="viewModels:TextListViewModel"
              Title="問題集">
+    <VerticalStackLayout>
+        <Button Text="中学一年生" Command="">
+            
+        </Button>
+    </VerticalStackLayout>
 </views:BaseContentPage>

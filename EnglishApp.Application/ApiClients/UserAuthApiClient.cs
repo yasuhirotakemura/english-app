@@ -1,6 +1,7 @@
 ﻿using EnglishApp.Application.Dtos.UserAuth;
 using EnglishApp.Application.Interfaces;
 using System.Net.Http.Headers;
+using System.Web;
 
 namespace EnglishApp.Application.ApiClients;
 
@@ -30,8 +31,10 @@ public sealed class UserAuthApiClient(ApiRequestHandler apiRequestHandler) : IUs
         return await this._apiRequestHandler.PostAsync<UserAuthSignUpRequest, UserAuthSignUpResponse>("userauth/signup", request);
     }
 
-    public async Task<ApiResult<UserAuthSaltResponse>> GetSaltAsync(UserAuthSaltRequest request)
+    public async Task<ApiResult<UserAuthSaltResponse>> GetSaltAsync(string email)
     {
-        return await this._apiRequestHandler.PostAsync<UserAuthSaltRequest, UserAuthSaltResponse>("userauth/signin/salt", request);
+        string url = $"userauth/signin/salt?email={HttpUtility.UrlEncode(email)}";
+
+        return await this._apiRequestHandler.GetAsync<UserAuthSaltResponse>(url);
     }
 }

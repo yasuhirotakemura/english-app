@@ -15,7 +15,7 @@ public sealed class SignUpViewModel : ViewModelBase, IQueryAttributable
 {
     private readonly IUserAuthApiClient _userAuthApiService;
 
-    public SignUpViewModel(IMessageService messageService, IUserAuthApiClient userAuthApiService) : base(messageService)
+    public SignUpViewModel(IMessageService messageService, INavigationService navigationService, IUserAuthApiClient userAuthApiService) : base(messageService, navigationService)
     {
         this._userAuthApiService = userAuthApiService;
 
@@ -70,7 +70,7 @@ public sealed class SignUpViewModel : ViewModelBase, IQueryAttributable
 
             Shared.UserId = userAuthSignUpResponse.UserId;
 
-            await this.NavigateToAsync(AppShellRoute.UserProfileSetupView);
+            await this.NavigationService.NavigateToAsync(route: AppShellRoute.UserProfileSetupView, isRoot: true);
         }
         else if(response.ErrorMessage is string errorMessage)
         {

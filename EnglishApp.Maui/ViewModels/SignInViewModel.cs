@@ -3,7 +3,6 @@ using EnglishApp.Application;
 using EnglishApp.Application.Dtos.UserAuth;
 using EnglishApp.Application.Interfaces;
 using EnglishApp.Domain;
-using EnglishApp.Domain.Entities;
 using EnglishApp.Domain.Interfaces;
 using EnglishApp.Domain.Logics;
 using EnglishApp.Domain.ValueObjects;
@@ -16,7 +15,10 @@ public sealed class SignInViewModel : ViewModelBase, IQueryAttributable
 {
     private readonly IUserAuthApiClient _userAuthApiService;
 
-    public SignInViewModel(IMessageService messageService, IUserAuthApiClient userAuthApiService) : base(messageService)
+    public SignInViewModel(IMessageService messageService,
+                           INavigationService navigationService,
+                           IUserAuthApiClient userAuthApiService) : base(messageService,
+                                                                         navigationService)
     {
         this._userAuthApiService = userAuthApiService;
 
@@ -50,8 +52,7 @@ public sealed class SignInViewModel : ViewModelBase, IQueryAttributable
             return;
         }
 
-        UserAuthSaltRequest saltRequest = new(this._email);
-        ApiResult<UserAuthSaltResponse> saltResponse = await this._userAuthApiService.GetSaltAsync(new(this._email));
+        ApiResult<UserAuthSaltResponse> saltResponse = await this._userAuthApiService.GetSaltAsync(this._email);
 
         if(saltResponse.ErrorMessage is string saltErrorMessage)
         {
@@ -75,7 +76,7 @@ public sealed class SignInViewModel : ViewModelBase, IQueryAttributable
 
             Shared.UserId = userAuthSignInResponse.UserId;
 
-            await this.NavigateToRootAsync(AppShellRoute.HomeView);
+            await this.NavigationService.NavigateToAsync(route: AppShellRoute.HomeView, isRoot: true);
         }
         else if(signInResponse.ErrorMessage is string signInErrorMessage)
         {

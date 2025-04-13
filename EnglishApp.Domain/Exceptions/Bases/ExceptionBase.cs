@@ -16,10 +16,3 @@ public abstract class ExceptionBase : Exception
 
     public abstract ExceptionType ExceptionType { get; }
 }
-
-public enum ExceptionType
-{
-    Info,
-    Warning,
-    Error,
-}

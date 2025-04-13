@@ -1,5 +1,4 @@
-﻿using EnglishApp.Application.Dtos.Master;
-using EnglishApp.Application.Dtos.Responses;
+﻿using EnglishApp.Application.Dtos.Error;
 using EnglishApp.Application.Dtos.UserProfile;
 using EnglishApp.Domain.Entities;
 using EnglishApp.Domain.Repositories;
@@ -25,34 +24,25 @@ public class UserProfileController(IUserProfileRepository userProfileRepository,
     [HttpPost]
     public async Task<IActionResult> Create(UserProfileSetupRequest request)
     {
-        try
+        UserProfileInsertEntity userProfileInsertEntity = new(userId: request.UserId,
+                                                              nickName: request.NickName,
+                                                              genderId: request.Gender,
+                                                              gradeId: request.GradeId,
+                                                              learningPurposeId: request.LearningPurposeId,
+                                                              prefectureId: request.PrefectureId,
+                                                              birthDate: request.BirthDate,
+                                                              profileText: request.ProfileText,
+                                                              iconUri: request.IconUri.Replace($"{this.Request.Scheme}:{this.Request.Host}/", ""));
+
+        UserProfileEntity? entity = await this._userProfileRepository.Create(userProfileInsertEntity);
+
+        if (entity is UserProfileEntity userProfileEntity)
         {
-            UserProfileInsertEntity userProfileInsertEntity = new(userId: request.UserId,
-                                                                  nickName: request.NickName,
-                                                                  gender: request.Gender,
-                                                                  gradeId: request.GradeId,
-                                                                  learningPurposeId: request.LearningPurposeId,
-                                                                  prefectureId: request.PrefectureId,
-                                                                  birthDate: request.BirthDate,
-                                                                  profileText: request.ProfileText,
-                                                                  iconUri: request.IconUri);
-
-            UserProfileEntity? entity = await this._userProfileRepository.Create(userProfileInsertEntity);
-
-            if(entity is UserProfileEntity userProfileEntity)
-            {
-                return this.Ok(userProfileEntity);
-            }
-            else
-            {
-                return this.Unauthorized(new ErrorResponse("ユーザー情報の取得に失敗しました。"));
-            }
+            return this.Ok(userProfileEntity);
         }
-        catch(Exception ex)
+        else
         {
-            Console.WriteLine(ex.Message);
-            // loggingの追加
-            return this.StatusCode(500, new ErrorResponse("サーバー側でエラーが発生しました。"));
+            return this.Unauthorized(new ErrorResponse("ユーザー情報の取得に失敗しました。"));
         }
     }
 
@@ -72,7 +62,7 @@ public class UserProfileController(IUserProfileRepository userProfileRepository,
                 return this.Unauthorized(new ErrorResponse("指定されたユーザーのプロフィールが見つかりません。"));
             }
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
 
@@ -83,22 +73,13 @@ public class UserProfileController(IUserProfileRepository userProfileRepository,
     [HttpGet("setup")]
     public async Task<IActionResult> GetUserSetupData()
     {
-        try
-        {
-            UserSetupDataResponse result = new(prefectures: await this._prefectureRepository.GetAll(),
-                                               userGenders: await this._userGenderRepository.GetAll(),
-                                               userGrades: await this._userGradeRepository.GetAll(),
-                                               userLearningPurposes: await this._userLearningPurposeRepository.GetAll(),
-                                               iconUris: this.GetAvailableIcons());
+        UserSetupDataResponse result = new(prefectures: await this._prefectureRepository.GetAll(),
+                                           genders: await this._userGenderRepository.GetAll(),
+                                           grades: await this._userGradeRepository.GetAll(),
+                                           learningPurposes: await this._userLearningPurposeRepository.GetAll(),
+                                           iconUris: this.GetAvailableIcons());
 
-            return this.Ok(result);
-        }
-        catch(Exception ex)
-        {
-            Console.WriteLine(ex.Message);
-
-            return this.StatusCode(500, new ErrorResponse("サーバーエラーが発生しました。"));
-        }
+        return this.Ok(result);
     }
 
     private ImmutableList<IconUri> GetAvailableIcons()
@@ -108,11 +89,11 @@ public class UserProfileController(IUserProfileRepository userProfileRepository,
 
         List<string> fileNames = [];
 
-        foreach(string iconFile in iconFiles)
+        foreach (string iconFile in iconFiles)
         {
             string? s = Path.GetFileName(iconFile);
 
-            if(s is string fileName)
+            if (s is string fileName)
             {
                 fileNames.Add(fileName);
             }

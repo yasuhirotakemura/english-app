@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using EnglishApp.Application;
-using EnglishApp.Application.Dtos.Master;
 using EnglishApp.Application.Dtos.UserProfile;
 using EnglishApp.Application.Interfaces;
 using EnglishApp.Domain;
@@ -16,7 +15,10 @@ public sealed class UserProfileSetupViewModel : ViewModelBase
 {
     private readonly IUserProfileApiClient _userProfileApiClient;
 
-    public UserProfileSetupViewModel(IMessageService messageService, IUserProfileApiClient userProfileApiService) : base(messageService)
+    public UserProfileSetupViewModel(IMessageService messageService,
+                                     INavigationService navigationService,
+                                     IUserProfileApiClient userProfileApiService) : base(messageService,
+                                                                                         navigationService)
     {
         this._userProfileApiClient = userProfileApiService;
 
@@ -126,6 +128,8 @@ public sealed class UserProfileSetupViewModel : ViewModelBase
     public IAsyncRelayCommand StartCommand { get; }
     private async Task OnStartCommand()
     {
+        await this.LoadProfileSetupData();
+
         if(! await this.IsInputCorrect())
         {
             return;
@@ -145,7 +149,7 @@ public sealed class UserProfileSetupViewModel : ViewModelBase
 
         if(result.IsSuccess && result.Data is UserProfileEntity userProfileEntity)
         {
-            await this.NavigateToRootAsync(AppShellRoute.HomeView);
+            await this.NavigationService.NavigateToAsync(route: AppShellRoute.HomeView, isRoot: true);
         }
         else if (result.ErrorMessage is string profileSetupErrorMessage)
         {

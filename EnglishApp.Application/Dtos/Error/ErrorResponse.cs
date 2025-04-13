@@ -1,4 +1,4 @@
-﻿namespace EnglishApp.Application.Dtos.Responses;
+﻿namespace EnglishApp.Application.Dtos.Error;
 
 public sealed class ErrorResponse(string message)
 {

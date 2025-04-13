@@ -14,7 +14,10 @@ public sealed class WelcomeViewModel : ViewModelBase
 {
     private readonly IUserAuthApiClient _userAuthApiService;
 
-    public WelcomeViewModel(IMessageService messageService, IUserAuthApiClient userAuthApiService) : base(messageService)
+    public WelcomeViewModel(IMessageService messageService,
+                            INavigationService navigationService,
+                            IUserAuthApiClient userAuthApiService) : base(messageService,
+                                                                          navigationService)
     {
         this._userAuthApiService = userAuthApiService;
 
@@ -25,13 +28,13 @@ public sealed class WelcomeViewModel : ViewModelBase
     public IAsyncRelayCommand LoginCommand { get; }
     public async Task OnLoginCommand()
     {
-        await this.NavigateToAsync(nameof(SignInView));
+        await this.NavigationService.NavigateToAsync(nameof(SignInView));
     }
 
     public IAsyncRelayCommand SignUpCommand { get; }
     public async Task OnSignUpCommand()
     {
-        await this.NavigateToAsync(nameof(SignUpView));
+        await this.NavigationService.NavigateToAsync(nameof(SignUpView));
     }
 
     public async Task TryAutoLoginAsync()
@@ -48,7 +51,7 @@ public sealed class WelcomeViewModel : ViewModelBase
             {
                 Shared.UserId = userAuthSignInResponse.UserId;
 
-                await this.NavigateToRootAsync(AppShellRoute.HomeView);
+                await this.NavigationService.NavigateToAsync(route: AppShellRoute.HomeView, isRoot: true);
 
                 return;
             }

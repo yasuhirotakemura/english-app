@@ -12,4 +12,5 @@ public sealed class UserAuthSignInRequest(string email,
     {
         return new UserAuthSignInRequest(email, passwordHash.GetBase64Hash());
     }
+
 }

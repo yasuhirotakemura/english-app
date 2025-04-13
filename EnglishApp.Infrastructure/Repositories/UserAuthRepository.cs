@@ -19,7 +19,7 @@ public sealed class UserAuthRepository(SqlServerService sqlServerService) : IUse
 
         SqlParameter[] parameters =
             [
-                new("@UserId", entity.Id),
+                new("@UserId", entity.UserId),
                 new("@Email", entity.Email),
                 new("@PasswordHash", entity.PasswordHash),
                 new("@Salt", entity.Salt)
@@ -28,7 +28,7 @@ public sealed class UserAuthRepository(SqlServerService sqlServerService) : IUse
         await this._sqlServerService.ExecuteAsync(query, parameters);
     }
 
-    public async Task<UserSignInEntity?> SignIn(string email, byte[] passwordHash)
+    public async Task<UserSignInEntity> SignIn(string email, byte[] passwordHash)
     {
         const string query = @"
     SELECT 
@@ -50,7 +50,11 @@ public sealed class UserAuthRepository(SqlServerService sqlServerService) : IUse
                 new("@PasswordHash", passwordHash)
             ];
 
-        return await this._sqlServerService.QuerySingleAsync(query, parameters, EntityFactory.CreateUserSignInEntity);
+        UserSignInEntity? entity = await this._sqlServerService.QuerySingleAsync(query, parameters, EntityFactory.CreateUserSignInEntity);
+
+        return entity is UserSignInEntity userSignInEntity
+            ? userSignInEntity
+            : throw new PasswordIncorrectException("パスワードが間違っています。");
     }
 
     public async Task<UserSignInEntity?> AutoSignIn(int userId)

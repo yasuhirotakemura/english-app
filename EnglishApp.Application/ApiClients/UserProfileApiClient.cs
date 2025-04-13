@@ -1,5 +1,4 @@
-﻿using EnglishApp.Application.Dtos.Master;
-using EnglishApp.Application.Dtos.UserProfile;
+﻿using EnglishApp.Application.Dtos.UserProfile;
 using EnglishApp.Application.Interfaces;
 using EnglishApp.Domain.Entities;
 

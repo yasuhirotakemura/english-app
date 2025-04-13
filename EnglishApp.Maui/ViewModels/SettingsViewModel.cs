@@ -7,7 +7,7 @@ namespace EnglishApp.Maui.ViewModels;
 
 public sealed class SettingsViewModel : ViewModelBase
 {
-    public SettingsViewModel(IMessageService messageService) : base(messageService)
+    public SettingsViewModel(IMessageService messageService, INavigationService navigationService) : base(messageService, navigationService)
     {
         this.UserProfileSettingCommand = new AsyncRelayCommand(this.OnUserProfileSettingButton);
     }
@@ -15,6 +15,6 @@ public sealed class SettingsViewModel : ViewModelBase
     public IAsyncRelayCommand UserProfileSettingCommand { get; }
     private async Task OnUserProfileSettingButton()
     {
-        await this.NavigateToAsync(AppShellRoute.UserProfileView);
+        await this.NavigationService.NavigateToAsync(route: AppShellRoute.UserProfileView);
     }
 }

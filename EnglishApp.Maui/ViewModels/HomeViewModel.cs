@@ -5,7 +5,9 @@ namespace EnglishApp.Maui.ViewModels;
 
 public sealed class HomeViewModel : ViewModelBase, IQueryAttributable
 {
-    public HomeViewModel(IMessageService messageService) : base(messageService)
+    public HomeViewModel(IMessageService messageService,
+                         INavigationService navigationService) : base(messageService,
+                                                                      navigationService)
     {
     }
 

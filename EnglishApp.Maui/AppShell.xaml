@@ -9,8 +9,8 @@
     Title="EnglishApp.Maui">
 
     <ShellContent
-            Route="{x:Static route:AppShellRoute.WelcomeView}"
-            ContentTemplate="{DataTemplate view:WelcomeView}" />
+            Route="{x:Static route:AppShellRoute.TextListView}"
+            ContentTemplate="{DataTemplate view:TextListView}" />
 
     <TabBar>
         <ShellContent

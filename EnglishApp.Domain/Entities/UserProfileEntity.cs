@@ -2,7 +2,7 @@
 
 public sealed class UserProfileEntity(int userId,
                                       string nickName,
-                                      byte gender,
+                                      int genderId,
                                       int gradeId,
                                       int learningPurposeId,
                                       int prefectureId,
@@ -19,7 +19,7 @@ public sealed class UserProfileEntity(int userId,
 {
     public int UserId { get; } = userId;
     public string NickName { get; } = nickName;
-    public byte Gender { get; } = gender;
+    public int Gender { get; } = genderId;
     public int GradeId { get; } = gradeId;
     public int LearningPurposeId { get; } = learningPurposeId;
     public int PrefectureId { get; } = prefectureId;
@@ -49,5 +49,4 @@ public sealed class UserProfileEntity(int userId,
                ", UpdatedAt: " + this.ProfileUpdatedAt.ToString("yyyy-MM-dd HH:mm:ss") +
                ", LastLoginAt: " + this.LastLoginAt.ToString("yyyy-MM-dd HH:mm:ss");
     }
-
 }

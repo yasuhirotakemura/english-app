@@ -53,6 +53,7 @@ public static class MauiProgram
     public static MauiAppBuilder RegisterServices(this MauiAppBuilder builder)
     {
         builder.Services.AddTransient<IMessageService, MessageService>();
+        builder.Services.AddTransient<INavigationService, NavigationService>();
 
         return builder;
     }

@@ -1,4 +1,5 @@
-﻿using EnglishApp.Api.Services;
+﻿using EnglishApp.Api.Middlewares;
+using EnglishApp.Api.Services;
 using EnglishApp.Domain.Repositories;
 using EnglishApp.Infrastructure.Repositories;
 using EnglishApp.Infrastructure.Services;
@@ -24,9 +25,10 @@ internal class Program
 
         builder.Services.AddScoped<IUserRepository, UserRepository>();
         builder.Services.AddScoped<IUserAuthRepository, UserAuthRepository>();
-        builder.Services.AddScoped<IPrefectureRepository, PrefectureRepository>();
+        builder.Services.AddScoped<IUserGenderRepository, UserGenderRepository>();
         builder.Services.AddScoped<IUserGradeRepository, UserGradeRepository>();
         builder.Services.AddScoped<IUserLearningPurposeRepository, UserLearningPurposeRepository>();
+        builder.Services.AddScoped<IPrefectureRepository, PrefectureRepository>();
         builder.Services.AddScoped<IUserProfileRepository, UserProfileRepository>();
 
         builder.Services.AddControllers();
@@ -60,6 +62,8 @@ internal class Program
             app.UseSwagger();
             app.UseSwaggerUI();
         }
+
+        app.UseMiddleware<ExceptionHandlingMiddleware>();
 
         app.UseHttpsRedirection();
 

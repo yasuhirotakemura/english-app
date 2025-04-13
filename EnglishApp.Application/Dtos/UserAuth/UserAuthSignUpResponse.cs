@@ -2,9 +2,8 @@
 
 namespace EnglishApp.Application.Dtos.UserAuth;
 
-public sealed class UserAuthSignUpResponse(string message,
-                                           int userId,
-                                           string accessToken) : ResponseBase(message)
+public sealed class UserAuthSignUpResponse(int userId,
+                                           string accessToken) : ResponseBase
 {
     public int UserId { get; } = userId;
     public string AccessToken { get; } = accessToken;
