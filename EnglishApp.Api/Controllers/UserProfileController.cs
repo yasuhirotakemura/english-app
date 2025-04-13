@@ -49,24 +49,15 @@ public class UserProfileController(IUserProfileRepository userProfileRepository,
     [HttpGet("{userId:int}")]
     public async Task<IActionResult> GetByUserId([FromRoute] int userId)
     {
-        try
-        {
-            UserProfileEntity? entity = await this._userProfileRepository.GetByUserId(userId);
+        UserProfileEntity? entity = await this._userProfileRepository.GetByUserId(userId);
 
-            if (entity is UserProfileEntity userProfileEntity)
-            {
-                return this.Ok(userProfileEntity);
-            }
-            else
-            {
-                return this.Unauthorized(new ErrorResponse("指定されたユーザーのプロフィールが見つかりません。"));
-            }
+        if (entity is UserProfileEntity userProfileEntity)
+        {
+            return this.Ok(userProfileEntity);
         }
-        catch (Exception ex)
+        else
         {
-            Console.WriteLine(ex.Message);
-
-            return this.StatusCode(500, new ErrorResponse("サーバーエラーが発生しました。"));
+            return this.Unauthorized(new ErrorResponse("指定されたユーザーのプロフィールが見つかりません。"));
         }
     }
 
